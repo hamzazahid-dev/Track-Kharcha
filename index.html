@@ -3,1986 +3,851 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Wallet - Track Kharcha</title>
+    <title>Track Kharcha - Expense Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js">
-    </script>
-
-    <script>
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyDN8MB7B0-faYxCZIaDdqXZ01MHYu_22qU",
-            authDomain: "track-kharcha.firebaseapp.com",
-            projectId: "track-kharcha",
-            storageBucket: "track-kharcha.firebasestorage.app",
-            messagingSenderId: "391437105314",
-            appId: "1:391437105314:web:ef3a62197f8265797afffb",
-            measurementId: "G-CFM1N6RTNV"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
-        db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
-    </script>
+    <!-- Firebase Compatibility SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
         /* ================================================================
-           CSS VARIABLES
+           VARIABLES & THEMING
            ================================================================ */
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #111827;
-            --bg-card: #1a2332;
-            --bg-card-hover: #1f2a3d;
-            --bg-input: #0f1729;
-            --border-color: #2a3a4a;
-            --text-primary: #f0f4f8;
-            --text-secondary: #94a3b8;
+            --bg-page: #f8fafc;
+            --surface-card: #ffffff;
+            --brand-green: #2ecc71;
+            --brand-green-dark: #27ae60;
+            --brand-blue: #3b82f6;
+            --brand-blue-dark: #2563eb;
+            --text-dark: #1e293b;
             --text-muted: #64748b;
-            --accent: #6c5ce7;
-            --accent-light: #8b7cf7;
-            --accent-glow: rgba(108, 92, 231, 0.4);
-            --green: #10b981;
-            --green-dark: #059669;
-            --green-glow: rgba(16, 185, 129, 0.3);
-            --red: #ef4444;
-            --red-glow: rgba(239, 68, 68, 0.3);
-            --orange: #f59e0b;
-            --blue: #3b82f6;
-            --pink: #ec4899;
-            --purple: #8b5cf6;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --radius-lg: 24px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --currency: '₨';
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --radius-pill: 50px;
+            --radius-card: 20px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --font-main: 'Inter', sans-serif;
         }
 
         /* ================================================================
-           RESET & BASE
+           GLOBAL RESET
            ================================================================ */
-        *,
-        *::before,
-        *::after {
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
+
         body {
-            font-family: var(--font);
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: var(--font-main);
+            background: #0f172a;
+            color: var(--text-dark);
             min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        a {
-            color: var(--accent-light);
-            text-decoration: none;
-        }
-        button {
-            cursor: pointer;
-            font-family: var(--font);
-            border: none;
-            background: none;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-        }
-        button:active {
-            transform: scale(0.95);
-        }
-        input,
-        select,
-        textarea {
-            font-family: var(--font);
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            outline: none;
-            transition: var(--transition);
+
+        /* Mobile Container Simulation */
+        .mobile-shell {
             width: 100%;
-            font-size: 0.95rem;
+            max-width: 430px;
+            height: 100vh;
+            max-height: 932px;
+            background: var(--bg-page);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
+
+        @media (max-height: 932px) {
+            .mobile-shell {
+                max-height: 100vh;
+                border-radius: 0;
+            }
         }
 
         /* ================================================================
-           ONBOARDING / AUTH SCREENS
+           SCREENS MANAGEMENT
            ================================================================ */
-        .auth-screen {
+        .screen {
             display: none;
-            min-height: 100vh;
-            background: var(--bg-primary);
-            padding: 40px 24px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            max-width: 420px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease;
-        }
-        .auth-screen.active {
-            display: flex;
-        }
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-screen .logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--accent-light), var(--green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .auth-screen .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 32px;
-            text-align: center;
-        }
-        .auth-screen .auth-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-        }
-        .auth-screen .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        .auth-screen .auth-btn.google {
-            background: #fff;
-            color: #1a1a2e;
-        }
-        .auth-screen .auth-btn.google:hover {
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
-        }
-        .auth-screen .auth-btn.facebook {
-            background: #1877f2;
-            color: #fff;
-            border-color: #1877f2;
-        }
-        .auth-screen .auth-btn.email {
-            background: transparent;
-            border-color: var(--border-color);
-        }
-        .auth-screen .auth-btn.email:hover {
-            background: var(--bg-card);
-        }
-        .auth-screen .divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            width: 100%;
-            margin: 16px 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-        .auth-screen .divider::before,
-        .auth-screen .divider::after {
-            content: '';
             flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-        .auth-screen .terms {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 16px;
-            line-height: 1.6;
-        }
-        .auth-screen .terms a {
-            color: var(--accent-light);
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            position: absolute;
+            inset: 0;
+            background: var(--bg-page);
+            z-index: 10;
         }
 
-        /* Onboarding Steps */
-        .onboarding {
-            display: none;
-            min-height: 100vh;
-            background: var(--bg-primary);
-            padding: 40px 24px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            max-width: 420px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease;
-        }
-        .onboarding.active {
+        .screen.active {
             display: flex;
         }
-        .onboarding .emoji {
-            font-size: 4rem;
+
+        /* ================================================================
+           AUTH / LANDING SCREEN (MATCHING SCREENSHOT)
+           ================================================================ */
+        .auth-banner {
+            height: 38%;
+            background: linear-gradient(135deg, #2ecc71 0%, #10b981 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .shield-badge {
+            width: 120px;
+            height: 120px;
+            background: #10b981;
+            border: 4px solid #ffffff;
+            border-radius: 28px 28px 60px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .wallet-icon {
+            width: 60px;
+            height: 42px;
+            background: #ffffff;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .wallet-clasp {
+            width: 12px;
+            height: 12px;
+            background: #f59e0b;
+            border-radius: 50%;
+        }
+
+        .auth-body {
+            flex: 1;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+        }
+
+        .auth-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.3;
             margin-bottom: 24px;
         }
-        .onboarding h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .onboarding p {
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
-        .onboarding .btn-primary {
+
+        .btn-stack {
             width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            background: var(--accent);
-            color: #fff;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
-        .onboarding .btn-primary:hover {
-            background: var(--accent-light);
-            box-shadow: 0 8px 30px var(--accent-glow);
-            transform: translateY(-2px);
-        }
-        .onboarding .btn-secondary {
+
+        .auth-pill-btn {
             width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 500;
-            border: 1px solid var(--border-color);
-            margin-top: 8px;
-        }
-        .onboarding .btn-secondary:hover {
-            background: var(--bg-card);
-        }
-        .onboarding .currency-display {
-            font-size: 3rem;
+            height: 56px;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border: none;
+            cursor: pointer;
             font-weight: 700;
-            color: var(--accent-light);
-            margin: 16px 0;
+            font-size: 0.88rem;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
         }
-        .onboarding .cash-input {
+
+        .auth-pill-btn:active {
+            transform: scale(0.98);
+        }
+
+        .icon-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 16px 0;
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
-        .onboarding .cash-input .currency {
-            color: var(--text-secondary);
-        }
-        .onboarding .cash-input input {
-            width: 120px;
-            font-size: 2.5rem;
-            font-weight: 700;
+
+        .btn-text {
+            flex: 1;
             text-align: center;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--border-color);
-            padding: 4px 8px;
+            padding-right: 44px;
         }
-        .onboarding .cash-input input:focus {
-            border-bottom-color: var(--accent);
-            box-shadow: none;
+
+        .btn-google {
+            background: #4285f4;
         }
-        .onboarding .numpad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 100%;
-            max-width: 300px;
-            margin: 16px 0;
+        .btn-google .icon-circle { color: #4285f4; }
+
+        .btn-facebook {
+            background: #1877f2;
         }
-        .onboarding .numpad button {
-            padding: 16px;
-            font-size: 1.5rem;
+        .btn-facebook .icon-circle { color: #1877f2; }
+
+        .btn-email {
+            background: #2ecc71;
+        }
+        .btn-email .icon-circle { color: #2ecc71; }
+
+        .legal-notice {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-top: 16px;
+        }
+
+        .legal-notice a {
+            color: var(--brand-blue);
+            text-decoration: underline;
             font-weight: 600;
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
         }
-        .onboarding .numpad button:hover {
-            background: var(--bg-card-hover);
-            transform: scale(1.02);
-        }
-        .onboarding .numpad button:active {
-            transform: scale(0.95);
-        }
-        .onboarding .biometric-option {
+
+        /* ================================================================
+           MAIN APP DASHBOARD & PAGES
+           ================================================================ */
+        .app-header {
+            padding: 20px 20px 10px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            width: 100%;
-            padding: 16px 20px;
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            margin: 8px 0;
-            border: 1px solid var(--border-color);
+            align-items: center;
+            background: #ffffff;
         }
-        .onboarding .biometric-option .left {
+
+        .profile-info {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .onboarding .biometric-option .left i {
-            font-size: 1.5rem;
-            color: var(--accent-light);
-        }
-        .onboarding .biometric-option .toggle {
-            width: 48px;
-            height: 28px;
-            background: var(--border-color);
-            border-radius: 14px;
-            position: relative;
-            transition: var(--transition);
-        }
-        .onboarding .biometric-option .toggle.active {
-            background: var(--accent);
-        }
-        .onboarding .biometric-option .toggle .dot {
-            width: 22px;
-            height: 22px;
-            background: #fff;
+
+        .avatar-circle {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            transition: var(--transition);
-        }
-        .onboarding .biometric-option .toggle.active .dot {
-            left: 23px;
-        }
-
-        /* ================================================================
-           MAIN APP LAYOUT
-           ================================================================ */
-        .app-container {
-            display: none;
-            min-height: 100vh;
-            background: var(--bg-primary);
-        }
-        .app-container.active {
-            display: flex;
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 16px 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-        .bottom-nav .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            padding: 4px 12px;
-            color: var(--text-muted);
-            font-size: 0.65rem;
-            transition: var(--transition);
-            position: relative;
-        }
-        .bottom-nav .nav-item i {
-            font-size: 1.4rem;
-            transition: var(--transition);
-        }
-        .bottom-nav .nav-item.active {
-            color: var(--accent-light);
-        }
-        .bottom-nav .nav-item.active i {
-            transform: translateY(-2px);
-        }
-        .bottom-nav .nav-item .badge {
-            position: absolute;
-            top: 2px;
-            right: 4px;
-            background: var(--red);
-            color: #fff;
-            font-size: 0.5rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        .bottom-nav .nav-item .fab-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            margin-top: -20px;
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transition: var(--transition);
-        }
-        .bottom-nav .nav-item .fab-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-        .bottom-nav .nav-item .fab-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 16px 16px 80px 16px;
-            overflow-y: auto;
-            max-height: 100vh;
-        }
-
-        /* ================================================================
-           PAGE STYLES
-           ================================================================ */
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .page.active {
-            display: block;
-        }
-
-        /* Home Page */
-        .home-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0 16px 0;
-        }
-        .home-header .greeting {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .home-header .greeting h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .home-header .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--accent);
+            background: var(--brand-green);
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             font-size: 1.1rem;
-            color: #fff;
+        }
+
+        .greeting-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .greeting-text h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .dashboard-content {
+            padding: 16px;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 90px;
         }
 
         .balance-card {
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: var(--radius-card);
             padding: 24px;
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);
             margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
         }
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-        }
+
         .balance-card .label {
-            font-size: 0.75rem;
-            opacity: 0.8;
+            font-size: 0.8rem;
+            opacity: 0.9;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .balance-card .amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 4px 0 16px 0;
-        }
-        .balance-card .amount .currency {
-            font-size: 1.2rem;
-            font-weight: 400;
-            opacity: 0.8;
-        }
-        .balance-card .stats {
-            display: flex;
-            gap: 24px;
-        }
-        .balance-card .stats .stat {
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-        .balance-card .stats .stat .value {
-            font-weight: 600;
-            font-size: 1rem;
-            opacity: 1;
-        }
-        .balance-card .stats .stat .value.positive {
-            color: var(--green);
-        }
-        .balance-card .stats .stat .value.negative {
-            color: var(--red);
+
+        .balance-card .val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 8px 0 16px 0;
         }
 
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
         }
-        .quick-actions .action {
+
+        .stat-box {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 4px;
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .quick-actions .action:hover {
-            transform: translateY(-2px);
-            background: var(--bg-card-hover);
-        }
-        .quick-actions .action .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-        .quick-actions .action .icon.income {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--green);
-        }
-        .quick-actions .action .icon.expense {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--red);
-        }
-        .quick-actions .action .icon.transfer {
-            background: rgba(59, 130, 246, 0.2);
-            color: var(--blue);
-        }
-        .quick-actions .action .icon.more {
-            background: rgba(108, 92, 231, 0.2);
-            color: var(--accent-light);
-        }
-        .quick-actions .action .label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
         }
 
-        .section-header {
+        .stat-box span {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .stat-box strong {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 16px 0 12px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 20px 0 12px 0;
-        }
-        .section-header h3 {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        .section-header .see-all {
-            font-size: 0.75rem;
-            color: var(--accent-light);
-            cursor: pointer;
         }
 
-        .account-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            padding: 16px;
+        .tx-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tx-item {
+            background: #ffffff;
+            padding: 14px 16px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
-            border: 1px solid transparent;
-            transition: var(--transition);
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
         }
-        .account-card:hover {
-            border-color: var(--border-color);
-            transform: translateX(4px);
+
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .account-card .icon {
-            width: 44px;
-            height: 44px;
+
+        .tx-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        .account-card .info {
-            flex: 1;
-        }
-        .account-card .info .name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .account-card .info .balance {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .account-card .amount {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* Accounts Page */
-        .account-type-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .account-type-item {
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            text-align: center;
-            border: 1px solid transparent;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .account-type-item:hover {
-            border-color: var(--border-color);
-            transform: translateY(-2px);
-        }
-        .account-type-item .icon {
-            font-size: 1.8rem;
-            margin-bottom: 6px;
-        }
-        .account-type-item .name {
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .account-type-item .desc {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
-
-        /* Records Page */
-        .record-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .record-item:last-child {
-            border-bottom: none;
-        }
-        .record-item .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 1rem;
-            flex-shrink: 0;
         }
-        .record-item .info {
-            flex: 1;
-        }
-        .record-item .info .name {
-            font-weight: 500;
+
+        .tx-icon.expense { background: #fef2f2; color: #ef4444; }
+        .tx-icon.income { background: #f0fdf4; color: #10b981; }
+
+        .tx-details h4 {
             font-size: 0.9rem;
-        }
-        .record-item .info .meta {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .record-item .amount {
             font-weight: 600;
+        }
+
+        .tx-details p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .tx-amount {
+            font-weight: 700;
             font-size: 0.95rem;
         }
-        .record-item .amount.positive {
-            color: var(--green);
-        }
-        .record-item .amount.negative {
-            color: var(--red);
+
+        .tx-amount.expense { color: #ef4444; }
+        .tx-amount.income { color: #10b981; }
+
+        /* Navigation Bar */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
         }
 
-        /* Budgets Page */
-        .budget-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            margin-bottom: 10px;
-        }
-        .budget-card .header {
+        .nav-link {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 6px;
-        }
-        .budget-card .header .name {
+            gap: 4px;
+            color: var(--text-light);
+            font-size: 0.65rem;
             font-weight: 600;
-        }
-        .budget-card .header .amount {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .budget-card .progress {
-            height: 6px;
-            background: var(--bg-input);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-        .budget-card .progress .fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.6s ease;
-        }
-        .budget-card .used {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Goals Page */
-        .goal-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            margin-bottom: 10px;
-        }
-        .goal-card .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-        .goal-card .header .name {
-            font-weight: 600;
-        }
-        .goal-card .header .amount {
-            font-weight: 600;
-        }
-        .goal-card .progress {
-            height: 6px;
-            background: var(--bg-input);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-        .goal-card .progress .fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.6s ease;
-        }
-        .goal-card .meta {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Settings */
-        .settings-group {
-            margin-bottom: 20px;
-        }
-        .settings-group .group-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .settings-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            transition: var(--transition);
-        }
-        .settings-item:hover {
-            padding-left: 8px;
-        }
-        .settings-item:last-child {
-            border-bottom: none;
-        }
-        .settings-item .icon {
-            width: 32px;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-        .settings-item .info {
-            flex: 1;
-        }
-        .settings-item .info .name {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .settings-item .info .desc {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .settings-item .arrow {
-            color: var(--text-muted);
+            border: none;
+            background: none;
         }
 
-        /* ================================================================
-           RESPONSIVE
-           ================================================================ */
-        @media (max-width: 480px) {
-            .auth-screen,
-            .onboarding {
-                padding: 24px 16px;
-            }
-            .balance-card .amount {
-                font-size: 2rem;
-            }
-            .quick-actions {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 8px;
-            }
-            .quick-actions .action .label {
-                font-size: 0.6rem;
-            }
-            .account-type-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .onboarding .numpad {
-                max-width: 100%;
-            }
-            .bottom-nav .nav-item {
-                font-size: 0.55rem;
-                padding: 2px 8px;
-            }
-            .bottom-nav .nav-item i {
-                font-size: 1.2rem;
-            }
-            .bottom-nav .nav-item .fab-btn {
-                width: 44px;
-                height: 44px;
-                font-size: 1.3rem;
-                margin-top: -16px;
-            }
+        .nav-link.active {
+            color: var(--brand-green);
         }
 
-        @media (min-width: 481px) and (max-width: 768px) {
-            .auth-screen,
-            .onboarding {
-                padding: 32px 20px;
-            }
-            .account-type-grid {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
+        .nav-link i {
+            font-size: 1.2rem;
         }
 
-        /* ================================================================
-           UTILITIES
-           ================================================================ */
-        .text-center {
-            text-align: center;
-        }
-        .text-muted {
-            color: var(--text-muted);
-        }
-        .text-secondary {
-            color: var(--text-secondary);
-        }
-        .mt-8 {
-            margin-top: 8px;
-        }
-        .mt-16 {
-            margin-top: 16px;
-        }
-        .mb-16 {
-            margin-bottom: 16px;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .gap-8 {
-            gap: 8px;
-        }
-        .gap-12 {
-            gap: 12px;
-        }
-        .w-full {
-            width: 100%;
-        }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            max-width: 90%;
-            width: 400px;
-        }
-        .toast {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 14px 20px;
-            box-shadow: var(--shadow);
-            animation: slideUp 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.9rem;
-        }
-        .toast.success i {
-            color: var(--green);
-        }
-        .toast.error i {
-            color: var(--red);
-        }
-        .toast.info i {
-            color: var(--blue);
-        }
-        @keyframes slideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
-        }
-        .empty-state i {
-            font-size: 3rem;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            display: block;
-        }
-        .empty-state h3 {
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        .empty-state p {
-            font-size: 0.85rem;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        .empty-state .btn {
-            margin-top: 12px;
-            padding: 10px 24px;
-            background: var(--accent);
-            color: #fff;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
-            z-index: 1000;
+        .add-fab {
+            width: 52px;
+            height: 52px;
+            background: var(--brand-green);
+            border-radius: 50%;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            font-size: 1.4rem;
+            margin-top: -24px;
+            box-shadow: 0 8px 16px rgba(46, 204, 113, 0.4);
+            cursor: pointer;
+            border: none;
         }
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
+
+        /* ================================================================
+           MODALS & OVERLAYS
+           ================================================================ */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
         }
-        .modal {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 24px;
-            max-width: 420px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-        .modal-overlay.open .modal {
-            transform: scale(1);
-        }
-        .modal .modal-header {
+
+        .overlay.active {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px 24px 0 0;
+            padding: 24px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-sheet h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
             margin-bottom: 16px;
         }
-        .modal .modal-header h2 {
-            font-size: 1.2rem;
-        }
-        .modal .modal-header .close {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0 8px;
-        }
-        .modal .modal-header .close:hover {
-            color: var(--text-primary);
-        }
-        .modal .form-group {
+
+        .form-group {
             margin-bottom: 14px;
         }
-        .modal .form-group label {
+
+        .form-group label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
         }
-        .modal .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+
+        .form-control {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--brand-green);
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 50px;
+            background: var(--brand-green);
+            color: #ffffff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Loader Overlay */
+        .loading-box {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.85);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        .loading-box.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--brand-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-box p {
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- ================================================================
-    AUTH / ONBOARDING SCREENS
-    ================================================================ -->
+    <div class="mobile-shell">
 
-    <!-- Sign In Screen -->
-    <div class="auth-screen active" id="signinScreen">
-        <div class="logo">💰 Wallet</div>
-        <p class="subtitle">Sign in or create a secure account.</p>
-        <button class="auth-btn google" id="googleSignInBtn">
-            <i class="fab fa-google"></i> CONNECT WITH GOOGLE
-        </button>
-        <button class="auth-btn facebook">
-            <i class="fab fa-facebook-f"></i> CONNECT WITH FACEBOOK
-        </button>
-        <div class="divider">or</div>
-        <button class="auth-btn email">
-            <i class="fas fa-envelope"></i> SIGN IN USING EMAIL
-        </button>
-        <p class="terms">
-            By signing up or connecting with the services above you agree to our
-            <a href="#">Terms of Services</a> and acknowledge our
-            <a href="#">Privacy Policy</a> describing how we handle your personal data.
-        </p>
-    </div>
-
-    <!-- Onboarding: Welcome -->
-    <div class="onboarding" id="onboardingWelcome">
-        <div class="emoji">🏦</div>
-        <h2>Your Finances in One Place</h2>
-        <p>Get the big picture on all your money. Connect your bank, track cash, or import data.</p>
-        <button class="btn-primary" onclick="showOnboarding('currency')">Start now</button>
-    </div>
-
-    <!-- Onboarding: Currency -->
-    <div class="onboarding" id="onboardingCurrency">
-        <div class="emoji">💱</div>
-        <h2>Select base currency</h2>
-        <div class="currency-display">PKR - Pakistani Rupee</div>
-        <p style="font-size:0.85rem;color:var(--text-muted);">
-            Your base currency should ideally be the one you use most often. Your balance &amp; statistics will be shown in this currency.
-        </p>
-        <button class="btn-primary" onclick="showOnboarding('cash')">Confirm</button>
-    </div>
-
-    <!-- Onboarding: Cash Balance -->
-    <div class="onboarding" id="onboardingCash">
-        <div class="emoji">💵</div>
-        <h2>Set up your cash balance</h2>
-        <p>How much cash do you have in your physical wallet?</p>
-        <div class="cash-input">
-            <span class="currency">₨</span>
-            <input type="text" id="cashAmount" value="1000" />
+        <!-- GLOBAL LOADER -->
+        <div id="loader" class="loading-box">
+            <div class="spinner"></div>
+            <p id="loader-text">Please wait...</p>
         </div>
-        <div class="numpad" id="numpad">
-            <button onclick="addDigit('1')">1</button>
-            <button onclick="addDigit('2')">2</button>
-            <button onclick="addDigit('3')">3</button>
-            <button onclick="addDigit('4')">4</button>
-            <button onclick="addDigit('5')">5</button>
-            <button onclick="addDigit('6')">6</button>
-            <button onclick="addDigit('7')">7</button>
-            <button onclick="addDigit('8')">8</button>
-            <button onclick="addDigit('9')">9</button>
-            <button onclick="addDigit('.')">.</button>
-            <button onclick="addDigit('0')">0</button>
-            <button onclick="backspace()">⌫</button>
-        </div>
-        <button class="btn-primary" onclick="showOnboarding('biometric')">Next</button>
-    </div>
 
-    <!-- Onboarding: Biometric -->
-    <div class="onboarding" id="onboardingBiometric">
-        <div class="emoji">🔐</div>
-        <h2>Secure your Wallet app</h2>
-        <p>Enable biometric authentication to safely log in.</p>
-        <div class="biometric-option">
-            <div class="left">
-                <i class="fas fa-fingerprint"></i>
-                <div>
-                    <div style="font-weight:500;">Biometric Unlock</div>
-                    <div style="font-size:0.75rem;color:var(--text-secondary);">Use Face or Fingerprint to log in</div>
-                </div>
-            </div>
-            <div class="toggle active" onclick="this.classList.toggle('active')">
-                <div class="dot"></div>
-            </div>
-        </div>
-        <button class="btn-primary" onclick="finishOnboarding()">Finish</button>
-    </div>
-
-    <!-- ================================================================
-    MAIN APP
-    ================================================================ -->
-    <div class="app-container" id="appContainer">
-
-        <!-- Main Content -->
-        <div class="main-content" id="mainContent">
-
-            <!-- HOME PAGE -->
-            <div class="page active" id="page-home">
-                <div class="home-header">
-                    <div class="greeting">
-                        <div>Good morning 👋</div>
-                        <h1>Hamza Zahid</h1>
+        <!-- SCREEN 1: AUTHENTICATION / LANDING -->
+        <div id="screen-auth" class="screen active">
+            <div class="auth-banner">
+                <div class="shield-badge">
+                    <div class="wallet-icon">
+                        <div class="wallet-clasp"></div>
                     </div>
-                    <div class="avatar">H</div>
+                </div>
+            </div>
+            <div class="auth-body">
+                <h1 class="auth-title">Sign in or create a secure account.</h1>
+                
+                <div class="btn-stack">
+                    <button class="auth-pill-btn btn-google" id="btn-google-login">
+                        <div class="icon-circle"><i class="fa-brands fa-google"></i></div>
+                        <span class="btn-text">Connect with Google</span>
+                    </button>
+
+                    <button class="auth-pill-btn btn-facebook" id="btn-facebook-login">
+                        <div class="icon-circle"><i class="fa-brands fa-facebook-f"></i></div>
+                        <span class="btn-text">Connect with Facebook</span>
+                    </button>
+
+                    <button class="auth-pill-btn btn-email" id="btn-email-login">
+                        <div class="icon-circle"><i class="fa-solid fa-envelope"></i></div>
+                        <span class="btn-text">Sign in using Email</span>
+                    </button>
                 </div>
 
-                <!-- Balance Card -->
+                <div class="legal-notice">
+                    By signing up or connecting with the services above you agree to our <a href="#">Terms of Services</a> and acknowledge our <a href="#">Privacy Policy</a> describing how we handle your personal data.
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: MAIN DASHBOARD -->
+        <div id="screen-dashboard" class="screen">
+            <div class="app-header">
+                <div class="profile-info">
+                    <div class="avatar-circle" id="user-avatar">U</div>
+                    <div class="greeting-text">
+                        <p>Welcome back,</p>
+                        <h2 id="user-name">User</h2>
+                    </div>
+                </div>
+                <button id="btn-logout" style="color: var(--text-muted); font-size: 1.2rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            </div>
+
+            <div class="dashboard-content">
                 <div class="balance-card">
                     <div class="label">Total Balance</div>
-                    <div class="amount"><span class="currency">₨</span> 1,000.00</div>
-                    <div class="stats">
-                        <div class="stat">
-                            Income <div class="value positive">₨ 0.00</div>
+                    <div class="val" id="total-balance">₨ 0</div>
+                    <div class="card-stats">
+                        <div class="stat-box">
+                            <span>Income</span>
+                            <strong id="total-income">₨ 0</strong>
                         </div>
-                        <div class="stat">
-                            Expenses <div class="value negative">₨ 0.00</div>
-                        </div>
-                        <div class="stat">
-                            This Month <div class="value">₨ 0.00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="quick-actions">
-                    <div class="action" onclick="openAddRecord('income')">
-                        <div class="icon income"><i class="fas fa-arrow-down"></i></div>
-                        <div class="label">Income</div>
-                    </div>
-                    <div class="action" onclick="openAddRecord('expense')">
-                        <div class="icon expense"><i class="fas fa-arrow-up"></i></div>
-                        <div class="label">Expense</div>
-                    </div>
-                    <div class="action">
-                        <div class="icon transfer"><i class="fas fa-exchange-alt"></i></div>
-                        <div class="label">Transfer</div>
-                    </div>
-                    <div class="action">
-                        <div class="icon more"><i class="fas fa-plus"></i></div>
-                        <div class="label">More</div>
-                    </div>
-                </div>
-
-                <!-- Accounts Section -->
-                <div class="section-header">
-                    <h3>Accounts</h3>
-                    <span class="see-all" onclick="navigateTo('accounts')">See all</span>
-                </div>
-
-                <div class="account-card">
-                    <div class="icon" style="background:rgba(16,185,129,0.2);color:var(--green);">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <div class="info">
-                        <div class="name">Cash</div>
-                        <div class="balance">Physical wallet</div>
-                    </div>
-                    <div class="amount">₨ 1,000.00</div>
-                </div>
-
-                <div class="account-card" style="border:1px dashed var(--border-color);opacity:0.6;">
-                    <div class="icon" style="background:transparent;color:var(--text-muted);">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="info">
-                        <div class="name">Add account</div>
-                        <div class="balance">Create a new account</div>
-                    </div>
-                </div>
-
-                <!-- Budgets & Goals -->
-                <div class="section-header">
-                    <h3>Budgets &amp; Goals</h3>
-                </div>
-
-                <div class="budget-card" style="border:1px dashed var(--border-color);text-align:center;padding:24px;">
-                    <div style="font-size:2rem;margin-bottom:8px;">🎯</div>
-                    <div style="font-weight:600;">Let's bake your Budget!</div>
-                    <div style="font-size:0.8rem;color:var(--text-secondary);">Create your first budget and stay on track with your money.</div>
-                    <button class="btn-primary" style="margin-top:12px;padding:10px 24px;background:var(--accent);border-radius:var(--radius-sm);font-weight:600;" onclick="navigateTo('budgets')">
-                        Create budget
-                    </button>
-                </div>
-
-                <div class="goal-card" style="border:1px dashed var(--border-color);text-align:center;padding:24px;">
-                    <div style="font-size:2rem;margin-bottom:8px;">🏆</div>
-                    <div style="font-weight:600;">Set your first goal</div>
-                    <div style="font-size:0.8rem;color:var(--text-secondary);">Have a quick overview of your progress.</div>
-                    <button class="btn-primary" style="margin-top:12px;padding:10px 24px;background:var(--accent);border-radius:var(--radius-sm);font-weight:600;" onclick="navigateTo('goals')">
-                        Create goal
-                    </button>
-                </div>
-
-                <!-- Premium / ShareCost Promo -->
-                <div style="margin-top:16px;background:var(--bg-card);border-radius:var(--radius-sm);padding:16px;border-left:3px solid var(--accent);">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="font-size:1.5rem;">📱</div>
-                        <div>
-                            <div style="font-weight:600;">Try our new app ShareCost</div>
-                            <div style="font-size:0.75rem;color:var(--text-secondary);">Splitting shared expenses has never been easier!</div>
-                            <span style="font-size:0.7rem;color:var(--accent-light);cursor:pointer;">Show more →</span>
+                        <div class="stat-box">
+                            <span>Expenses</span>
+                            <strong id="total-expense">₨ 0</strong>
                         </div>
                     </div>
                 </div>
 
-                <div style="margin-top:8px;background:var(--bg-card);border-radius:var(--radius-sm);padding:16px;border-left:3px solid var(--orange);">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="font-size:1.5rem;">👑</div>
-                        <div>
-                            <div style="font-weight:600;">Join our Premium club!</div>
-                            <div style="font-size:0.75rem;color:var(--text-secondary);">Maximize your financial potential. Cancel anytime.</div>
-                            <span style="font-size:0.7rem;color:var(--accent-light);cursor:pointer;">Get Wallet Premium →</span>
-                        </div>
-                    </div>
+                <div class="section-title">
+                    <span>Recent Expenses</span>
+                    <small style="color: var(--brand-blue); cursor: pointer;">View All</small>
+                </div>
+
+                <div class="tx-list" id="tx-container">
+                    <!-- Dynamic Transaction Items -->
                 </div>
             </div>
 
-            <!-- ACCOUNTS PAGE -->
-            <div class="page" id="page-accounts">
-                <div class="section-header" style="margin-top:0;">
-                    <h2 style="font-size:1.3rem;">Accounts</h2>
-                </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:12px;">1 account</div>
-
-                <div class="account-card">
-                    <div class="icon" style="background:rgba(16,185,129,0.2);color:var(--green);">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <div class="info">
-                        <div class="name">Cash</div>
-                        <div class="balance">Physical wallet</div>
-                    </div>
-                    <div class="amount">₨ 1,000.00</div>
-                </div>
-
-                <div class="account-card" style="border:1px dashed var(--border-color);opacity:0.6;">
-                    <div class="icon" style="background:transparent;color:var(--text-muted);">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="info">
-                        <div class="name">Add account</div>
-                        <div class="balance">Create a new account</div>
-                    </div>
-                </div>
-
-                <div style="margin-top:20px;">
-                    <div style="font-weight:600;margin-bottom:12px;">Add more accounts</div>
-                    <div class="account-type-grid">
-                        <div class="account-type-item">
-                            <div class="icon">🏦</div>
-                            <div class="name">Checking account</div>
-                            <div class="desc">Main account for daily transactions</div>
-                        </div>
-                        <div class="account-type-item">
-                            <div class="icon">💳</div>
-                            <div class="name">Credit card</div>
-                            <div class="desc">Bank credit cards</div>
-                        </div>
-                        <div class="account-type-item">
-                            <div class="icon">🏛️</div>
-                            <div class="name">Savings account</div>
-                            <div class="desc">Bank savings with interest</div>
-                        </div>
-                        <div class="account-type-item">
-                            <div class="icon">📈</div>
-                            <div class="name">Investments</div>
-                            <div class="desc">Stocks, ETF or Crypto</div>
-                        </div>
-                        <div class="account-type-item" style="grid-column:span 2;">
-                            <div class="icon">📋</div>
-                            <div class="name">Other</div>
-                            <div class="desc">Life insurance, Loan, Mortgage or anything else</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RECORDS PAGE -->
-            <div class="page" id="page-records">
-                <div class="section-header" style="margin-top:0;">
-                    <h2 style="font-size:1.3rem;">Records</h2>
-                    <span style="font-size:0.8rem;color:var(--text-secondary);">LAST 30 DAYS</span>
-                </div>
-                <div style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">Σ ₨ 0</div>
-
-                <div class="empty-state" id="recordsEmpty">
-                    <i class="fas fa-receipt"></i>
-                    <h3>No records yet</h3>
-                    <p>All your income and expenses will show up here.</p>
-                    <div class="btn" onclick="openAddRecord('expense')">+ Create first record</div>
-                </div>
-                <div id="recordsList" style="display:none;"></div>
-            </div>
-
-            <!-- BUDGETS PAGE -->
-            <div class="page" id="page-budgets">
-                <div class="section-header" style="margin-top:0;">
-                    <h2 style="font-size:1.3rem;">Budgets</h2>
-                    <span style="font-size:0.8rem;color:var(--accent-light);cursor:pointer;" onclick="openBudgetModal()">+ Add</span>
-                </div>
-                <div id="budgetsList">
-                    <div class="budget-card" style="border:1px dashed var(--border-color);text-align:center;padding:32px;">
-                        <div style="font-size:3rem;margin-bottom:12px;">🍰</div>
-                        <div style="font-weight:600;font-size:1.1rem;">Let's bake your Budget!</div>
-                        <div style="font-size:0.8rem;color:var(--text-secondary);">Create your first budget and stay on track with your money.</div>
-                        <button class="btn-primary" style="margin-top:16px;padding:12px 24px;background:var(--accent);border-radius:var(--radius-sm);font-weight:600;" onclick="openBudgetModal()">
-                            Create Budget
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- GOALS PAGE -->
-            <div class="page" id="page-goals">
-                <div class="section-header" style="margin-top:0;">
-                    <h2 style="font-size:1.3rem;">Goals</h2>
-                    <span style="font-size:0.8rem;color:var(--accent-light);cursor:pointer;">+ Add</span>
-                </div>
-                <div class="goal-card" style="border:1px dashed var(--border-color);text-align:center;padding:32px;">
-                    <div style="font-size:3rem;margin-bottom:12px;">🏆</div>
-                    <div style="font-weight:600;font-size:1.1rem;">Set your first goal</div>
-                    <div style="font-size:0.8rem;color:var(--text-secondary);">Have a quick overview of your progress.</div>
-                    <button class="btn-primary" style="margin-top:16px;padding:12px 24px;background:var(--accent);border-radius:var(--radius-sm);font-weight:600;">
-                        Create goal
-                    </button>
-                </div>
-            </div>
-
-            <!-- SETTINGS PAGE -->
-            <div class="page" id="page-settings">
-                <div class="section-header" style="margin-top:0;">
-                    <h2 style="font-size:1.3rem;">Settings</h2>
-                </div>
-
-                <div class="settings-group">
-                    <div class="group-title">User profile</div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-user-circle"></i></div>
-                        <div class="info">
-                            <div class="name">Change profile image, name or password, logout or delete data</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <div class="group-title">Premium plans</div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-crown"></i></div>
-                        <div class="info">
-                            <div class="name">Explore premium options and enjoy Wallet in its full functionality</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <div class="group-title">General</div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-credit-card"></i></div>
-                        <div class="info">
-                            <div class="name">Accounts</div>
-                            <div class="desc">Manage accounts, change icons, color and description</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-tags"></i></div>
-                        <div class="info">
-                            <div class="name">Categories</div>
-                            <div class="desc">Manage categories, change icons, color and add custom subcategories</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-flag"></i></div>
-                        <div class="info">
-                            <div class="name">Labels</div>
-                            <div class="desc">Define labels for better filtering</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                        <div class="info">
-                            <div class="name">Currencies</div>
-                            <div class="desc">Add other currencies, adjust exchange rates</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <div class="group-title">Other settings</div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-bell"></i></div>
-                        <div class="info">
-                            <div class="name">Notifications</div>
-                            <div class="desc">Configure notifications you want to receive</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="settings-item">
-                        <div class="icon"><i class="fas fa-lock"></i></div>
-                        <div class="info">
-                            <div class="name">Security</div>
-                            <div class="desc">Protect your app with PIN or Fingerprint</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                    <div class="settings-item" onclick="toggleDarkMode()">
-                        <div class="icon"><i class="fas fa-moon"></i></div>
-                        <div class="info">
-                            <div class="name">Dark mode</div>
-                        </div>
-                        <div style="color:var(--accent-light);font-weight:600;">On</div>
-                    </div>
-                    <div class="settings-item" id="signOutSettings" style="border-top:1px solid var(--border-color);margin-top:8px;padding-top:16px;">
-                        <div class="icon" style="color:var(--red);"><i class="fas fa-sign-out-alt"></i></div>
-                        <div class="info">
-                            <div class="name" style="color:var(--red);">Sign Out</div>
-                        </div>
-                        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
+            <div class="bottom-nav">
+                <button class="nav-link active"><i class="fa-solid fa-house"></i>Home</button>
+                <button class="nav-link"><i class="fa-solid fa-chart-pie"></i>Stats</button>
+                <button class="add-fab" id="open-add-modal"><i class="fa-solid fa-plus"></i></button>
+                <button class="nav-link"><i class="fa-solid fa-wallet"></i>Wallet</button>
+                <button class="nav-link"><i class="fa-solid fa-user"></i>Profile</button>
             </div>
         </div>
 
-        <!-- ================================================================
-        BOTTOM NAVIGATION
-        ================================================================ -->
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="navigateTo('home')">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </div>
-            <div class="nav-item" onclick="navigateTo('accounts')">
-                <i class="fas fa-credit-card"></i>
-                <span>Accounts</span>
-            </div>
-            <div class="nav-item" onclick="navigateTo('records')">
-                <i class="fas fa-receipt"></i>
-                <span>Records</span>
-            </div>
-            <div class="nav-item" onclick="openAddRecord('expense')">
-                <div class="fab-btn"><i class="fas fa-plus"></i></div>
-                <span>New</span>
-            </div>
-            <div class="nav-item" onclick="navigateTo('budgets')">
-                <i class="fas fa-chart-pie"></i>
-                <span>Budgets</span>
-            </div>
-            <div class="nav-item" onclick="navigateTo('goals')">
-                <i class="fas fa-bullseye"></i>
-                <span>Goals</span>
-            </div>
-            <div class="nav-item" onclick="navigateTo('settings')">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================================================================
-    MODALS
-    ================================================================ -->
-
-    <!-- Add Record Modal -->
-    <div class="modal-overlay" id="recordModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="recordModalTitle">Add Record</h2>
-                <span class="close" onclick="closeModal('recordModal')">&times;</span>
-            </div>
-            <form id="recordForm" onsubmit="saveRecord(event)">
-                <div class="form-group">
-                    <label>Amount (₨)</label>
-                    <input type="number" id="recordAmount" step="0.01" min="0.01" placeholder="0.00" required />
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <select id="recordCategory" required>
-                        <option value="food">Food</option>
-                        <option value="transport">Transport</option>
-                        <option value="shopping">Shopping</option>
-                        <option value="bills">Bills</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="health">Health</option>
-                        <option value="education">Education</option>
-                        <option value="income">Income</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-row">
+        <!-- ADD TRANSACTION MODAL -->
+        <div id="modal-add" class="overlay">
+            <div class="modal-sheet">
+                <h3>Add New Transaction</h3>
+                <form id="tx-form">
                     <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" id="recordDate" required />
+                        <label>Title</label>
+                        <input type="text" id="tx-title" class="form-control" placeholder="e.g., Grocery, Salary" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount (PKR)</label>
+                        <input type="number" id="tx-amount" class="form-control" placeholder="0" required />
                     </div>
                     <div class="form-group">
                         <label>Type</label>
-                        <select id="recordType">
+                        <select id="tx-type" class="form-control">
                             <option value="expense">Expense</option>
                             <option value="income">Income</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="recordNotes" placeholder="Optional notes..."></textarea>
-                </div>
-                <div style="display:flex;gap:10px;margin-top:8px;">
-                    <button type="submit" class="btn-primary" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:600;">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                    <button type="button" class="btn-secondary" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:600;background:var(--bg-card);border:1px solid var(--border-color);" onclick="closeModal('recordModal')">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Add Budget Modal -->
-    <div class="modal-overlay" id="budgetModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Create Budget</h2>
-                <span class="close" onclick="closeModal('budgetModal')">&times;</span>
+                    <button type="submit" class="btn-submit">Save Transaction</button>
+                    <button type="button" id="close-add-modal" class="btn-submit" style="background: transparent; color: var(--text-muted); margin-top: 0;">Cancel</button>
+                </form>
             </div>
-            <form id="budgetForm" onsubmit="saveBudget(event)">
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" id="budgetName" placeholder="e.g. Groceries" required />
-                </div>
-                <div class="form-group">
-                    <label>Monthly Limit (₨)</label>
-                    <input type="number" id="budgetLimit" step="0.01" min="0.01" placeholder="5000" required />
-                </div>
-                <div style="display:flex;gap:10px;margin-top:8px;">
-                    <button type="submit" class="btn-primary" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:600;">
-                        <i class="fas fa-save"></i> Create
-                    </button>
-                    <button type="button" class="btn-secondary" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:600;background:var(--bg-card);border:1px solid var(--border-color);" onclick="closeModal('budgetModal')">Cancel</button>
-                </div>
-            </form>
         </div>
+
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- ================================================================
-    JAVASCRIPT
-    ================================================================ -->
+    <!-- APPLICATION LOGIC -->
     <script>
-        // ================================================================
-        // DATA
-        // ================================================================
-        let appData = {
-            expenses: [],
-            budgets: [],
-            goals: [],
-            cashBalance: 1000,
-            currency: 'PKR'
+        // DOM Elements
+        const screens = {
+            auth: document.getElementById('screen-auth'),
+            dashboard: document.getElementById('screen-dashboard')
         };
+        const loader = document.getElementById('loader');
+        const loaderText = document.getElementById('loader-text');
 
-        // ================================================================
-        // ONBOARDING
-        // ================================================================
-        function showOnboarding(step) {
-            document.querySelectorAll('.onboarding').forEach(el => el.classList.remove('active'));
-            document.getElementById('onboarding' + step.charAt(0).toUpperCase() + step.slice(1)).classList.add('active');
+        // Buttons
+        const btnGoogle = document.getElementById('btn-google-login');
+        const btnFacebook = document.getElementById('btn-facebook-login');
+        const btnEmail = document.getElementById('btn-email-login');
+        const btnLogout = document.getElementById('btn-logout');
+        const fabAdd = document.getElementById('open-add-modal');
+        const modalAdd = document.getElementById('modal-add');
+        const closeModal = document.getElementById('close-add-modal');
+        const txForm = document.getElementById('tx-form');
+
+        // App State
+        let currentUser = null;
+        let transactions = [];
+
+        // Switch Active Screen
+        function navigateTo(screenName) {
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screens[screenName].classList.add('active');
         }
 
-        let cashInput = '1000';
-
-        function addDigit(d) {
-            if (d === '.' && cashInput.includes('.')) return;
-            cashInput += d;
-            document.getElementById('cashAmount').value = cashInput;
+        // Show/Hide Loader
+        function setLoading(isLoading, text = "Please wait...") {
+            loaderText.innerText = text;
+            if (isLoading) {
+                loader.classList.add('active');
+            } else {
+                loader.classList.remove('active');
+            }
         }
 
-        function backspace() {
-            cashInput = cashInput.slice(0, -1) || '0';
-            document.getElementById('cashAmount').value = cashInput;
-        }
+        // Firebase Auth Listeners
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('user-name').innerText = user.displayName || user.email.split('@')[0];
+                document.getElementById('user-avatar').innerText = (user.displayName || user.email)[0].toUpperCase();
+                navigateTo('dashboard');
+                loadTransactions();
+            } else {
+                currentUser = null;
+                navigateTo('auth');
+            }
+            setLoading(false);
+        });
 
-        function finishOnboarding() {
-            const cash = parseFloat(document.getElementById('cashAmount').value) || 0;
-            appData.cashBalance = cash;
-            document.querySelectorAll('.onboarding').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.auth-screen').forEach(el => el.classList.remove('active'));
-            document.getElementById('appContainer').classList.add('active');
-            updateUI();
-            showToast('Welcome to Wallet! 🎉', 'success');
-        }
-
-        // ================================================================
-        // AUTH
-        // ================================================================
-        document.getElementById('googleSignInBtn').addEventListener('click', () => {
+        // Authentication Handlers
+        btnGoogle.addEventListener('click', () => {
+            setLoading(true, "Connecting Google...");
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then(result => {
-                    document.querySelectorAll('.auth-screen').forEach(el => el.classList.remove('active'));
-                    document.getElementById('onboardingWelcome').classList.add('active');
-                    showToast('Signed in successfully!', 'success');
-                })
-                .catch(error => {
-                    showToast('Sign-in failed: ' + error.message, 'error');
-                });
-        });
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.querySelectorAll('.auth-screen').forEach(el => el.classList.remove('active'));
-                document.getElementById('onboardingWelcome').classList.add('active');
-            }
-        });
-
-        document.getElementById('signOutSettings').addEventListener('click', () => {
-            auth.signOut().then(() => {
-                location.reload();
+            auth.signInWithPopup(provider).catch((err) => {
+                alert("Auth Error: " + err.message);
+                setLoading(false);
             });
         });
 
-        // ================================================================
-        // NAVIGATION
-        // ================================================================
-        function navigateTo(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-            const navMap = { home: 0, accounts: 1, records: 2, budgets: 4, goals: 5, settings: 6 };
-            if (navMap[page] !== undefined) {
-                document.querySelectorAll('.bottom-nav .nav-item')[navMap[page]]?.classList.add('active');
-            }
-            // Hide empty state if records exist
-            if (page === 'records') {
-                updateRecords();
-            }
-        }
-
-        // ================================================================
-        // UI UPDATE
-        // ================================================================
-        function updateUI() {
-            const total = appData.expenses.reduce((sum, e) => sum + (e.type === 'income' ? e.amount : -e.amount), 0) + appData
-                .cashBalance;
-            document.querySelector('.balance-card .amount').innerHTML = `<span class="currency">₨</span> ${total.toFixed(2)}`;
-            document.querySelector('#page-records .empty-state .btn')?.addEventListener('click', () => openAddRecord(
-            'expense'));
-            updateRecords();
-        }
-
-        // ================================================================
-        // RECORDS
-        // ================================================================
-        function updateRecords() {
-            const list = document.getElementById('recordsList');
-            const empty = document.getElementById('recordsEmpty');
-            const total = document.querySelector('#page-records .flex-between span:last-child');
-
-            if (appData.expenses.length === 0) {
-                list.style.display = 'none';
-                empty.style.display = 'block';
-                return;
-            }
-            list.style.display = 'block';
-            empty.style.display = 'none';
-
-            let html = '';
-            const sorted = [...appData.expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
-            sorted.forEach((r, i) => {
-                const isIncome = r.type === 'income';
-                const color = isIncome ? 'var(--green)' : 'var(--red)';
-                const icon = isIncome ? 'fa-arrow-down' : 'fa-arrow-up';
-                const amountClass = isIncome ? 'positive' : 'negative';
-                html += `
-                    <div class="record-item" style="animation: fadeIn ${0.3 + i*0.05}s ease;">
-                        <div class="icon" style="background:${color}22;color:${color};">
-                            <i class="fas ${icon}"></i>
-                        </div>
-                        <div class="info">
-                            <div class="name">${r.category}</div>
-                            <div class="meta">${r.date} ${r.notes ? '· ' + r.notes : ''}</div>
-                        </div>
-                        <div class="amount ${amountClass}">${isIncome ? '+' : '-'} ₨ ${r.amount.toFixed(2)}</div>
-                    </div>
-                `;
+        btnFacebook.addEventListener('click', () => {
+            setLoading(true, "Connecting Facebook...");
+            const provider = new firebase.auth.FacebookAuthProvider();
+            auth.signInWithPopup(provider).catch((err) => {
+                alert("Auth Error: " + err.message);
+                setLoading(false);
             });
-            list.innerHTML = html;
-        }
+        });
 
-        function openAddRecord(type) {
-            document.getElementById('recordModalTitle').textContent = type === 'income' ? 'Add Income' : 'Add Expense';
-            document.getElementById('recordType').value = type || 'expense';
-            document.getElementById('recordAmount').value = '';
-            document.getElementById('recordDate').value = new Date().toISOString().slice(0, 10);
-            document.getElementById('recordNotes').value = '';
-            document.getElementById('recordModal').classList.add('open');
-        }
+        btnEmail.addEventListener('click', () => {
+            const email = prompt("Enter your Email:");
+            const password = prompt("Enter your Password:");
+            if (email && password) {
+                setLoading(true, "Signing in...");
+                auth.signInWithEmailAndPassword(email, password)
+                    .catch(() => {
+                        return auth.createUserWithEmailAndPassword(email, password);
+                    })
+                    .catch((err) => {
+                        alert(err.message);
+                        setLoading(false);
+                    });
+            }
+        });
 
-        function saveRecord(e) {
+        btnLogout.addEventListener('click', () => {
+            setLoading(true, "Logging out...");
+            auth.signOut();
+        });
+
+        // Modal Controls
+        fabAdd.addEventListener('click', () => modalAdd.classList.add('active'));
+        closeModal.addEventListener('click', () => modalAdd.classList.remove('active'));
+
+        // Firestore Data Management
+        txForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const amount = parseFloat(document.getElementById('recordAmount').value);
-            const category = document.getElementById('recordCategory').value;
-            const date = document.getElementById('recordDate').value;
-            const notes = document.getElementById('recordNotes').value.trim();
-            const type = document.getElementById('recordType').value;
+            if (!currentUser) return;
 
-            if (!amount || amount <= 0) { showToast('Please enter a valid amount.', 'error'); return; }
+            const title = document.getElementById('tx-title').value;
+            const amount = parseFloat(document.getElementById('tx-amount').value);
+            const type = document.getElementById('tx-type').value;
 
-            appData.expenses.push({
-                id: Date.now().toString(36),
+            setLoading(true, "Saving transaction...");
+            db.collection('users').doc(currentUser.uid).collection('transactions').add({
+                title,
                 amount,
-                category,
-                date,
-                notes,
-                type
-            });
-
-            closeModal('recordModal');
-            updateUI();
-            showToast(`${type === 'income' ? 'Income' : 'Expense'} added! 💰`, 'success');
-            // Switch to records tab
-            navigateTo('records');
-        }
-
-        // ================================================================
-        // BUDGETS
-        // ================================================================
-        function openBudgetModal() {
-            document.getElementById('budgetModal').classList.add('open');
-            document.getElementById('budgetName').value = '';
-            document.getElementById('budgetLimit').value = '';
-        }
-
-        function saveBudget(e) {
-            e.preventDefault();
-            const name = document.getElementById('budgetName').value.trim();
-            const limit = parseFloat(document.getElementById('budgetLimit').value);
-
-            if (!name || !limit) { showToast('Please fill in all fields.', 'error'); return; }
-
-            appData.budgets.push({
-                id: Date.now().toString(36),
-                name,
-                limit,
-                spent: 0
-            });
-
-            closeModal('budgetModal');
-            updateBudgets();
-            showToast('Budget created! 🎯', 'success');
-        }
-
-        function updateBudgets() {
-            const container = document.getElementById('budgetsList');
-            if (appData.budgets.length === 0) {
-                container.innerHTML = `
-                    <div class="budget-card" style="border:1px dashed var(--border-color);text-align:center;padding:32px;">
-                        <div style="font-size:3rem;margin-bottom:12px;">🍰</div>
-                        <div style="font-weight:600;font-size:1.1rem;">Let's bake your Budget!</div>
-                        <div style="font-size:0.8rem;color:var(--text-secondary);">Create your first budget and stay on track with your money.</div>
-                        <button class="btn-primary" style="margin-top:16px;padding:12px 24px;background:var(--accent);border-radius:var(--radius-sm);font-weight:600;" onclick="openBudgetModal()">
-                            Create Budget
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            appData.budgets.forEach(b => {
-                const pct = Math.min(100, (b.spent / b.limit) * 100);
-                const color = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--orange)' : 'var(--green)';
-                html += `
-                    <div class="budget-card">
-                        <div class="header">
-                            <span class="name">${b.name}</span>
-                            <span class="amount">₨ ${b.spent.toFixed(2)} / ₨ ${b.limit.toFixed(2)}</span>
-                        </div>
-                        <div class="progress">
-                            <div class="fill" style="width:${pct}%;background:${color};"></div>
-                        </div>
-                        <div class="used">${pct.toFixed(0)}% used</div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // ================================================================
-        // MODAL HELPERS
-        // ================================================================
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
-
-        document.querySelectorAll('.modal-overlay').forEach(el => {
-            el.addEventListener('click', (e) => {
-                if (e.target === el) el.classList.remove('open');
+                type,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                txForm.reset();
+                modalAdd.classList.remove('active');
+                loadTransactions();
+            }).catch((err) => {
+                alert(err.message);
+                setLoading(false);
             });
         });
 
-        // ================================================================
-        // TOAST
-        // ================================================================
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(20px)';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+        function loadTransactions() {
+            if (!currentUser) return;
+            db.collection('users').doc(currentUser.uid).collection('transactions')
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then((snapshot) => {
+                    transactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderDashboard();
+                    setLoading(false);
+                }).catch(() => setLoading(false));
         }
 
-        // ================================================================
-        // DARK MODE TOGGLE
-        // ================================================================
-        let darkMode = true;
+        function renderDashboard() {
+            const container = document.getElementById('tx-container');
+            container.innerHTML = '';
 
-        function toggleDarkMode() {
-            darkMode = !darkMode;
-            document.body.style.background = darkMode ? 'var(--bg-primary)' : '#ffffff';
-            document.body.style.color = darkMode ? 'var(--text-primary)' : '#1a1a2e';
-            document.querySelectorAll('.card, .balance-card, .account-card, .budget-card, .goal-card').forEach(el => {
-                el.style.background = darkMode ? 'var(--bg-card)' : '#f0f2f8';
-                el.style.color = darkMode ? 'var(--text-primary)' : '#1a1a2e';
-            });
-            document.querySelectorAll('.bottom-nav, .modal, .auth-screen, .onboarding').forEach(el => {
-                el.style.background = darkMode ? '' : '#ffffff';
-                el.style.color = darkMode ? '' : '#1a1a2e';
-            });
-            showToast(darkMode ? 'Dark mode enabled 🌙' : 'Light mode enabled ☀️', 'info');
-        }
+            let totalIncome = 0;
+            let totalExpense = 0;
 
-        // ================================================================
-        // INIT
-        // ================================================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check if user is signed in
-            const user = auth.currentUser;
-            if (user) {
-                document.querySelectorAll('.auth-screen').forEach(el => el.classList.remove('active'));
-                document.getElementById('onboardingWelcome').classList.add('active');
+            if (transactions.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color: var(--text-muted); padding: 20px;">No transactions found.</p>`;
             }
-            // Set default date
-            document.getElementById('recordDate').value = new Date().toISOString().slice(0, 10);
-            updateUI();
-        });
 
-        console.log('💰 Wallet app loaded successfully!');
-        console.log('📊 Data:', appData);
+            transactions.forEach(tx => {
+                if (tx.type === 'income') totalIncome += tx.amount;
+                if (tx.type === 'expense') totalExpense += tx.amount;
+
+                const item = document.createElement('div');
+                item.className = 'tx-item';
+                item.innerHTML = `
+                    <div class="tx-left">
+                        <div class="tx-icon ${tx.type}">
+                            <i class="fa-solid ${tx.type === 'income' ? 'fa-arrow-down' : 'fa-bag-shopping'}"></i>
+                        </div>
+                        <div class="tx-details">
+                            <h4>${tx.title}</h4>
+                            <p>${tx.type.toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <div class="tx-amount ${tx.type}">
+                        ${tx.type === 'income' ? '+' : '-'} ₨ ${tx.amount.toLocaleString()}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            document.getElementById('total-balance').innerText = `₨ ${(totalIncome - totalExpense).toLocaleString()}`;
+            document.getElementById('total-income').innerText = `₨ ${totalIncome.toLocaleString()}`;
+            document.getElementById('total-expense').innerText = `₨ ${totalExpense.toLocaleString()}`;
+        }
     </script>
 </body>
 </html>
