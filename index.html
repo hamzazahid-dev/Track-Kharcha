@@ -1715,6 +1715,22 @@
         transition:.3s var(--tk-spring);
     }
     .mobile-settings-btn:active{transform:rotate(25deg) scale(.9)}
+@media(max-width:820px){
+    .mobile-settings-btn{display:flex!important;flex:0 0 42px!important}
+}
+.tk-account-security{
+    margin-top:14px;padding:14px;border-radius:18px;
+    background:var(--bg-input);border:1px solid var(--border-color);
+}
+.tk-account-security h3{font-size:13px;margin-bottom:5px}
+.tk-account-security p{font-size:10px;color:var(--text-muted);line-height:1.5;margin-bottom:10px}
+.tk-security-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tk-security-actions button{
+    min-height:40px;border-radius:11px;background:var(--bg-card);
+    border:1px solid var(--border-color);color:var(--text-primary);
+}
+.tk-security-status{font-size:10px;color:var(--text-secondary);margin-top:9px}
+.tk-password-modal .modal{max-width:420px}
 
     /* Better loading / first-use feel */
     .splash-screen h1{animation:tkHeading .7s .1s both}
@@ -1919,6 +1935,56 @@
     .tk-voice-fab{display:flex!important}
 }
 
+
+/* =========================================================
+   V7 — INCOME / SALARY / SMART GOALS / NAV FIX
+========================================================= */
+.tk-income-summary{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px
+}
+.tk-money-box{
+    padding:15px;border-radius:18px;background:var(--bg-card);
+    border:1px solid var(--border-color)
+}
+.tk-money-box small{display:block;color:var(--text-muted);font-size:10px}
+.tk-money-box strong{display:block;margin-top:5px;font-size:20px}
+.tk-money-box.income strong{color:var(--green)}
+.tk-money-box.expense strong{color:var(--red)}
+.tk-goal-card{
+    position:relative;overflow:hidden;padding:18px;border-radius:20px;
+    background:var(--bg-card);border:1px solid var(--border-color);
+    margin-bottom:12px
+}
+.tk-goal-card:before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 100% 0,rgba(108,92,231,.14),transparent 42%);
+    pointer-events:none
+}
+.tk-goal-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.tk-goal-title{font-size:15px;font-weight:800}
+.tk-goal-price{font-size:12px;color:var(--text-secondary);margin-top:4px}
+.tk-goal-percent{font-size:18px;font-weight:900;color:var(--accent-light)}
+.tk-goal-bar{height:9px;background:var(--bg-input);border-radius:20px;overflow:hidden;margin:14px 0 10px}
+.tk-goal-bar span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .8s var(--tk-spring)}
+.tk-goal-meta{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:var(--text-muted)}
+.tk-plan-card{
+    padding:15px;border-radius:18px;background:rgba(0,212,170,.08);
+    border:1px solid rgba(0,212,170,.18);margin-top:12px
+}
+.tk-plan-card strong{color:var(--green)}
+.tk-price-source{font-size:9px;color:var(--text-muted);margin-top:7px;line-height:1.5}
+.tk-salary-chip{
+    display:inline-flex;align-items:center;gap:6px;padding:7px 10px;
+    border-radius:12px;background:rgba(0,212,170,.10);color:var(--green);
+    font-size:10px;font-weight:800;margin-top:10px
+}
+.tk-smart-goal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tk-smart-goal-actions .btn{flex:1;min-width:120px}
+@media(max-width:520px){
+    .tk-income-summary{grid-template-columns:1fr 1fr}
+    .tk-goal-meta{flex-direction:column;gap:4px}
+}
+
 </style>
 </head>
 <body>
@@ -2070,7 +2136,7 @@
     <button data-mobile-page="dashboard" class="mobile-nav-item active"><i class="fas fa-house"></i><span>Home</span></button>
     <button data-mobile-page="expenses" class="mobile-nav-item"><i class="fas fa-receipt"></i><span>Expenses</span></button>
     <button class="mobile-add-btn" onclick="openAddExpense()"><i class="fas fa-plus"></i></button>
-    <button data-mobile-page="reports" class="mobile-nav-item"><i class="fas fa-chart-pie"></i><span>Reports</span></button>
+    <button data-mobile-page="goals" class="mobile-nav-item"><i class="fas fa-bullseye"></i><span>Goals</span></button>
     <button data-mobile-page="savings" class="mobile-nav-item"><i class="fas fa-piggy-bank"></i><span>Savings</span></button>
 </nav>
 
@@ -2088,6 +2154,7 @@
             <a href="#" data-page="budgets"><i class="fas fa-coins"></i> Budgets</a>
             <a href="#" data-page="reports"><i class="fas fa-chart-bar"></i> Reports</a>
             <a href="#" data-page="savings"><i class="fas fa-piggy-bank"></i> Savings Plan</a>
+            <a href="#" data-page="goals"><i class="fas fa-bullseye"></i> Smart Goals</a>
             <a href="#" data-page="story"><i class="fas fa-book-open"></i> Monthly Story</a>
         </nav>
 
@@ -2150,6 +2217,19 @@
             </div>
 
             <div class="card mt-16" style="border-left:4px solid var(--accent);">
+            <div class="card mt-16">
+                <div class="flex-between">
+                    <span class="card-title" style="margin-bottom:0;"><i class="fas fa-money-bill-wave"></i> Income & Salary</span>
+                    <button class="btn btn-primary btn-sm" onclick="openSalaryModal()"><i class="fas fa-plus"></i> Add Salary</button>
+                </div>
+                <div class="tk-income-summary">
+                    <div class="tk-money-box income"><small>This month's income</small><strong id="dashIncome">₨0.00</strong></div>
+                    <div class="tk-money-box"><small>Available after expenses</small><strong id="dashBalance">₨0.00</strong></div>
+                </div>
+                <div id="salaryChip"></div>
+            </div>
+
+
                 <div class="flex-between"><span class="card-title" style="margin-bottom:0;"><i class="fas fa-robot"></i> Adaptive Spending Advisor</span><i class="fas fa-robot" style="color:var(--accent-light);"></i></div>
                 <div id="advisorAlerts" style="margin-top:12px;">
                     <div class="text-muted" style="font-size:0.9rem;">No alerts yet. Add some expenses to get insights.</div>
@@ -2253,6 +2333,27 @@
             </div>
         </section>
 
+
+        <!-- ===== SMART GOALS ===== -->
+        <section class="page" id="page-goals">
+            <div class="page-header">
+                <h1>Smart Goals <small>Turn things you want into a savings plan</small></h1>
+                <div class="page-actions">
+                    <button class="btn btn-primary" onclick="openGoalModal()"><i class="fas fa-bullseye"></i> New Goal</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fas fa-wand-magic-sparkles"></i> What do you want to buy?</div>
+                <p class="text-muted" style="font-size:12px;line-height:1.6;margin-top:6px;">
+                    Tell Track Kharcha something like <b>PS5</b>. It can use a known current Pakistan market price and calculate a realistic saving plan from your income and spending.
+                </p>
+                <div id="goalList" style="margin-top:14px;">
+                    <div class="text-muted">No goals yet. Create your first goal.</div>
+                </div>
+            </div>
+        </section>
+
         <!-- ===== SAVINGS PLAN ===== -->
         <section class="page" id="page-savings">
             <div class="page-header">
@@ -2293,6 +2394,114 @@
     </div>
 
     <!-- ===== MODALS ===== -->
+
+    <div class="modal-overlay" id="salaryModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add Income / Salary</h2>
+                <span class="close" onclick="closeModal('salaryModal')">&times;</span>
+            </div>
+            <form id="salaryForm" onsubmit="saveSalary(event)">
+                <div class="form-group">
+                    <label>Amount (<span class="currency">₨</span>)</label>
+                    <input type="number" id="salaryAmount" step="0.01" min="0.01" placeholder="e.g. 100000" required>
+                </div>
+                <div class="form-group">
+                    <label>Income type</label>
+                    <select id="salaryType">
+                        <option value="salary">Salary</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="business">Business</option>
+                        <option value="bonus">Bonus</option>
+                        <option value="other">Other income</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="salaryDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Repeat</label>
+                        <select id="salaryRecurring">
+                            <option value="monthly">Every month</option>
+                            <option value="none">One time</option>
+                            <option value="weekly">Every week</option>
+                            <option value="yearly">Every year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="salaryNotes" placeholder="Optional"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%"><i class="fas fa-check"></i> Add Income</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="goalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create Smart Goal</h2>
+                <span class="close" onclick="closeModal('goalModal')">&times;</span>
+            </div>
+            <form id="goalForm" onsubmit="saveGoal(event)">
+                <div class="form-group">
+                    <label>What do you want?</label>
+                    <input type="text" id="goalName" placeholder="e.g. PS5, iPhone, Laptop" required>
+                </div>
+                <div class="form-group">
+                    <label>Current price (<span class="currency">₨</span>)</label>
+                    <input type="number" id="goalTarget" step="1" min="1" placeholder="Enter price or use auto price" required>
+                    <button type="button" class="btn btn-outline btn-sm" style="margin-top:8px;width:100%" onclick="autoGoalPrice()">
+                        <i class="fas fa-wand-magic-sparkles"></i> Find known current price
+                    </button>
+                    <div id="goalPriceHint" class="tk-price-source">For supported products, Track Kharcha uses a current Pakistan-market reference price and lets you edit it before saving.</div>
+                </div>
+                <div class="form-group">
+                    <label>Already saved</label>
+                    <input type="number" id="goalSaved" step="1" min="0" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Target date <small style="color:var(--text-muted)">(optional)</small></label>
+                    <input type="date" id="goalDate">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%"><i class="fas fa-bullseye"></i> Create Plan</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay tk-password-modal" id="passwordModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="passwordModalTitle">Set account password</h2>
+                <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+            </div>
+            <form id="passwordForm" onsubmit="tkSavePassword(event)">
+                <div class="form-group">
+                    <label>Account email</label>
+                    <input id="tkPasswordEmail" type="email" readonly>
+                </div>
+                <div class="form-group">
+                    <label>New password</label>
+                    <input id="tkNewPassword" type="password" minlength="6" autocomplete="new-password" placeholder="At least 6 characters" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm password</label>
+                    <input id="tkConfirmPassword" type="password" minlength="6" autocomplete="new-password" placeholder="Repeat password" required>
+                </div>
+                <div id="tkPasswordHint" style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-bottom:13px;">
+                    This creates/updates the Firebase password credential for your account. Your password is never stored in localStorage.
+                </div>
+                <button class="btn btn-primary" type="submit" style="width:100%">
+                    <i class="fas fa-shield-halved"></i> Save password
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="expenseModal">
         <div class="modal">
             <div class="modal-header">
@@ -2425,8 +2634,10 @@
 
         let appData = {
             expenses: [],
+            incomes: [],
             categories: [],
-            budgets: {}
+            budgets: {},
+            goals: []
         };
 
         // ================================================================
@@ -2481,9 +2692,19 @@
                     (remoteData.expenses || []).forEach(e => expMap[e.id] = e);
                     (localData.expenses || []).forEach(e => { if (!expMap[e.id]) expMap[e.id] = e; });
 
+                    const incomeMap = {};
+                    (remoteData.incomes || []).forEach(i => incomeMap[i.id] = i);
+                    (localData.incomes || []).forEach(i => { if (!incomeMap[i.id]) incomeMap[i.id] = i; });
+
+                    const goalMap = {};
+                    (remoteData.goals || []).forEach(g => goalMap[g.id] = g);
+                    (localData.goals || []).forEach(g => { if (!goalMap[g.id]) goalMap[g.id] = g; });
+
                     appData = {
                         categories: Object.values(catMap),
                         expenses: Object.values(expMap),
+                        incomes: Object.values(incomeMap),
+                        goals: Object.values(goalMap),
                         budgets: { ...(localData.budgets || {}), ...(remoteData.budgets || {}) }
                     };
 
@@ -2511,6 +2732,8 @@
                     appData.categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
                 }
                 if (!appData.expenses) appData.expenses = [];
+                if (!appData.incomes) appData.incomes = [];
+                if (!appData.goals) appData.goals = [];
                 if (!appData.budgets) appData.budgets = {};
                 saveData();
                 refreshPage(currentPage);
@@ -4012,18 +4235,8 @@ document.getElementById("tkCloseSettings")?.addEventListener("click",tkCloseSett
 document.getElementById("tkSettingsSheet")?.addEventListener("click",e=>{
     if(e.target.id==="tkSettingsSheet")tkCloseSettings();
 });
-document.getElementById("tkThemeSwitch")?.addEventListener("click",e=>{
-    e.currentTarget.classList.toggle("on");
-    showToast(e.currentTarget.classList.contains("on")?"Dark interface enabled":"Dark interface preference changed","success");
-});
-document.getElementById("tkNotificationSwitch")?.addEventListener("click",e=>{
-    e.currentTarget.classList.toggle("on");
-    showToast(e.currentTarget.classList.contains("on")?"Notifications enabled":"Notifications disabled","info");
-});
-document.getElementById("tkSecuritySwitch")?.addEventListener("click",e=>{
-    e.currentTarget.classList.toggle("on");
-    showToast(e.currentTarget.classList.contains("on")?"Quick security enabled":"Quick security disabled","info");
-});
+/* V8 replaces the old visual-only settings handlers below. */
+
 document.getElementById("tkCurrencySettingBtn")?.addEventListener("click",()=>{
     tkCloseSettings();
     showOnboardingScreen("currencyScreen");
@@ -4119,7 +4332,7 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
 
     function detectType(t){
         const s=normalizeText(t);
-        const incomeKeys=["income","salary","earned","earning","received","receive","profit","bonus","payment received","آمدن","آمدنی","تنخواہ","ملا","ملے","وصول","منافع","بونس"];
+        const incomeKeys=["income","salary","earned","earning","received","receive","profit","bonus","payment received","آمدن","آمدنی","تنخواہ","ملا","ملے","ملی","ملا","وصول","منافع","بونس","mila","mili","milay","mili hai","mila hai","tankhwa","tankhwaah","pagaar","pagar","salary mili","salary ayi","salary aayi"];
         const expenseKeys=["spent","spend","expense","bought","buy","paid","pay","cost","خرچ","خرچے","خرچ ہوئے","خریدا","خرید","ادا"];
         const income=incomeKeys.some(k=>s.includes(k));
         const expense=expenseKeys.some(k=>s.includes(k));
@@ -4234,6 +4447,12 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
     }
     function renderResult(){
         if(!pending)return;
+        // Use the deterministic category mapper from V7.
+        if(pending.type==="Expense" && typeof voiceCategoryId==="function"){
+            pending.categoryId=voiceCategoryId((pending.raw||"")+" "+(pending.description||""));
+            pending.category=voiceCategoryName(pending.categoryId);
+        }
+        if(pending.type==="Income") pending.category="Income";
         document.getElementById("tkVoiceType").textContent=pending.type;
         document.getElementById("tkVoiceAmount").textContent=pending.amount>0?money(pending.amount):"Amount not detected";
         document.getElementById("tkVoiceCategory").textContent=pending.category;
@@ -4247,27 +4466,15 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
             status.textContent="Please speak the amount clearly, e.g. “500 rupees”.";
             return;
         }
-        // Reuse the app's existing expense form where possible, so Firebase/local
-        // saving and category handling stay consistent with the rest of the app.
-        if(typeof openAddExpense==="function"){
-            shut();
-            openAddExpense();
-            setTimeout(()=>{
-                const amountInput=document.querySelector('#expenseAmount,[name="amount"],input[type="number"]');
-                const descInput=document.querySelector('#expenseDescription,[name="description"],textarea');
-                if(amountInput){amountInput.value=pending.amount;amountInput.dispatchEvent(new Event("input",{bubbles:true}))}
-                if(descInput){descInput.value=pending.description;descInput.dispatchEvent(new Event("input",{bubbles:true}))}
-                // Try selecting a matching category.
-                const selects=[...document.querySelectorAll("select")];
-                const cat=selects.find(s=>/categor|category/i.test(s.name+" "+s.id));
-                if(cat){
-                    const opt=[...cat.options].find(o=>o.textContent.toLowerCase().includes(pending.category.toLowerCase()));
-                    if(opt){cat.value=opt.value;cat.dispatchEvent(new Event("change",{bubbles:true}))}
-                }
-                showToast("Voice details added — review and save.","success");
-            },180);
+        if(typeof addVoiceTransaction==="function"){
+            if(pending.type==="Expense" && typeof voiceCategoryId==="function"){
+                pending.categoryId=voiceCategoryId((pending.raw||"")+" "+(pending.description||""));
+                pending.category=voiceCategoryName(pending.categoryId);
+            }
+            const ok=addVoiceTransaction(pending);
+            if(ok) shut();
         }else{
-            showToast("Voice transaction detected, but the expense form is unavailable.","error");
+            showToast("Voice transaction system is not ready yet.","error");
         }
     }
 
@@ -4698,6 +4905,757 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
             }
         }
     });
+})();
+
+
+
+/* =========================================================
+   V7 SMART MONEY SYSTEM
+========================================================= */
+function ensureV7Data(){
+    if(!Array.isArray(appData.incomes)) appData.incomes=[];
+    if(!Array.isArray(appData.goals)) appData.goals=[];
+}
+
+function monthKey(date){
+    const d=new Date((date||new Date().toISOString().slice(0,10))+"T00:00:00");
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+}
+
+function currentMonthIncome(){
+    ensureV7Data();
+    const key=monthKey(new Date().toISOString().slice(0,10));
+    let total=appData.incomes.filter(i=>monthKey(i.date)===key).reduce((s,i)=>s+Number(i.amount||0),0);
+    // A recurring monthly salary remains part of the current month's plan even
+    // when the user entered it on a previous month.
+    const recurring=appData.incomes.filter(i=>i.recurring==="monthly");
+    const already=recurring.filter(i=>monthKey(i.date)===key).reduce((s,i)=>s+Number(i.amount||0),0);
+    const latestByType={};
+    recurring.forEach(i=>{
+        const k=i.type||"other";
+        if(!latestByType[k] || new Date(i.date)>new Date(latestByType[k].date))latestByType[k]=i;
+    });
+    Object.values(latestByType).forEach(i=>{
+        if(monthKey(i.date)!==key) total+=Number(i.amount||0);
+    });
+    return total;
+}
+
+function currentMonthExpenses(){
+    const key=monthKey(new Date().toISOString().slice(0,10));
+    return (appData.expenses||[]).filter(e=>monthKey(e.date)===key).reduce((s,e)=>s+Number(e.amount||0),0);
+}
+
+function saveSalary(e){
+    e.preventDefault();
+    ensureV7Data();
+    const amount=Number(document.getElementById("salaryAmount").value);
+    const type=document.getElementById("salaryType").value;
+    const date=document.getElementById("salaryDate").value;
+    const recurring=document.getElementById("salaryRecurring").value;
+    const notes=document.getElementById("salaryNotes").value.trim();
+    if(!amount||amount<=0){showToast("Enter a valid income amount.","error");return}
+    if(!date){showToast("Choose an income date.","error");return}
+
+    appData.incomes.push({
+        id:generateId(),amount,type,date,recurring:recurring==="none"?null:recurring,
+        notes,createdAt:new Date().toISOString()
+    });
+    saveData();
+    closeModal("salaryModal");
+    document.getElementById("salaryForm").reset();
+    document.getElementById("salaryDate").value=new Date().toISOString().slice(0,10);
+    refreshPage(currentPage);
+    showToast(`Income added: ${money(amount)}`,"success");
+}
+
+function openSalaryModal(prefillAmount){
+    ensureV7Data();
+    const form=document.getElementById("salaryForm");
+    form.reset();
+    document.getElementById("salaryDate").value=new Date().toISOString().slice(0,10);
+    if(prefillAmount)document.getElementById("salaryAmount").value=prefillAmount;
+    openModal("salaryModal");
+}
+
+function knownGoalPrice(name){
+    const n=(name||"").toLowerCase();
+    // Pakistan-market reference checked Aug 2026:
+    // PS5 Slim Digital is around Rs 235k-248k; Slim Disc around Rs 245k-255k.
+    if(n.includes("ps5")||n.includes("playstation 5")){
+        if(n.includes("pro"))return {price:375000,label:"PS5 Pro"};
+        if(n.includes("digital"))return {price:248000,label:"PS5 Slim Digital"};
+        return {price:255000,label:"PS5 Slim Disc Edition"};
+    }
+    if(n.includes("iphone 16"))return {price:260000,label:"iPhone 16 (reference)"};
+    if(n.includes("iphone 17"))return {price:300000,label:"iPhone 17 (reference)"};
+    if(n.includes("airpods"))return {price:70000,label:"AirPods (reference)"};
+    if(n.includes("laptop"))return {price:150000,label:"Laptop (starting reference)"};
+    return null;
+}
+
+function autoGoalPrice(){
+    const name=document.getElementById("goalName").value.trim();
+    const found=knownGoalPrice(name);
+    if(!found){
+        showToast("I don't have a reliable built-in price for that item yet. Enter its current price manually.","info");
+        document.getElementById("goalPriceHint").textContent="No supported reference found. Enter the current price manually.";
+        return;
+    }
+    document.getElementById("goalTarget").value=found.price;
+    document.getElementById("goalPriceHint").innerHTML=
+        `<b>${found.label}:</b> ${money(found.price)} reference price. You can edit it if your shop has a different price.<br>
+         <span>Prices vary by seller, region and edition.</span>`;
+    showToast(`${found.label} price loaded: ${money(found.price)}`,"success");
+}
+
+function openGoalModal(){
+    document.getElementById("goalForm").reset();
+    document.getElementById("goalSaved").value=0;
+    document.getElementById("goalDate").min=new Date().toISOString().slice(0,10);
+    document.getElementById("goalPriceHint").textContent="Supported products can be filled automatically. You can always edit the price.";
+    openModal("goalModal");
+}
+
+function saveGoal(e){
+    e.preventDefault();
+    ensureV7Data();
+    const name=document.getElementById("goalName").value.trim();
+    const target=Number(document.getElementById("goalTarget").value);
+    const saved=Number(document.getElementById("goalSaved").value||0);
+    const targetDate=document.getElementById("goalDate").value||null;
+    if(!name||!target||target<=0){showToast("Enter a goal and target price.","error");return}
+    appData.goals.push({
+        id:generateId(),name,target,saved:Math.min(saved,target),targetDate,
+        createdAt:new Date().toISOString()
+    });
+    saveData();
+    closeModal("goalModal");
+    refreshPage("goals");
+    showToast(`Goal created: ${name}`,"success");
+}
+
+function goalPlan(goal){
+    const remaining=Math.max(0,Number(goal.target)-Number(goal.saved||0));
+    const monthlyIncome=currentMonthIncome();
+    const monthlyExpenses=currentMonthExpenses();
+    const free=Math.max(0,monthlyIncome-monthlyExpenses);
+
+    let months=0, monthlyNeeded=0, targetLabel="No deadline";
+    if(goal.targetDate){
+        const now=new Date();
+        const end=new Date(goal.targetDate+"T00:00:00");
+        months=Math.max(1,Math.ceil((end-now)/(1000*60*60*24*30.4375)));
+        monthlyNeeded=remaining/months;
+        targetLabel=end.toLocaleDateString("en-PK",{month:"short",year:"numeric"});
+    }else{
+        // Never recommend saving 100% of leftover money.
+        const safeMonthly=Math.max(0,Math.min(free*0.5,monthlyIncome*0.25));
+        monthlyNeeded=safeMonthly||Math.max(remaining/12,0);
+        months=Math.max(1,Math.ceil(remaining/monthlyNeeded));
+        targetLabel=`about ${months} month${months===1?"":"s"}`;
+    }
+
+    const feasible=!goal.targetDate || monthlyNeeded<=Math.max(free,0);
+    return {remaining,monthlyIncome,monthlyExpenses,free,months,monthlyNeeded,targetLabel,feasible};
+}
+
+function renderGoals(){
+    ensureV7Data();
+    const box=document.getElementById("goalList");
+    if(!box)return;
+    if(!appData.goals.length){
+        box.innerHTML='<div class="text-muted">No goals yet. Create your first goal.</div>';
+        return;
+    }
+    box.innerHTML=appData.goals.map(g=>{
+        const p=goalPlan(g);
+        const percent=Math.min(100,Math.round((Number(g.saved||0)/Number(g.target))*100));
+        const remaining=p.remaining;
+        const planText=remaining<=0
+            ?"Goal completed 🎉"
+            :p.feasible
+                ?`Save <strong>${money(p.monthlyNeeded)}</strong> per month to reach it by <strong>${p.targetLabel}</strong>.`
+                :`You need <strong>${money(p.monthlyNeeded)}</strong>/month, but your current leftover is about <strong>${money(p.free)}</strong>. Reduce spending, increase income, or extend the deadline.`;
+
+        return `<div class="tk-goal-card">
+            <div class="tk-goal-top">
+                <div><div class="tk-goal-title"><i class="fas fa-bullseye" style="color:var(--accent-light)"></i> ${escapeHtml(g.name)}</div>
+                <div class="tk-goal-price">${money(g.target)} target</div></div>
+                <div class="tk-goal-percent">${percent}%</div>
+            </div>
+            <div class="tk-goal-bar"><span style="width:${percent}%"></span></div>
+            <div class="tk-goal-meta"><span>Saved: ${money(g.saved||0)}</span><span>Remaining: ${money(remaining)}</span></div>
+            <div class="tk-plan-card"><i class="fas fa-route"></i> ${planText}</div>
+            <div class="tk-goal-meta" style="margin-top:10px">
+                <span>Monthly income: ${money(p.monthlyIncome)}</span><span>Monthly expenses: ${money(p.monthlyExpenses)}</span>
+            </div>
+            <div class="tk-smart-goal-actions">
+                <button class="btn btn-outline btn-sm" onclick="addGoalSaving('${g.id}')"><i class="fas fa-plus"></i> Add saved money</button>
+                <button class="btn btn-outline btn-sm" onclick="deleteGoal('${g.id}')"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+function addGoalSaving(id){
+    ensureV7Data();
+    const g=appData.goals.find(x=>x.id===id);
+    if(!g)return;
+    const value=Number(prompt(`How much did you save for ${g.name}?`, "1000"));
+    if(!value||value<=0)return;
+    g.saved=Math.min(Number(g.target),Number(g.saved||0)+value);
+    saveData();renderGoals();
+    showToast(`Goal saved amount updated by ${money(value)}.`,"success");
+}
+
+function deleteGoal(id){
+    if(!confirm("Delete this goal?"))return;
+    appData.goals=appData.goals.filter(g=>g.id!==id);
+    saveData();renderGoals();
+    showToast("Goal deleted.","info");
+}
+
+function refreshIncomeDashboard(){
+    ensureV7Data();
+    const income=currentMonthIncome(), expense=currentMonthExpenses();
+    const incomeEl=document.getElementById("dashIncome");
+    const balEl=document.getElementById("dashBalance");
+    if(incomeEl)incomeEl.textContent=money(income);
+    if(balEl)balEl.textContent=money(income-expense);
+    const chip=document.getElementById("salaryChip");
+    if(chip){
+        const salary=appData.incomes.filter(i=>i.type==="salary").sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+        chip.innerHTML=salary?`<span class="tk-salary-chip"><i class="fas fa-calendar-check"></i> Latest salary: ${money(salary.amount)} ${salary.recurring?"• "+salary.recurring:""}</span>`:"";
+    }
+}
+
+/* Better category mapping: map natural speech to actual category IDs. */
+function voiceCategoryId(text){
+    const s=(text||"").toLowerCase();
+    const rules=[
+        ["transport",["petrol","fuel","diesel","uber","careem","taxi","bus","train","rickshaw","parking","transport","گاڑی","پٹرول","پیٹرول","ایندھن","ٹیکسی","بس","رکشہ","سفر","petrol"]],
+        ["food",["bread","roti","naan","milk","doodh","chai","tea","coffee","restaurant","food","lunch","dinner","breakfast","grocery","groceries","kiryana","biryani","pizza","burger","کھانا","دودھ","روٹی","نان","چائے","کافی","راشن","کریانہ"]],
+        ["shopping",["shopping","clothes","shirt","shoes","dress","market","mall","buy","bought","خرید","خریداری","کپڑے","جوتے","بازار"]],
+        ["utilities",["electricity","gas","water","internet","wifi","phone","mobile","bill","rent","بجلی","گیس","پانی","انٹرنیٹ","وائی فائی","فون","موبائل","کرایہ","بل"]],
+        ["healthcare",["doctor","medicine","pharmacy","hospital","health","دوا","ڈاکٹر","ہسپتال","فارمیسی","صحت"]],
+        ["education",["school","college","university","course","book","education","fee","fees","تعلیم","اسکول","کالج","یونیورسٹی","فیس","کتاب"]],
+        ["entertainment",["movie","cinema","game","gaming","netflix","spotify","entertainment","فلم","سینما","کھیل"]],
+        ["savings",["save","saving","savings","بچت","بچانے"]]
+    ];
+    for(const [id,keys] of rules){
+        if(keys.some(k=>s.includes(k))) return id;
+    }
+    return appData.categories.find(c=>c.id==="other")?.id || appData.categories[0]?.id || "other";
+}
+
+function voiceCategoryName(id){
+    const c=appData.categories.find(x=>x.id===id);
+    return c?c.name:id;
+}
+
+/* Add a transaction directly from voice, including income. */
+function addVoiceTransaction(p){
+    ensureV7Data();
+    if(!p||!p.amount||p.amount<=0){
+        showToast("I couldn't detect the amount. Try saying '500 rupees'.","error");
+        return false;
+    }
+    if(p.type==="Income"){
+        appData.incomes.push({
+            id:generateId(),amount:Number(p.amount),type:/salary|تنخواہ|salary/i.test(p.raw||"")?"salary":"other",
+            date:new Date().toISOString().slice(0,10),recurring:null,
+            notes:p.description||"Voice income",createdAt:new Date().toISOString()
+        });
+        saveData();refreshPage(currentPage);
+        showToast(`Income added: ${money(p.amount)}`,"success");
+        return true;
+    }
+
+    const catId=voiceCategoryId(p.raw+" "+(p.description||""));
+    appData.expenses.push({
+        id:generateId(),amount:Number(p.amount),category:catId,
+        date:new Date().toISOString().slice(0,10),notes:p.description||"Voice expense",
+        recurring:null,createdAt:new Date().toISOString()
+    });
+    saveData();refreshPage(currentPage);
+    showToast(`Expense added: ${money(p.amount)} • ${voiceCategoryName(catId)}`,"success");
+    return true;
+}
+
+function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+/* Keep the old refreshPage but augment dashboard/goals. */
+const tkRefreshPageOriginal=window.refreshPage;
+if(typeof tkRefreshPageOriginal==="function"){
+    window.refreshPage=function(page){
+        const r=tkRefreshPageOriginal.apply(this,arguments);
+        setTimeout(()=>{
+            if(page==="dashboard")refreshIncomeDashboard();
+            if(page==="goals")renderGoals();
+        },30);
+        return r;
+    };
+}
+
+
+
+/* ===== V7 VOICE PATCH ===== */
+(function(){
+    const addBtn=document.getElementById("tkVoiceAdd");
+    if(!addBtn)return;
+
+    // Capture the original pending parser result and make category IDs deterministic.
+    const oldRender=window.renderResult;
+    window.tkVoiceV7PendingItems=[];
+
+    function improvePending(){
+        if(typeof pending==="undefined" || !pending)return;
+        if(pending.type==="Expense"){
+            pending.categoryId=voiceCategoryId((pending.raw||"")+" "+(pending.description||""));
+            pending.category=voiceCategoryName(pending.categoryId);
+        }
+        if(pending.type==="Income"){
+            pending.category="Income";
+        }
+    }
+
+    // Mutation observer updates the displayed category after speech recognition.
+    const result=document.getElementById("tkVoiceResult");
+    const heard=document.getElementById("tkVoiceHeard");
+    const observer=new MutationObserver(()=>{
+        try{
+            improvePending();
+            const type=document.getElementById("tkVoiceType");
+            const cat=document.getElementById("tkVoiceCategory");
+            if(typeof pending!=="undefined"&&pending){
+                if(type)type.textContent=pending.type;
+                if(cat)cat.textContent=pending.category;
+            }
+        }catch(e){}
+    });
+    if(result)observer.observe(result,{childList:true,subtree:true,characterData:true});
+    if(heard)observer.observe(heard,{childList:true,subtree:true,characterData:true});
+
+
+})();
+
+
+
+/* ===== V7 MOBILE NAV DOT FIX ===== */
+(function(){
+    function syncMobileDot(page){
+        document.querySelectorAll(".mobile-nav-item").forEach(btn=>{
+            btn.classList.toggle("active",btn.dataset.mobilePage===page);
+        });
+    }
+    document.addEventListener("click",e=>{
+        const btn=e.target.closest(".mobile-nav-item");
+        if(btn&&btn.dataset.mobilePage)syncMobileDot(btn.dataset.mobilePage);
+    });
+    const oldNav=window.navigateTo;
+    if(typeof oldNav==="function"&&!window.__tkNavV7){
+        window.__tkNavV7=true;
+        window.navigateTo=function(page){
+            const result=oldNav.apply(this,arguments);
+            requestAnimationFrame(()=>syncMobileDot(page));
+            setTimeout(()=>syncMobileDot(page),150);
+            return result;
+        };
+    }
+    window.addEventListener("pageshow",()=>syncMobileDot(window.currentPage||"dashboard"));
+})();
+
+
+
+(function(){
+    ensureV7Data();
+    const d=document.getElementById("salaryDate");
+    if(d)d.value=new Date().toISOString().slice(0,10);
+    const name=document.getElementById("goalName");
+    if(name)name.addEventListener("input",()=>{
+        const found=knownGoalPrice(name.value);
+        const hint=document.getElementById("goalPriceHint");
+        if(found&&hint)hint.textContent=`Known reference available: ${found.label} • ${money(found.price)}. Tap "Find known current price".`;
+    });
+})();
+
+
+
+/* =========================================================
+   V8 — REAL SETTINGS / PASSWORD / BIOMETRIC / NOTIFICATIONS
+========================================================= */
+(function(){
+    const BIO_KEY="tk_biometric_enabled";
+    const BIO_ID_KEY="tk_bio_credential";
+    const THEME_KEY="tk_theme";
+    const NOTIF_KEY="tk_notifications_enabled";
+
+    const $=id=>document.getElementById(id);
+    const toast=(m,t="info")=>typeof showToast==="function"?showToast(m,t):alert(m);
+
+    function setSwitch(id,on){
+        const el=$(id); if(el)el.classList.toggle("on",!!on);
+    }
+
+    /* ---------- REAL LIGHT/DARK THEME ---------- */
+    function applyTheme(theme){
+        const root=document.documentElement;
+        if(theme==="light") root.setAttribute("data-theme","light");
+        else root.removeAttribute("data-theme");
+        localStorage.setItem(THEME_KEY,theme);
+        setSwitch("tkThemeSwitch",theme!=="light");
+    }
+
+    const lightCss=document.createElement("style");
+    lightCss.textContent=`
+      :root[data-theme="light"]{
+        --bg-primary:#f5f7fb;--bg-secondary:#ffffff;--bg-card:#ffffff;
+        --bg-card-hover:#f0f2f8;--bg-input:#eef1f7;--border-color:#dfe3ee;
+        --text-primary:#171a27;--text-secondary:#626a80;--text-muted:#8991a6;
+        --shadow:0 8px 32px rgba(20,25,45,.12);
+      }
+      :root[data-theme="light"] body{background:var(--bg-primary);color:var(--text-primary)}
+      :root[data-theme="light"] .sidebar{background:var(--bg-secondary)}
+    `;
+    document.head.appendChild(lightCss);
+
+    applyTheme(localStorage.getItem(THEME_KEY)||"dark");
+
+    $("tkThemeSwitch")?.addEventListener("click",()=>{
+        const light=document.documentElement.getAttribute("data-theme")==="light";
+        applyTheme(light?"dark":"light");
+        toast(light?"Dark mode enabled":"Light mode enabled","success");
+    });
+
+    /* ---------- BIOMETRIC / PASSKEY ---------- */
+    function secureContextOK(){
+        return window.isSecureContext===true;
+    }
+
+    async function biometricAvailable(){
+        try{
+            return !!(secureContextOK() &&
+                window.PublicKeyCredential &&
+                await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+        }catch(e){return false}
+    }
+
+    function bytesToBase64Url(bytes){
+        let s="";
+        const a=new Uint8Array(bytes);
+        for(let i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);
+        return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+    }
+
+    function base64UrlToBytes(s){
+        const pad="=".repeat((4-s.length%4)%4);
+        const raw=atob((s+pad).replace(/-/g,"+").replace(/_/g,"/"));
+        return Uint8Array.from(raw,c=>c.charCodeAt(0));
+    }
+
+    async function enableBiometric(){
+        const user=auth.currentUser;
+        if(!user){
+            toast("Sign in with Google first so biometric protection can be attached to your account.","error");
+            return false;
+        }
+        if(!secureContextOK()){
+            toast("Biometric security requires HTTPS (or a trusted installed app). Open the app from HTTPS, not file://.","error");
+            return false;
+        }
+        if(!(await biometricAvailable())){
+            toast("This device/browser does not expose a fingerprint, Face ID, Windows Hello, or other platform authenticator.","error");
+            return false;
+        }
+
+        try{
+            const credential=await navigator.credentials.create({
+                publicKey:{
+                    challenge:crypto.getRandomValues(new Uint8Array(32)),
+                    rp:{name:"Track Kharcha",id:location.hostname},
+                    user:{
+                        id:crypto.getRandomValues(new Uint8Array(16)),
+                        name:user.email||user.uid,
+                        displayName:user.displayName||user.email||"Track Kharcha"
+                    },
+                    pubKeyCredParams:[
+                        {type:"public-key",alg:-7},
+                        {type:"public-key",alg:-257}
+                    ],
+                    authenticatorSelection:{
+                        authenticatorAttachment:"platform",
+                        residentKey:"preferred",
+                        userVerification:"required"
+                    },
+                    timeout:60000,
+                    attestation:"none"
+                }
+            });
+            if(!credential)throw new Error("Credential creation failed");
+            localStorage.setItem(BIO_KEY,"1");
+            localStorage.setItem(BIO_ID_KEY,bytesToBase64Url(credential.rawId));
+            setSwitch("tkSecuritySwitch",true);
+            updateSecurityStatus();
+            toast("Biometric protection enabled. It will be requested whenever the app is opened or returns from the background.","success");
+            return true;
+        }catch(e){
+            console.error("Biometric setup:",e);
+            setSwitch("tkSecuritySwitch",false);
+            if(e.name==="NotAllowedError")toast("Biometric setup was cancelled.","error");
+            else toast("Could not set up biometric protection.","error");
+            return false;
+        }
+    }
+
+    async function verifyBiometric(){
+        if(localStorage.getItem(BIO_KEY)!=="1")return true;
+        const id=localStorage.getItem(BIO_ID_KEY);
+        if(!id)return false;
+
+        const modal=$("tkBioModal");
+        const status=$("tkBioStatus");
+        if(modal){modal.classList.add("open");modal.setAttribute("aria-hidden","false")}
+        if(status)status.textContent="Use your fingerprint or device biometric…";
+
+        try{
+            if(!(await biometricAvailable()))throw new Error("Biometric unavailable");
+            await navigator.credentials.get({
+                publicKey:{
+                    challenge:crypto.getRandomValues(new Uint8Array(32)),
+                    allowCredentials:[{
+                        id:base64UrlToBytes(id),
+                        type:"public-key",
+                        transports:["internal"]
+                    }],
+                    userVerification:"required",
+                    timeout:60000
+                }
+            });
+            if(status)status.textContent="Verified ✓";
+            setTimeout(()=>{
+                modal?.classList.remove("open");
+                modal?.setAttribute("aria-hidden","true");
+            },220);
+            return true;
+        }catch(e){
+            if(status)status.textContent="Verification required. Try again.";
+            if(e.name!=="NotAllowedError")toast("Biometric verification failed.","error");
+            return false;
+        }
+    }
+
+    $("tkSecuritySwitch")?.addEventListener("click",async()=>{
+        const on=$("tkSecuritySwitch").classList.contains("on");
+        if(on){
+            localStorage.removeItem(BIO_KEY);
+            localStorage.removeItem(BIO_ID_KEY);
+            setSwitch("tkSecuritySwitch",false);
+            updateSecurityStatus();
+            toast("Biometric protection disabled.","info");
+        }else{
+            await enableBiometric();
+        }
+    });
+
+    $("tkVerifyNowBtn")?.addEventListener("click",()=>verifyBiometric());
+
+    /* ---------- FIREBASE ACCOUNT PASSWORD ---------- */
+    window.openPasswordSettings=function(){
+        const user=auth.currentUser;
+        if(!user){
+            toast("Sign in with Google first.","error");return;
+        }
+        $("tkPasswordEmail").value=user.email||"";
+        $("tkNewPassword").value="";
+        $("tkConfirmPassword").value="";
+        $("passwordModalTitle").textContent=user.providerData?.some(p=>p.providerId==="password")
+            ?"Change account password":"Set account password";
+        $("passwordModal").classList.add("open");
+    };
+
+    $("tkPasswordBtn")?.addEventListener("click",openPasswordSettings);
+
+    window.tkSavePassword=async function(e){
+        e.preventDefault();
+        const user=auth.currentUser;
+        if(!user){toast("Please sign in first.","error");return}
+        const p=$("tkNewPassword").value;
+        const c=$("tkConfirmPassword").value;
+        if(p.length<6){toast("Password must be at least 6 characters.","error");return}
+        if(p!==c){toast("Passwords do not match.","error");return}
+
+        try{
+            const hasPassword=user.providerData?.some(x=>x.providerId==="password");
+            if(hasPassword){
+                await user.updatePassword(p);
+            }else{
+                const credential=firebase.auth.EmailAuthProvider.credential(user.email,p);
+                await user.linkWithCredential(credential);
+            }
+            closeModal("passwordModal");
+            updateSecurityStatus();
+            toast("Account password saved successfully.","success");
+        }catch(err){
+            console.error("Password setup:",err);
+            if(err.code==="auth/requires-recent-login"){
+                toast("For security, sign out and sign in again with Google, then set the password.","error");
+            }else if(err.code==="auth/provider-already-linked"){
+                toast("A password login is already linked to this account.","info");
+            }else if(err.code==="auth/email-already-in-use"){
+                toast("That email already belongs to another Firebase account.","error");
+            }else{
+                toast(err.message||"Could not save password.","error");
+            }
+        }
+    };
+
+    function updateSecurityStatus(){
+        const el=$("tkSecurityStatus");
+        const user=auth.currentUser;
+        if(!el)return;
+        const hasPass=!!user?.providerData?.some(x=>x.providerId==="password");
+        const bio=localStorage.getItem(BIO_KEY)==="1";
+        el.innerHTML=`<i class="fas fa-${bio?"check-circle":"circle"}"></i> Biometric: ${bio?"ON":"OFF"} &nbsp;•&nbsp;
+          <i class="fas fa-${hasPass?"check-circle":"circle"}"></i> Password: ${hasPass?"ON":"NOT SET"}`;
+    }
+
+    /* ---------- MOBILE NOTIFICATIONS ---------- */
+    async function enableNotifications(){
+        if(!("Notification" in window)){
+            toast("This browser does not support notifications.","error");return false;
+        }
+        if(!window.isSecureContext){
+            toast("Notifications require HTTPS. A local file opened as file:// cannot request them reliably.","error");
+            return false;
+        }
+        try{
+            const permission=await Notification.requestPermission();
+            if(permission!=="granted"){
+                setSwitch("tkNotificationSwitch",false);
+                localStorage.removeItem(NOTIF_KEY);
+                toast(permission==="denied"?"Notifications are blocked for this site. Enable them in browser/site settings.":"Notification permission was not granted.","error");
+                return false;
+            }
+            localStorage.setItem(NOTIF_KEY,"1");
+            setSwitch("tkNotificationSwitch",true);
+            await registerNotificationWorker();
+            await showAppNotification("Track Kharcha","Notifications are enabled successfully.");
+            toast("Notifications enabled.","success");
+            return true;
+        }catch(e){
+            console.error(e);
+            toast("Notification setup failed. Make sure the app is running over HTTPS.","error");
+            return false;
+        }
+    }
+
+    async function registerNotificationWorker(){
+        if(!("serviceWorker" in navigator))return null;
+        try{
+            return await navigator.serviceWorker.register("./track-kharcha-sw.js",{scope:"./"});
+        }catch(e){
+            console.warn("Service worker registration failed:",e);
+            return null;
+        }
+    }
+
+    async function showAppNotification(title,body){
+        const reg=await registerNotificationWorker();
+        if(reg && reg.showNotification){
+            return reg.showNotification(title,{
+                body,icon:"./icon-192.png",badge:"./icon-192.png",
+                vibrate:[120,60,120],tag:"track-kharcha"
+            });
+        }
+        // Desktop fallback only. Most mobile browsers require a service worker.
+        if(!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+            return new Notification(title,{body});
+        }
+    }
+
+    $("tkNotificationSwitch")?.addEventListener("click",async()=>{
+        const on=$("tkNotificationSwitch").classList.contains("on");
+        if(on){
+            setSwitch("tkNotificationSwitch",false);
+            localStorage.removeItem(NOTIF_KEY);
+            toast("Notifications disabled. You can re-enable them anytime.","info");
+        }else{
+            await enableNotifications();
+        }
+    });
+
+    $("tkRequestNotifications")?.addEventListener("click",()=>enableNotifications());
+
+    $("tkSendReminder")?.addEventListener("click",async()=>{
+        if(Notification.permission!=="granted"){
+            toast("Enable notifications first.","error");return;
+        }
+        const msg=$("tkReminderText")?.value.trim()||"Check today's spending.";
+        await showAppNotification("Track Kharcha reminder",msg);
+        toast("Reminder sent.","success");
+    });
+
+    /* ---------- SETTINGS / APP STARTUP ---------- */
+    window.tkOpenSettings=tkOpenSettings;
+    window.tkCloseSettings=tkCloseSettings;
+
+    function restoreSettings(){
+        const dark=localStorage.getItem(THEME_KEY)!=="light";
+        setSwitch("tkThemeSwitch",dark);
+        setSwitch("tkSecuritySwitch",localStorage.getItem(BIO_KEY)==="1");
+        setSwitch("tkNotificationSwitch",
+            localStorage.getItem(NOTIF_KEY)==="1" &&
+            ("Notification" in window) &&
+            Notification.permission==="granted");
+        updateSecurityStatus();
+    }
+
+    restoreSettings();
+
+    // Auth state may change after Firebase initializes.
+    if(typeof auth!=="undefined"){
+        auth.onAuthStateChanged(()=>updateSecurityStatus());
+    }
+
+    // Register worker early; permission is still only requested after a click.
+    if(window.isSecureContext && "serviceWorker" in navigator){
+        window.addEventListener("load",()=>registerNotificationWorker());
+    }
+
+    // Require biometric every time the app becomes visible again.
+    let hidden=false;
+    document.addEventListener("visibilitychange",()=>{
+        if(document.hidden){hidden=true;return}
+        if(hidden){
+            hidden=false;
+            if(localStorage.getItem(BIO_KEY)==="1"){
+                setTimeout(()=>verifyBiometric(),250);
+            }
+        }
+    });
+
+    // First app unlock.
+    window.addEventListener("load",()=>{
+        setTimeout(()=>{
+            const onboarding=$("onboarding");
+            const onboardingVisible=onboarding && getComputedStyle(onboarding).display!=="none";
+            if(!onboardingVisible && localStorage.getItem(BIO_KEY)==="1")verifyBiometric();
+        },1000);
+    });
+})();
+
+
+
+(function(){
+    function ensureSettingsButtons(){
+        if(typeof tkAddMobileSettingsButtons==="function")tkAddMobileSettingsButtons();
+    }
+    document.addEventListener("DOMContentLoaded",()=>setTimeout(ensureSettingsButtons,50));
+    window.addEventListener("load",()=>setTimeout(ensureSettingsButtons,100));
+    setInterval(ensureSettingsButtons,1500);
 })();
 
 </script>
