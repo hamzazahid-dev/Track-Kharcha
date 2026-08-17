@@ -5897,106 +5897,29 @@ window.parseVoiceAmount=tkParseMoneyAmountV9;
 
 </script>
 <script>
-/* SAVESY — hard biometric gate. No cancel/close action is provided. */
+/* SAVESY — biometric is opt-in. No biometric prompt unless the user enabled it in Settings. */
 (function(){
-  const gate=document.getElementById("tkMandatoryLock");
-  const btn=document.getElementById("tkMandatoryBtn");
-  const status=document.getElementById("tkMandatoryStatus");
   const BIO_KEY="tk_biometric_enabled";
-  const CRED_KEY="tk_bio_credential";
-  const MANDATORY_KEY="savesy_mandatory_bio";
+  function enabled(){ return localStorage.getItem(BIO_KEY)==="1"; }
 
-  function openGate(){
-    if(!gate)return;
-    gate.classList.add("open");
-    gate.setAttribute("aria-hidden","false");
-    document.body.style.overflow="hidden";
-  }
-  function closeGate(){
-    if(!gate)return;
-    gate.classList.remove("open");
-    gate.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
-  }
-  function supported(){
-    return !!(window.PublicKeyCredential &&
-      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable);
-  }
-  async function setup(){
-    status.textContent="Set up fingerprint/Face ID on this device…";
-    if(!supported()){
-      status.textContent="This browser/app does not expose device biometrics. Open Savesy from a supported HTTPS/PWA or native WebView.";
-      return;
+  // Remove the legacy flag used by older builds that forced biometric setup.
+  // This does NOT enable biometric protection.
+  localStorage.removeItem("savesy_mandatory_bio");
+
+  // Expose the current state without turning biometric on.
+  window.savesyBiometricEnabled = enabled;
+
+  // Make sure an old mandatory overlay cannot block the app when biometric
+  // has never been enabled by the user.
+  window.addEventListener("load",()=>{
+    if(!enabled()){
+      const gate=document.getElementById("tkMandatoryLock");
+      if(gate){
+        gate.classList.remove("open");
+        gate.setAttribute("aria-hidden","true");
+      }
+      document.body.style.overflow="";
     }
-    try{
-      const available=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-      if(!available){status.textContent="No fingerprint/Face ID authenticator is available.";return;}
-      const challenge=crypto.getRandomValues(new Uint8Array(32));
-      const userId=crypto.getRandomValues(new Uint8Array(16));
-      const credential=await navigator.credentials.create({
-        publicKey:{
-          challenge,
-          rp:{name:"Savesy"},
-          user:{id:userId,name:"savesy-user",displayName:"Savesy User"},
-          pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],
-          authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"preferred"},
-          timeout:60000,attestation:"none"
-        }
-      });
-      if(!credential)throw new Error("No credential");
-      localStorage.setItem(BIO_KEY,"1");
-      localStorage.setItem(CRED_KEY,credential.id);
-      localStorage.setItem(MANDATORY_KEY,"1");
-      status.textContent="Biometric registered. Verifying…";
-      await verify();
-    }catch(e){
-      status.textContent=e.name==="NotAllowedError"?"Verification was not completed. Try again.":"Could not set up biometric protection.";
-    }
-  }
-  function bytes(s){
-    const pad="=".repeat((4-s.length%4)%4);
-    const raw=atob((s+pad).replace(/-/g,"+").replace(/_/g,"/"));
-    return Uint8Array.from(raw,c=>c.charCodeAt(0));
-  }
-  async function verify(){
-    const id=localStorage.getItem(CRED_KEY);
-    if(!id){btn.innerHTML='<i class="fas fa-fingerprint"></i> Set up biometric';return false;}
-    if(!supported()){status.textContent="Device biometric authentication is unavailable here.";return false;}
-    status.textContent="Touch the fingerprint sensor or use device biometrics…";
-    btn.disabled=true;
-    try{
-      const challenge=crypto.getRandomValues(new Uint8Array(32));
-      await navigator.credentials.get({publicKey:{
-        challenge,
-        allowCredentials:[{id:bytes(id),type:"public-key",transports:["internal"]}],
-        userVerification:"required",timeout:60000
-      }});
-      status.textContent="Verified ✓";
-      setTimeout(closeGate,220);
-      return true;
-    }catch(e){
-      status.textContent=e.name==="NotAllowedError"?"Verification required. Try again.":"Verification failed. Try again.";
-      return false;
-    }finally{btn.disabled=false;}
-  }
-  async function enforce(){
-    // Once this build is installed, biometric protection is mandatory.
-    localStorage.setItem(MANDATORY_KEY,"1");
-    if(localStorage.getItem(CRED_KEY)){
-      openGate();
-      await verify();
-    }else{
-      openGate();
-      btn.innerHTML='<i class="fas fa-fingerprint"></i> Set up biometric';
-      status.textContent="Savesy cannot open until biometric protection is set up and verified.";
-    }
-  }
-  btn?.addEventListener("click",async()=>{
-    if(localStorage.getItem(CRED_KEY)) await verify(); else await setup();
-  });
-  window.addEventListener("load",()=>setTimeout(enforce,350));
-  document.addEventListener("visibilitychange",()=>{
-    if(!document.hidden && localStorage.getItem(CRED_KEY)) setTimeout(()=>{openGate();verify();},180);
   });
 })();
 </script></body>
