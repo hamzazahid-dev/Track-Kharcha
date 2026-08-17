@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Track Kharcha - Budget App</title>
+    <title>Savesy - Smart Money</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -1283,7 +1283,7 @@
             border-bottom: none;
         }
     
-/* ===== TRACK KHARCHA MOBILE REDESIGN ===== */
+/* ===== SAVESY MOBILE REDESIGN ===== */
 .onboarding{position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 50% 10%,rgba(108,92,231,.30),transparent 34%),#080b17;overflow:hidden;color:var(--text-primary);transition:opacity .45s ease,transform .45s ease}
 .onboarding-screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:28px 22px;opacity:0;visibility:hidden;transform:translateX(55px);transition:opacity .45s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility .45s}
 .onboarding-screen.active{opacity:1;visibility:visible;transform:translateX(0)}
@@ -1318,7 +1318,7 @@
 
 
 /* =========================================================
-   TRACK KHARCHA — MOBILE PREMIUM MOTION PACK
+   SAVESY — MOBILE PREMIUM MOTION PACK
 ========================================================= */
 :root{
     --tk-motion:cubic-bezier(.22,1,.36,1);
@@ -1985,21 +1985,72 @@
     .tk-goal-meta{flex-direction:column;gap:4px}
 }
 
+/* SAVESY — mandatory biometric gate + mobile reports/flow */
+.tk-lock-gate{
+    position:fixed;inset:0;z-index:1000000;display:none;align-items:center;justify-content:center;
+    padding:24px;background:radial-gradient(circle at 50% 15%,rgba(108,92,231,.35),transparent 38%),#070a14;
+}
+.tk-lock-gate.open{display:flex;animation:tkLockIn .45s ease both}
+.tk-lock-card{
+    width:min(410px,100%);padding:30px 24px;text-align:center;border:1px solid var(--border-color);
+    background:rgba(18,22,42,.92);backdrop-filter:blur(25px);border-radius:28px;box-shadow:0 25px 90px rgba(0,0,0,.6);
+}
+.tk-lock-icon{width:86px;height:86px;margin:0 auto 20px;border-radius:28px;display:flex;align-items:center;justify-content:center;
+    font-size:36px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-light));box-shadow:0 0 55px var(--accent-glow);
+    animation:tkLockPulse 2.2s ease-in-out infinite}
+.tk-lock-card h2{font-size:26px;margin-bottom:9px}.tk-lock-card p{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:20px}
+.tk-lock-status{min-height:22px;font-size:12px;color:var(--text-secondary);margin-bottom:14px}
+.tk-lock-btn{width:100%;height:55px;border-radius:17px;background:var(--accent);font-weight:800;color:#fff;box-shadow:0 12px 35px var(--accent-glow)}
+.tk-flow-wrap{display:flex;align-items:center;gap:18px;min-height:240px}
+.tk-flow-ring{width:190px;height:190px;flex:0 0 190px;border-radius:50%;position:relative;
+    background:conic-gradient(var(--accent) 0deg,var(--green) 120deg,var(--blue) 220deg,var(--orange) 300deg,var(--accent) 360deg);
+    padding:12px;animation:tkFlowSpin 12s linear infinite;box-shadow:0 0 40px rgba(108,92,231,.18)}
+.tk-flow-ring:before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--bg-card)}
+.tk-flow-center{position:absolute;inset:30px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-secondary);z-index:2;animation:tkFlowFloat 3s ease-in-out infinite}
+.tk-flow-center span{font-size:19px;font-weight:900}.tk-flow-center small{font-size:9px;color:var(--text-muted);margin-top:4px}
+.tk-flow-legend{display:flex;flex-direction:column;gap:8px;font-size:11px;color:var(--text-secondary);flex:1}
+.tk-flow-row{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:11px;background:var(--bg-secondary);border:1px solid var(--border-color)}
+.tk-flow-row b{color:var(--text-primary)}
+.tk-goal-ideas{margin-top:16px;padding:14px;border-radius:16px;background:var(--bg-secondary);border:1px solid var(--border-color)}
+.tk-goal-ideas-title{font-size:11px;font-weight:800;color:var(--text-secondary);margin-bottom:9px;text-transform:uppercase;letter-spacing:.6px}
+.tk-goal-idea-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.tk-goal-idea-grid button{padding:10px 6px;border-radius:11px;background:var(--bg-input);font-size:10px;color:var(--text-secondary);border:1px solid transparent}
+.tk-goal-idea-grid button:active{transform:scale(.94);border-color:var(--accent)}
+@keyframes tkLockIn{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
+@keyframes tkLockPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes tkFlowSpin{to{transform:rotate(360deg)}}@keyframes tkFlowFloat{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media(max-width:820px){
+  .mobile-bottom-nav{gap:1px;padding:0 4px}
+  .mobile-nav-item{width:44px;font-size:9px}.mobile-nav-item i{font-size:16px}
+  .mobile-add-btn{width:52px;height:52px}
+  .tk-flow-wrap{flex-direction:column;align-items:stretch;padding:6px 0 2px}
+  .tk-flow-ring{margin:auto;width:175px;height:175px;flex-basis:175px}
+  .tk-flow-legend{width:100%}
+}
 </style>
 </head>
-<body>
+<body><div id="tkMandatoryLock" class="tk-lock-gate" aria-hidden="true">
+  <div class="tk-lock-card">
+    <div class="tk-lock-icon"><i class="fas fa-fingerprint"></i></div>
+    <h2>Savesy is locked</h2>
+    <p>Your money data is protected. Verify with your phone fingerprint, Face ID, or device biometric to continue.</p>
+    <div id="tkMandatoryStatus" class="tk-lock-status">Biometric verification required.</div>
+    <button id="tkMandatoryBtn" class="tk-lock-btn"><i class="fas fa-fingerprint"></i> Verify to continue</button>
+  </div>
+</div>
+
 
 <div id="onboarding" class="onboarding">
     <section class="onboarding-screen splash-screen active" id="splashScreen">
         <div class="splash-logo"><div class="splash-logo-ring"><i class="fas fa-wallet"></i></div></div>
-        <h1>Track Kharcha</h1><p>Your money. Your control.</p>
+        <h1>Savesy</h1><p>Your money. Your control.</p>
         <div class="loading-dots"><span></span><span></span><span></span></div>
     </section>
     <section class="onboarding-screen login-screen" id="loginScreen">
         <div class="onboarding-top"><div class="mini-logo"><i class="fas fa-wallet"></i></div><div class="step-label">Welcome</div></div>
         <div class="login-content">
             <div class="big-icon google-icon"><i class="fab fa-google"></i></div>
-            <h1>Welcome to<br><span>Track Kharcha</span></h1>
+            <h1>Welcome to<br><span>Savesy</span></h1>
             <p>Take control of your spending, understand your money and build better financial habits.</p>
             <button id="onboardingGoogleBtn" class="google-login-btn"><i class="fab fa-google"></i><span>Continue with Google</span><i class="fas fa-arrow-right"></i></button>
             <small>Your data is securely synced with your account.</small>
@@ -2026,7 +2077,7 @@
         <div class="currency-content">
             <div class="currency-icon"><i class="fas fa-coins"></i></div>
             <h1>What currency<br>do you use?</h1>
-            <p>We'll use this currency throughout your Track Kharcha account.</p>
+            <p>We'll use this currency throughout your Savesy account.</p>
             <div class="currency-search"><i class="fas fa-search"></i><input id="currencySearch" type="text" placeholder="Search currency or code..."></div>
             <div class="currency-list" id="currencyList"></div>
         </div>
@@ -2044,9 +2095,8 @@
   <div class="tk-bio-card">
     <div class="tk-bio-icon"><i class="fas fa-fingerprint"></i></div>
     <h2>Verify your identity</h2>
-    <p>Use your phone's fingerprint, Face ID, or device biometric security to open Track Kharcha.</p>
+    <p>Use your phone's fingerprint, Face ID, or device biometric security to open Savesy.</p>
     <div id="tkBioStatus" class="tk-bio-status">Waiting for verification…</div>
-    <button id="tkBioCancel" class="tk-bio-cancel">Cancel</button>
   </div>
 </div>
 
@@ -2127,7 +2177,7 @@
         </div>
         <div class="tk-setting-row">
             <div class="settings-mobile-icon"><i class="fas fa-info-circle"></i></div>
-            <div class="tk-setting-text"><strong>About Track Kharcha</strong><small>Version 2.0</small></div>
+            <div class="tk-setting-text"><strong>About Savesy</strong><small>Version 2.0</small></div>
         </div>
     </div>
 </div>
@@ -2136,6 +2186,7 @@
     <button data-mobile-page="dashboard" class="mobile-nav-item active"><i class="fas fa-house"></i><span>Home</span></button>
     <button data-mobile-page="expenses" class="mobile-nav-item"><i class="fas fa-receipt"></i><span>Expenses</span></button>
     <button class="mobile-add-btn" onclick="openAddExpense()"><i class="fas fa-plus"></i></button>
+    <button data-mobile-page="reports" class="mobile-nav-item"><i class="fas fa-chart-pie"></i><span>Reports</span></button>
     <button data-mobile-page="goals" class="mobile-nav-item"><i class="fas fa-bullseye"></i><span>Goals</span></button>
     <button data-mobile-page="savings" class="mobile-nav-item"><i class="fas fa-piggy-bank"></i><span>Savings</span></button>
 </nav>
@@ -2145,7 +2196,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <i class="fas fa-wallet"></i>
-            <span>Track Kharcha</span>
+            <span>Savesy</span>
         </div>
         <nav class="sidebar-nav" id="navLinks">
             <a href="#" data-page="dashboard" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a>
@@ -2185,7 +2236,7 @@
     <div class="main-content" id="mainContent">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
             <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-            <span style="font-weight:600;font-size:1.1rem;display:none;" id="mobileBrand"><i class="fas fa-wallet" style="color:var(--accent-light);"></i> Track Kharcha</span>
+            <span style="font-weight:600;font-size:1.1rem;display:none;" id="mobileBrand"><i class="fas fa-wallet" style="color:var(--accent-light);"></i> Savesy</span>
         </div>
 
         <!-- ===== DASHBOARD ===== -->
@@ -2316,6 +2367,19 @@
                 </div>
             </div>
 
+            <div class="card tk-flow-card mt-16">
+                <div class="card-title"><i class="fas fa-circle-nodes"></i> Money Flow</div>
+                <div class="tk-flow-wrap">
+                    <div class="tk-flow-ring">
+                        <div class="tk-flow-center">
+                            <span id="tkFlowTotal">₨0</span>
+                            <small>Total spent</small>
+                        </div>
+                      </div>
+                    <div id="tkFlowLegend" class="tk-flow-legend"></div>
+                </div>
+            </div>
+
             <div class="grid-2 mt-16">
                 <div class="card">
                     <div class="card-title"><i class="fas fa-calendar-alt"></i> Weekly Summary</div>
@@ -2346,8 +2410,25 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-wand-magic-sparkles"></i> What do you want to buy?</div>
                 <p class="text-muted" style="font-size:12px;line-height:1.6;margin-top:6px;">
-                    Tell Track Kharcha something like <b>PS5</b>. It can use a known current Pakistan market price and calculate a realistic saving plan from your income and spending.
+                    Tell Savesy something like <b>PS5</b>. It can use a known current Pakistan market price and calculate a realistic saving plan from your income and spending.
                 </p>
+                <div class="tk-goal-ideas">
+                    <div class="tk-goal-ideas-title"><i class="fas fa-lightbulb"></i> Quick goals</div>
+                    <div class="tk-goal-idea-grid">
+                        <button onclick="quickGoal('PS5')">🎮 PS5</button>
+                        <button onclick="quickGoal('iPhone 17')">📱 iPhone</button>
+                        <button onclick="quickGoal('Laptop')">💻 Laptop</button>
+                        <button onclick="quickGoal('AirPods')">🎧 AirPods</button>
+                        <button onclick="quickGoal('Car')">🚗 Car</button>
+                        <button onclick="quickGoal('Bike')">🏍️ Bike</button>
+                        <button onclick="quickGoal('Trip')">✈️ Trip</button>
+                        <button onclick="quickGoal('Emergency Fund')">🛟 Emergency</button>
+                        <button onclick="quickGoal('Gaming PC')">🖥️ Gaming PC</button>
+                        <button onclick="quickGoal('Phone Upgrade')">📲 Phone</button>
+                        <button onclick="quickGoal('Wedding')">💍 Wedding</button>
+                        <button onclick="quickGoal('Education')">🎓 Education</button>
+                    </div>
+                </div>
                 <div id="goalList" style="margin-top:14px;">
                     <div class="text-muted">No goals yet. Create your first goal.</div>
                 </div>
@@ -2457,7 +2538,7 @@
                     <button type="button" class="btn btn-outline btn-sm" style="margin-top:8px;width:100%" onclick="autoGoalPrice()">
                         <i class="fas fa-wand-magic-sparkles"></i> Find known current price
                     </button>
-                    <div id="goalPriceHint" class="tk-price-source">For supported products, Track Kharcha uses a current Pakistan-market reference price and lets you edit it before saving.</div>
+                    <div id="goalPriceHint" class="tk-price-source">For supported products, Savesy uses a current Pakistan-market reference price and lets you edit it before saving.</div>
                 </div>
                 <div class="form-group">
                     <label>Already saved</label>
@@ -3408,13 +3489,43 @@
         let reportPieChartInstance = null;
         let reportTrendChartInstance = null;
 
-        function renderReports() {
+        
+function renderSavesyFlow(expenses){
+    const total=(expenses||[]).reduce((sum,e)=>sum+Number(e.amount||0),0);
+    const cats={};
+    (expenses||[]).forEach(e=>{cats[e.category]=(cats[e.category]||0)+Number(e.amount||0);});
+    const sorted=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const ring=document.querySelector(".tk-flow-ring");
+    const center=document.getElementById("tkFlowTotal");
+    const legend=document.getElementById("tkFlowLegend");
+    if(center)center.textContent=currencySymbol()+formatCurrency(total);
+    if(legend){
+      legend.innerHTML=sorted.length?sorted.map(([id,v])=>{
+        const pct=total?Math.round(v/total*100):0;
+        return `<div class="tk-flow-row"><span>${escapeHtml(getCategoryName(id))}</span><b>${pct}%</b></div>`;
+      }).join(""):'<div class="text-muted">Add expenses to see your money flow.</div>';
+    }
+    if(ring){
+      const palette=sorted.map(([id])=>getCategoryColor(id));
+      if(palette.length){
+        let acc=0, stops=[];
+        sorted.forEach(([id,v],i)=>{
+          const deg=total?v/total*360:0;
+          stops.push(`${palette[i]} ${acc}deg ${acc+deg}deg`); acc+=deg;
+        });
+        ring.style.background=`conic-gradient(${stops.join(",")}, var(--border-color) ${acc}deg 360deg)`;
+      }else ring.style.background="conic-gradient(var(--border-color) 0 360deg)";
+    }
+}
+
+function renderReports() {
             const expenses = appData.expenses;
             if (expenses.length === 0) {
                 document.getElementById('weeklySummary').innerHTML = '<div class="text-muted">No data yet.</div>';
                 document.getElementById('savingsPotential').innerHTML =
                     '<div class="text-muted">Add expenses to see potential savings.</div>';
                 document.getElementById('categoryBreakdown').innerHTML = '<div class="text-muted">No data.</div>';
+                renderSavesyFlow([]);
                 if (reportPieChartInstance) { reportPieChartInstance.destroy();
                     reportPieChartInstance = null; }
                 if (reportTrendChartInstance) { reportTrendChartInstance.destroy();
@@ -3526,6 +3637,7 @@
             });
             breakdownHtml += '</tbody></table>';
             document.getElementById('categoryBreakdown').innerHTML = breakdownHtml;
+            renderSavesyFlow(expenses);
         }
 
         function refreshReports() {
@@ -3892,7 +4004,9 @@
               .export-header i { font-size: 2rem; color: #8b7cf7; }
               .export-header h1 { font-size: 1.6rem; font-weight: 700; }
               .currency { font-size: 1rem; color: #9aa2c0; margin-right: 2px; }
-            </style>
+            
+
+</style>
           </head><body>
             <div class="export-header">
               <i class="fas fa-wallet"></i>
@@ -3900,14 +4014,16 @@
             </div>
             <div class="card">${html}</div>
             <div style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:20px;">
-              Generated by Track Kharcha · ${new Date().toLocaleDateString()}
+              Generated by Savesy · ${new Date().toLocaleDateString()}
             </div>
             <div style="text-align:center;margin-top:16px;" class="no-print">
               <button onclick="window.print()" style="background:var(--accent);color:#fff;border:none;padding:10px 28px;border-radius:10px;font-weight:600;font-size:0.95rem;cursor:pointer; box-shadow: 0 0 30px 5px rgba(108,92,231,0.4); transition: all 0.2s ease;">
                 <i class="fas fa-print"></i> Print / Save as PDF
               </button>
             </div>
-          </body></html>
+          
+
+</body></html>
         `);
             win.document.close();
             showToast('Story infographic opened in new window.', 'success');
@@ -4001,7 +4117,7 @@
             b.innerHTML='<i class="fas fa-spinner fa-spin"></i><span>Signing in...</span>';
             try{
                 await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-                whyStep=0;renderWhyPage();showOnboardingScreen("whyScreen");showToast("Welcome to Track Kharcha!","success");
+                whyStep=0;renderWhyPage();showOnboardingScreen("whyScreen");showToast("Welcome to Savesy!","success");
             }catch(error){
                 showToast(error.code==="auth/unauthorized-domain"?"This domain is not authorized in Firebase.":(error.message||"Google sign-in failed."),"error");
                 b.disabled=false;b.innerHTML='<i class="fab fa-google"></i><span>Continue with Google</span><i class="fas fa-arrow-right"></i>';
@@ -4118,7 +4234,7 @@ document.getElementById("currencyScreen")?.addEventListener("scroll",()=>{});
         });
 
         init();
-        console.log('💰 Track Kharcha loaded successfully!');
+        console.log('💰 Savesy loaded successfully!');
         console.log('📊 Data:', appData);
     
 
@@ -4690,8 +4806,7 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
     const sheet=document.getElementById("tkSettingsSheet");
     const bioModal=document.getElementById("tkBioModal");
     const bioStatus=document.getElementById("tkBioStatus");
-    const bioCancel=document.getElementById("tkBioCancel");
-    const securitySwitch=document.getElementById("tkSecuritySwitch");
+        const securitySwitch=document.getElementById("tkSecuritySwitch");
     const notificationSwitch=document.getElementById("tkNotificationSwitch");
     const requestBtn=document.getElementById("tkRequestNotifications");
     const reminderBtn=document.getElementById("tkSendReminder");
@@ -4730,8 +4845,8 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
             const credential=await navigator.credentials.create({
                 publicKey:{
                     challenge,
-                    rp:{name:"Track Kharcha"},
-                    user:{id:userId,name:"track-kharcha-user",displayName:"Track Kharcha User"},
+                    rp:{name:"Savesy"},
+                    user:{id:userId,name:"savesy-user",displayName:"Savesy User"},
                     pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],
                     authenticatorSelection:{
                         authenticatorAttachment:"platform",
@@ -4815,10 +4930,6 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
         }
     });
 
-    bioCancel?.addEventListener("click",()=>{
-        bioModal.classList.remove("open");
-        bioModal.setAttribute("aria-hidden","true");
-    });
 
     notificationSwitch?.addEventListener("click",async()=>{
         const willEnable=!notificationSwitch.classList.contains("on");
@@ -4851,7 +4962,7 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
         if(p==="granted"){
             notificationSwitch?.classList.add("on");
             localStorage.setItem(NOTIF_KEY,"1");
-            new Notification("Track Kharcha",{body:"Notifications are working. Your expense reminders can appear here."});
+            new Notification("Savesy",{body:"Notifications are working. Your expense reminders can appear here."});
             toast("Test notification sent.","success");
         }else{
             toast("Please allow notifications in browser settings.","error");
@@ -4864,7 +4975,7 @@ window.addEventListener("load",()=>setTimeout(tkAddMobileSettingsButtons,150));
         if(!("Notification" in window)||Notification.permission!=="granted"){
             toast("Allow notifications first.","error");return;
         }
-        new Notification("Track Kharcha reminder",{body:msg});
+        new Notification("Savesy reminder",{body:msg});
         toast("Reminder shown.","success");
     });
 
@@ -4980,17 +5091,46 @@ function openSalaryModal(prefillAmount){
 
 function knownGoalPrice(name){
     const n=(name||"").toLowerCase();
-    // Pakistan-market reference checked Aug 2026:
-    // PS5 Slim Digital is around Rs 235k-248k; Slim Disc around Rs 245k-255k.
-    if(n.includes("ps5")||n.includes("playstation 5")){
-        if(n.includes("pro"))return {price:375000,label:"PS5 Pro"};
-        if(n.includes("digital"))return {price:248000,label:"PS5 Slim Digital"};
-        return {price:255000,label:"PS5 Slim Disc Edition"};
-    }
-    if(n.includes("iphone 16"))return {price:260000,label:"iPhone 16 (reference)"};
-    if(n.includes("iphone 17"))return {price:300000,label:"iPhone 17 (reference)"};
-    if(n.includes("airpods"))return {price:70000,label:"AirPods (reference)"};
-    if(n.includes("laptop"))return {price:150000,label:"Laptop (starting reference)"};
+    const prices=[
+        [/ps5.*pro|playstation 5.*pro/,375000,"PS5 Pro"],
+        [/ps5.*digital|playstation 5.*digital/,248000,"PS5 Slim Digital"],
+        [/ps5|playstation 5/,255000,"PS5 Slim Disc Edition"],
+        [/iphone 17/,300000,"iPhone 17 (reference)"],
+        [/iphone 16/,260000,"iPhone 16 (reference)"],
+        [/iphone 15/,220000,"iPhone 15 (reference)"],
+        [/samsung.*s26|galaxy s26/,260000,"Galaxy S26 (reference)"],
+        [/samsung.*s25|galaxy s25/,210000,"Galaxy S25 (reference)"],
+        [/pixel 10/,210000,"Google Pixel 10 (reference)"],
+        [/airpods.*max/,115000,"AirPods Max (reference)"],
+        [/airpods.*pro/,85000,"AirPods Pro (reference)"],
+        [/airpods/,70000,"AirPods (reference)"],
+        [/macbook.*pro/,450000,"MacBook Pro (reference)"],
+        [/macbook/,300000,"MacBook (reference)"],
+        [/laptop/,150000,"Laptop (starting reference)"],
+        [/gaming.*pc|pc.*gaming/,250000,"Gaming PC (reference)"],
+        [/ipad.*pro/,300000,"iPad Pro (reference)"],
+        [/ipad/,150000,"iPad (reference)"],
+        [/apple watch|watch/,100000,"Smart Watch (reference)"],
+        [/bike|motorcycle/,250000,"Motorbike (reference)"],
+        [/car|corolla|civic/,5000000,"Car (starter reference)"],
+        [/camera/,180000,"Camera (reference)"],
+        [/tv|television/,120000,"Smart TV (reference)"],
+        [/ps portal/,70000,"PlayStation Portal (reference)"],
+        [/xbox/,180000,"Xbox (reference)"],
+        [/trip|travel|vacation/,150000,"Trip / Travel (starter reference)"],
+        [/wedding/,500000,"Wedding Fund (starter reference)"],
+        [/education|course|university/,200000,"Education Fund (starter reference)"],
+        [/emergency/,100000,"Emergency Fund (starter reference)"],
+        [/rent.*deposit|house.*deposit/,300000,"House Deposit (starter reference)"],
+        [/furniture/,150000,"Furniture (starter reference)"],
+        [/camera.*lens|lens/,100000,"Camera Lens (reference)"],
+        [/drone/,150000,"Drone (reference)"],
+        [/headphone/,30000,"Headphones (reference)"],
+        [/monitor/,70000,"Monitor (reference)"],
+        [/console/,200000,"Game Console (reference)"],
+        [/phone/,150000,"Phone Upgrade (reference)"]
+    ];
+    for(const [re,price,label] of prices) if(re.test(n)) return {price,label};
     return null;
 }
 
@@ -5009,6 +5149,12 @@ function autoGoalPrice(){
     showToast(`${found.label} price loaded: ${money(found.price)}`,"success");
 }
 
+function quickGoal(name){
+    openGoalModal();
+    const input=document.getElementById("goalName");
+    if(input) input.value=name;
+    autoGoalPrice();
+}
 function openGoalModal(){
     document.getElementById("goalForm").reset();
     document.getElementById("goalSaved").value=0;
@@ -5375,11 +5521,11 @@ if(typeof tkRefreshPageOriginal==="function"){
             const credential=await navigator.credentials.create({
                 publicKey:{
                     challenge:crypto.getRandomValues(new Uint8Array(32)),
-                    rp:{name:"Track Kharcha",id:location.hostname},
+                    rp:{name:"Savesy",id:location.hostname},
                     user:{
                         id:crypto.getRandomValues(new Uint8Array(16)),
                         name:user.email||user.uid,
-                        displayName:user.displayName||user.email||"Track Kharcha"
+                        displayName:user.displayName||user.email||"Savesy"
                     },
                     pubKeyCredParams:[
                         {type:"public-key",alg:-7},
@@ -5542,7 +5688,7 @@ if(typeof tkRefreshPageOriginal==="function"){
             localStorage.setItem(NOTIF_KEY,"1");
             setSwitch("tkNotificationSwitch",true);
             await registerNotificationWorker();
-            await showAppNotification("Track Kharcha","Notifications are enabled successfully.");
+            await showAppNotification("Savesy","Notifications are enabled successfully.");
             toast("Notifications enabled.","success");
             return true;
         }catch(e){
@@ -5594,7 +5740,7 @@ if(typeof tkRefreshPageOriginal==="function"){
             toast("Enable notifications first.","error");return;
         }
         const msg=$("tkReminderText")?.value.trim()||"Check today's spending.";
-        await showAppNotification("Track Kharcha reminder",msg);
+        await showAppNotification("Savesy reminder",msg);
         toast("Reminder sent.","success");
     });
 
@@ -5750,5 +5896,108 @@ window.tkCorrectVoiceAmountV9=function(rawText,oldAmount){
 window.parseVoiceAmount=tkParseMoneyAmountV9;
 
 </script>
-</body>
+<script>
+/* SAVESY — hard biometric gate. No cancel/close action is provided. */
+(function(){
+  const gate=document.getElementById("tkMandatoryLock");
+  const btn=document.getElementById("tkMandatoryBtn");
+  const status=document.getElementById("tkMandatoryStatus");
+  const BIO_KEY="tk_biometric_enabled";
+  const CRED_KEY="tk_bio_credential";
+  const MANDATORY_KEY="savesy_mandatory_bio";
+
+  function openGate(){
+    if(!gate)return;
+    gate.classList.add("open");
+    gate.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+  function closeGate(){
+    if(!gate)return;
+    gate.classList.remove("open");
+    gate.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+  function supported(){
+    return !!(window.PublicKeyCredential &&
+      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable);
+  }
+  async function setup(){
+    status.textContent="Set up fingerprint/Face ID on this device…";
+    if(!supported()){
+      status.textContent="This browser/app does not expose device biometrics. Open Savesy from a supported HTTPS/PWA or native WebView.";
+      return;
+    }
+    try{
+      const available=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+      if(!available){status.textContent="No fingerprint/Face ID authenticator is available.";return;}
+      const challenge=crypto.getRandomValues(new Uint8Array(32));
+      const userId=crypto.getRandomValues(new Uint8Array(16));
+      const credential=await navigator.credentials.create({
+        publicKey:{
+          challenge,
+          rp:{name:"Savesy"},
+          user:{id:userId,name:"savesy-user",displayName:"Savesy User"},
+          pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],
+          authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"preferred"},
+          timeout:60000,attestation:"none"
+        }
+      });
+      if(!credential)throw new Error("No credential");
+      localStorage.setItem(BIO_KEY,"1");
+      localStorage.setItem(CRED_KEY,credential.id);
+      localStorage.setItem(MANDATORY_KEY,"1");
+      status.textContent="Biometric registered. Verifying…";
+      await verify();
+    }catch(e){
+      status.textContent=e.name==="NotAllowedError"?"Verification was not completed. Try again.":"Could not set up biometric protection.";
+    }
+  }
+  function bytes(s){
+    const pad="=".repeat((4-s.length%4)%4);
+    const raw=atob((s+pad).replace(/-/g,"+").replace(/_/g,"/"));
+    return Uint8Array.from(raw,c=>c.charCodeAt(0));
+  }
+  async function verify(){
+    const id=localStorage.getItem(CRED_KEY);
+    if(!id){btn.innerHTML='<i class="fas fa-fingerprint"></i> Set up biometric';return false;}
+    if(!supported()){status.textContent="Device biometric authentication is unavailable here.";return false;}
+    status.textContent="Touch the fingerprint sensor or use device biometrics…";
+    btn.disabled=true;
+    try{
+      const challenge=crypto.getRandomValues(new Uint8Array(32));
+      await navigator.credentials.get({publicKey:{
+        challenge,
+        allowCredentials:[{id:bytes(id),type:"public-key",transports:["internal"]}],
+        userVerification:"required",timeout:60000
+      }});
+      status.textContent="Verified ✓";
+      setTimeout(closeGate,220);
+      return true;
+    }catch(e){
+      status.textContent=e.name==="NotAllowedError"?"Verification required. Try again.":"Verification failed. Try again.";
+      return false;
+    }finally{btn.disabled=false;}
+  }
+  async function enforce(){
+    // Once this build is installed, biometric protection is mandatory.
+    localStorage.setItem(MANDATORY_KEY,"1");
+    if(localStorage.getItem(CRED_KEY)){
+      openGate();
+      await verify();
+    }else{
+      openGate();
+      btn.innerHTML='<i class="fas fa-fingerprint"></i> Set up biometric';
+      status.textContent="Savesy cannot open until biometric protection is set up and verified.";
+    }
+  }
+  btn?.addEventListener("click",async()=>{
+    if(localStorage.getItem(CRED_KEY)) await verify(); else await setup();
+  });
+  window.addEventListener("load",()=>setTimeout(enforce,350));
+  document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden && localStorage.getItem(CRED_KEY)) setTimeout(()=>{openGate();verify();},180);
+  });
+})();
+</script></body>
 </html>
