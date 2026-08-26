@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mahir Company - On-Demand Professional Services</title>
+    <title>Mahir Company</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -19,11 +19,10 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        mahirNavy: '#0B1536',
-                        mahirBlue: '#1D4ED8',
-                        mahirPink: '#E91E63',
-                        mahirGray: '#F3F4F6',
-                        mahirDarkText: '#111827'
+                        mahirNavy: '#1E2B58',
+                        mahirBadgeBlue: '#2550C0',
+                        mahirPink: '#E84A5F',
+                        mahirLightBg: '#F8F9FA'
                     }
                 }
             }
@@ -38,17 +37,17 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
-            color: #111827;
             margin: 0;
             padding: 0;
             user-select: none;
         }
-        /* Mobile App Frame Styling */
+        
+        /* Mobile Frame Styling */
         .app-container {
             width: 100%;
-            max-width: 430px;
+            max-width: 412px;
             height: 100vh;
-            max-height: 932px;
+            max-height: 892px;
             background-color: #ffffff;
             position: relative;
             overflow: hidden;
@@ -59,13 +58,14 @@
         }
         @media (min-width: 640px) {
             .app-container {
-                height: 880px;
-                border-radius: 40px;
+                height: 850px;
+                border-radius: 36px;
                 border: 8px solid #1e293b;
                 margin: 20px auto;
             }
         }
-        /* Screen Transitions */
+
+        /* Screen Navigation Control */
         .screen {
             display: none;
             width: 100%;
@@ -80,334 +80,330 @@
         .screen.active {
             display: flex;
         }
-        /* Custom Scrollbars */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+
+        /* Custom Scrollbar Removal */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Custom Shadow & Input Styles matching Mahir native UI */
+        .mahir-card-shadow {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .mahir-input-bg {
+            background-color: #F4F4F5;
         }
-        
-        /* Map Fallback Canvas Grid */
-        .map-grid-pattern {
-            background-color: #111827;
-            background-image: 
-                radial-gradient(#1f2937 2px, transparent 2px), 
-                linear-gradient(to right, #1f2937 1px, transparent 1px),
-                linear-gradient(to bottom, #1f2937 1px, transparent 1px);
-            background-size: 32px 32px, 40px 40px, 40px 40px;
+        .map-dark-bg {
+            background-color: #1a2234;
         }
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen">
 
-    <!-- Mobile Frame Shell -->
+    <!-- App Shell Container -->
     <div class="app-container">
 
         <!-- ==========================================
-             1. LOGIN SCREEN
+             1. LOGIN SCREEN (Matches 1000149300.jpg)
              ========================================== -->
         <div id="login-screen" class="screen active justify-between p-6 overflow-y-auto no-scrollbar">
             <div>
-                <!-- Top Header / Guest Pill -->
-                <div class="flex justify-end pt-2 pb-4">
-                    <button onclick="navigateTo('map-screen')" class="bg-black text-white text-xs font-semibold px-5 py-2 rounded-full shadow-md hover:bg-gray-800 transition active:scale-95">
+                <!-- Top Header Bar with Guest Pill -->
+                <div class="flex justify-end pt-2">
+                    <button onclick="navigateTo('map-screen')" class="bg-black text-white text-xs font-medium px-4 py-1.5 rounded-full hover:opacity-90 active:scale-95 transition">
                         Guest
                     </button>
                 </div>
                 
-                <!-- Main Branding Heading -->
-                <div class="mt-8">
-                    <h1 class="text-[28px] font-black tracking-tight text-gray-900 leading-tight">
-                        Welcome to<br/>Mahir Company
+                <!-- Welcome Typography -->
+                <div class="mt-14 space-y-2">
+                    <h1 class="text-[26px] font-bold text-black tracking-tight leading-snug">
+                        Welcome to Mahir Company
                     </h1>
-                    <p class="text-gray-500 text-sm font-medium mt-2">
+                    <p class="text-gray-600 text-[14px] font-normal">
                         Please enter your phone number to continue
                     </p>
                 </div>
 
-                <!-- Phone Input Section -->
-                <div class="mt-8 space-y-4">
-                    <div class="relative flex items-center">
-                        <div class="absolute left-4 flex items-center gap-1.5 pointer-events-none">
-                            <span class="text-gray-700 font-bold text-sm">🇵🇰 +92</span>
-                            <span class="text-gray-300">|</span>
-                        </div>
-                        <input type="tel" id="phone-input" placeholder="300 1234567" 
-                               class="w-full bg-gray-100 text-gray-900 text-base font-semibold rounded-2xl py-4 pl-24 pr-4 border border-transparent focus:border-black focus:bg-white focus:outline-none transition shadow-inner">
-                    </div>
+                <!-- Input & Main Action -->
+                <div class="mt-10 space-y-4">
+                    <input type="tel" id="phone-input" placeholder="Phone Number" 
+                           class="w-full mahir-input-bg text-gray-800 placeholder-gray-400 text-base font-medium rounded-2xl py-4 px-5 border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition">
 
                     <button onclick="handlePhoneLogin()" 
-                            class="w-full bg-black text-white text-base font-bold py-4 rounded-2xl shadow-xl hover:bg-gray-800 active:scale-[0.98] transition duration-150">
+                            class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-sm hover:bg-gray-900 active:scale-[0.99] transition">
                         Continue
                     </button>
                 </div>
             </div>
 
-            <!-- Social Logins & Footer Policies -->
+            <!-- Social Auth & Footer Terms -->
             <div class="space-y-3 pt-6 pb-2">
                 <!-- Continue with Google -->
                 <button onclick="handleGoogleLogin()" 
-                        class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 py-3.5 rounded-2xl font-semibold text-gray-800 hover:bg-gray-50 active:scale-[0.98] transition shadow-sm">
+                        class="w-full flex items-center justify-center gap-3 mahir-input-bg border border-gray-100 py-3.5 rounded-2xl font-medium text-gray-800 hover:bg-gray-100 active:scale-[0.99] transition">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     </svg>
-                    <span>Continue with Google</span>
+                    <span class="text-sm font-semibold">Continue with Google</span>
                 </button>
 
                 <!-- Continue with Facebook -->
                 <button onclick="handleFacebookLogin()" 
-                        class="w-full flex items-center justify-center gap-3 bg-[#1877F2] text-white py-3.5 rounded-2xl font-semibold hover:bg-[#166fe5] active:scale-[0.98] transition shadow-md">
-                    <i class="fa-brands fa-facebook text-xl"></i>
-                    <span>Continue with Facebook</span>
+                        class="w-full flex items-center justify-center gap-3 bg-[#3B82F6] text-white py-3.5 rounded-2xl font-medium hover:bg-blue-600 active:scale-[0.99] transition shadow-xs">
+                    <i class="fa-brands fa-square-facebook text-xl"></i>
+                    <span class="text-sm font-semibold">Continue with Facebook</span>
                 </button>
 
-                <!-- Footer Terms -->
-                <p class="text-[11px] text-center text-gray-400 font-medium px-4 leading-relaxed pt-2">
+                <!-- Legal Terms Subtext -->
+                <p class="text-[11px] text-center text-gray-500 leading-relaxed px-4 pt-3">
                     By continuing, you agree to Mahir Company's 
-                    <a href="#" class="underline font-semibold text-gray-600">Terms & Conditions</a> 
+                    <a href="#" class="font-bold underline text-gray-700">Terms & Conditions</a> 
                     and accept our 
-                    <a href="#" class="underline font-semibold text-gray-600">Privacy Policy</a>.
+                    <a href="#" class="font-bold underline text-gray-700">Privacy Policy</a>.
                 </p>
             </div>
         </div>
 
         <!-- ==========================================
-             2. ADDRESS / MAP SCREEN
+             2. MAP / ADDRESS SCREEN (Matches 1000149302.jpg)
              ========================================== -->
-        <div id="map-screen" class="screen flex-col h-full bg-gray-900 relative">
-            <!-- Top Search Header (~90px height) -->
-            <div class="h-[90px] bg-white px-4 flex items-center gap-3 z-30 shadow-md border-b border-gray-100">
-                <button onclick="navigateTo('login-screen')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
-                    <i class="fa-solid fa-arrow-left text-xl text-black"></i>
+        <div id="map-screen" class="screen flex-col h-full bg-slate-900 relative">
+            <!-- Header Bar (~90px Height) -->
+            <div class="h-[75px] bg-white px-4 flex items-center gap-4 z-20 border-b border-gray-100 shadow-xs">
+                <button onclick="navigateTo('login-screen')" class="p-1 hover:bg-gray-100 rounded-full transition">
+                    <i class="fa-solid fa-chevron-left text-xl text-black"></i>
                 </button>
-                <div class="flex-1 relative flex items-center">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-sm"></i>
+                <div class="flex-1">
                     <input type="text" id="map-search-input" 
                            placeholder="Search your Address" 
-                           class="w-full bg-gray-100 text-gray-900 text-base font-semibold placeholder-gray-400 rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:bg-white focus:ring-2 focus:ring-black transition">
+                           class="w-full text-gray-600 placeholder-gray-400 text-base font-semibold focus:outline-none bg-transparent">
                 </div>
             </div>
 
-            <!-- Map Area Container -->
+            <!-- Google Map Viewport -->
             <div class="flex-1 w-full h-full relative overflow-hidden">
-                <!-- Google Map Target Container -->
-                <div id="google-map-canvas" class="w-full h-full bg-gray-900"></div>
+                <!-- Target Div for Google Maps API -->
+                <div id="google-map-canvas" class="w-full h-full bg-[#18233c]"></div>
 
-                <!-- Fallback Interactive Map (Visible if Google Maps Key missing/unloaded) -->
-                <div id="map-fallback-ui" class="absolute inset-0 map-grid-pattern flex flex-col justify-between p-4 pointer-events-auto transition-opacity duration-300">
-                    <!-- Vector Road Lines Simulation -->
-                    <svg class="absolute inset-0 w-full h-full opacity-30 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M-50,150 Q120,80 250,220 T500,300" stroke="#3b82f6" stroke-width="12" fill="none"/>
-                        <path d="M100,-20 L180,600" stroke="#475569" stroke-width="18" fill="none"/>
-                        <path d="M-20,380 L450,320" stroke="#475569" stroke-width="14" fill="none"/>
-                        <path d="M280,-10 L310,500" stroke="#334155" stroke-width="8" fill="none"/>
+                <!-- Dark Map Graphic Fallback Interface (Shown if API Key offline or loading) -->
+                <div id="map-fallback-view" class="absolute inset-0 bg-[#18233c] pointer-events-auto flex flex-col justify-between p-4">
+                    <!-- Styled Dark Map Vector Graphics -->
+                    <svg class="absolute inset-0 w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M-20,100 L450,220" stroke="#2c3a58" stroke-width="16"/>
+                        <path d="M80,-20 L220,600" stroke="#2c3a58" stroke-width="24"/>
+                        <path d="M-10,400 L420,280" stroke="#37486e" stroke-width="12"/>
+                        <path d="M300,-10 L180,500" stroke="#25324e" stroke-width="8"/>
+                        <!-- Fake Map Labels -->
+                        <text x="20" y="70" fill="#64748b" font-size="12" font-weight="bold">SECTOR 2</text>
+                        <text x="100" y="440" fill="#64748b" font-size="10" font-weight="bold">KORANG TOWN</text>
                     </svg>
 
-                    <!-- Top Banner Indicator for Demo Mode -->
-                    <div id="api-status-pill" class="self-center bg-gray-900/90 backdrop-blur-md border border-gray-700/60 text-gray-200 text-xs px-3.5 py-1.5 rounded-full shadow-lg flex items-center gap-2 z-10">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span id="api-status-text">Interactive Map Ready (Set API Key in Code)</span>
-                    </div>
-
-                    <!-- Center Fixed Location Marker Icon -->
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20 -mt-8">
+                    <!-- Dynamic Marker Pin Centered -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                         <div class="relative flex flex-col items-center">
-                            <!-- Floating Address Badge Above Marker -->
-                            <div class="bg-gray-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-xl border border-gray-700 mb-1 max-w-[220px] truncate text-center">
-                                <span id="pin-address-label">Street 14, Korang Town, Islamabad</span>
+                            <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white shadow-2xl border-2 border-white">
+                                <i class="fa-solid fa-location-dot text-lg"></i>
                             </div>
-                            <!-- Pin Icon -->
-                            <div class="text-rose-500 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] animate-bounce">
-                                <i class="fa-solid fa-location-dot text-4xl"></i>
-                            </div>
-                            <!-- Marker Shadow -->
-                            <div class="w-5 h-2 bg-black/50 rounded-full blur-[2px] mt-0.5"></div>
+                            <div class="w-3 h-3 bg-black/60 rounded-full blur-[1px] mt-1"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Floating My Location Button -->
-                <button onclick="getUserCurrentLocation()" 
-                        class="absolute bottom-24 right-4 z-30 bg-white text-gray-800 p-3.5 rounded-full shadow-2xl border border-gray-200 hover:bg-gray-50 active:scale-90 transition">
-                    <i class="fa-solid fa-crosshairs text-lg text-gray-800"></i>
+                <!-- Floating My Location Button (Bottom Right) -->
+                <button onclick="fetchCurrentLocation()" 
+                        class="absolute bottom-24 right-5 z-20 w-12 h-12 bg-white text-black rounded-full shadow-2xl flex items-center justify-center border border-gray-100 active:scale-90 transition">
+                    <i class="fa-solid fa-crosshairs text-xl text-black"></i>
                 </button>
             </div>
 
-            <!-- Bottom Fixed Confirmation Card -->
-            <div class="p-4 bg-white border-t border-gray-200 z-30 shadow-2xl">
-                <div class="mb-3">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">SELECTED LOCATION</p>
-                    <p id="confirm-address-display" class="text-xs font-bold text-gray-800 truncate">Street 14, Korang Town, Islamabad, Pakistan</p>
-                </div>
-                <button onclick="confirmSelectedAddress()" 
-                        class="w-full bg-black text-white text-base font-bold py-4 rounded-2xl shadow-xl hover:bg-gray-800 active:scale-[0.98] transition duration-150">
+            <!-- Fixed Bottom Confirmation Button -->
+            <div class="p-4 bg-transparent z-20 mb-2">
+                <button onclick="confirmAddressSelection()" 
+                        class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-2xl hover:bg-gray-900 active:scale-[0.99] transition">
                     Confirm
                 </button>
             </div>
         </div>
 
         <!-- ==========================================
-             3. HOME / SERVICES SCREEN
+             3. HOME / SERVICES SCREEN (Matches 1000149304.jpg)
              ========================================== -->
-        <div id="dashboard-screen" class="screen flex-col h-full bg-[#F8FAFC] overflow-y-auto no-scrollbar">
-            <!-- Address Bar Header -->
-            <div class="bg-white px-4 py-3 border-b border-gray-100 sticky top-0 z-30 flex items-center gap-3 shadow-xs">
-                <button onclick="navigateTo('map-screen')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
-                    <i class="fa-solid fa-arrow-left text-lg text-gray-900"></i>
+        <div id="dashboard-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
+            <!-- Header Section with Back Arrow and Address -->
+            <div class="bg-white px-5 py-4 border-b border-gray-100 sticky top-0 z-20">
+                <button onclick="navigateTo('map-screen')" class="flex items-center gap-3 text-black font-semibold text-lg hover:opacity-80 transition mb-2">
+                    <i class="fa-solid fa-chevron-left text-lg"></i>
+                    <span>Log in</span>
                 </button>
-                <div class="flex-1 overflow-hidden cursor-pointer" onclick="navigateTo('map-screen')">
-                    <div class="flex items-center gap-1">
-                        <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">ADDRESS</span>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
-                    </div>
-                    <p id="home-address-text" class="text-xs font-bold text-gray-800 truncate max-w-[280px]">
-                        48 Street 14 Korang Town Rawalpindi Punjab
+                <div class="space-y-0.5">
+                    <h4 class="text-xs font-bold text-gray-900 tracking-tight">Address</h4>
+                    <p id="selected-address-detail" class="text-xs text-gray-400 font-medium leading-snug line-clamp-2">
+                        48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi
                     </p>
                 </div>
             </div>
 
-            <!-- Services Section Container -->
-            <div class="p-4 space-y-4 pb-12">
+            <!-- Main Content Container -->
+            <div class="p-5 space-y-5 pb-10">
                 <!-- Welcome Title -->
-                <h2 class="text-2xl font-black text-gray-900 tracking-tight pt-1">
+                <h2 class="text-[22px] font-bold text-gray-900 tracking-tight">
                     Welcome to Mahir Company
                 </h2>
 
-                <!-- Grid Services (2 Columns for Cards 1-4) -->
+                <!-- 2x2 Grid Services -->
                 <div class="grid grid-cols-2 gap-3.5">
 
                     <!-- CARD 1: Home Services -->
-                    <div class="bg-white p-4 rounded-[22px] border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between h-[180px] relative overflow-hidden group cursor-pointer">
+                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
                         <div>
-                            <h3 class="font-extrabold text-gray-900 text-sm leading-tight">Home Services</h3>
-                            <div class="flex flex-wrap gap-1 mt-1.5">
-                                <span class="bg-[#0B1536] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
-                                <span class="bg-[#0B1536] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">COMMERCIAL</span>
+                            <h3 class="font-bold text-gray-900 text-[15px]">Home Services</h3>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
+                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
                             </div>
                         </div>
-                        <!-- Custom SVG Illustration: Tools & Repair -->
-                        <div class="mt-auto flex justify-end items-end pt-2">
-                            <svg class="w-24 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="60" r="50" fill="#EFF6FF"/>
-                                <path d="M35 75 L75 35 L85 45 L45 85 Z" fill="#3B82F6"/>
-                                <path d="M78 32 L88 22 C92 18 98 18 102 22 C106 26 106 32 102 36 L92 46 Z" fill="#1D4ED8"/>
-                                <rect x="30" y="70" width="25" height="25" rx="5" fill="#1E40AF" transform="rotate(-45 30 70)"/>
-                                <path d="M40 90 L85 90 C88 90 90 88 90 85 L90 55" stroke="#93C5FD" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 4"/>
-                                <circle cx="45" cy="45" r="8" fill="#F59E0B"/>
+                        <!-- Toolbox SVG Artwork -->
+                        <div class="mt-auto flex justify-center items-end pb-1">
+                            <svg class="w-28 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Red Toolbox Body -->
+                                <rect x="30" y="50" width="80" height="50" rx="8" fill="#EF4444"/>
+                                <rect x="25" y="45" width="90" height="12" rx="4" fill="#DC2626"/>
+                                <rect x="58" y="32" width="24" height="15" rx="3" fill="#94A3B8"/>
+                                <rect x="62" y="35" width="16" height="10" rx="2" fill="#FFFFFF"/>
+                                <!-- Hammer -->
+                                <path d="M40 30 L55 45 L50 50 L35 35 Z" fill="#D97706"/>
+                                <rect x="30" y="22" width="18" height="10" rx="2" fill="#64748B" transform="rotate(-15 30 22)"/>
+                                <!-- Saw -->
+                                <path d="M80 20 L105 45 L95 50 L75 25 Z" fill="#94A3B8"/>
+                                <path d="M98 40 L102 44 M94 36 L98 40 M90 32 L94 36" stroke="#475569" stroke-width="2"/>
+                                <!-- Yellow Spirit Level -->
+                                <rect x="45" y="65" width="50" height="12" rx="3" fill="#F59E0B"/>
+                                <circle cx="70" cy="71" r="3" fill="#10B981"/>
+                                <!-- Mahir Text Branding on Box -->
+                                <text x="55" y="85" fill="#FFFFFF" font-size="9" font-weight="900" font-family="sans-serif">mahir</text>
                             </svg>
                         </div>
                     </div>
 
                     <!-- CARD 2: Cleaning Services -->
-                    <div class="bg-white p-4 rounded-[22px] border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between h-[180px] relative overflow-hidden group cursor-pointer">
+                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
                         <div>
-                            <h3 class="font-extrabold text-gray-900 text-sm leading-tight">Cleaning Services</h3>
-                            <div class="flex flex-wrap gap-1 mt-1.5">
-                                <span class="bg-[#0B1536] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
-                                <span class="bg-[#0B1536] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">COMMERCIAL</span>
+                            <h3 class="font-bold text-gray-900 text-[15px]">Cleaning Services</h3>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
+                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
                             </div>
                         </div>
-                        <!-- Custom SVG Illustration: Vacuum / Cleaning Spray -->
-                        <div class="mt-auto flex justify-end items-end pt-2">
-                            <svg class="w-24 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="60" r="50" fill="#ECFDF5"/>
-                                <!-- Spray Bottle & Sparkles -->
-                                <path d="M45 50 H65 V90 C65 95 60 98 55 98 C50 98 45 95 45 90 V50 Z" fill="#10B981"/>
-                                <path d="M50 35 H60 V50 H50 Z" fill="#047857"/>
-                                <path d="M60 40 L75 42 L72 48 L60 45 Z" fill="#059669"/>
-                                <circle cx="82" cy="35" r="6" fill="#34D399" opacity="0.8"/>
-                                <circle cx="95" cy="48" r="4" fill="#6EE7B7" opacity="0.9"/>
-                                <path d="M78 68 L88 58 M88 68 L78 58" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-                                <circle cx="32" cy="70" r="10" fill="#A7F3D0"/>
+                        <!-- Cleaning Equipment SVG Artwork -->
+                        <div class="mt-auto flex justify-center items-end pb-1">
+                            <svg class="w-32 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 150 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Red Car -->
+                                <path d="M15 80 Q15 65 30 65 L45 55 H70 L80 65 H90 Q95 65 95 80 Z" fill="#EF4444"/>
+                                <circle cx="30" cy="82" r="7" fill="#1E293B"/>
+                                <circle cx="75" cy="82" r="7" fill="#1E293B"/>
+                                <!-- Industrial Vacuum Cleaner -->
+                                <rect x="75" y="45" width="22" height="35" rx="5" fill="#F59E0B"/>
+                                <path d="M75 45 C75 35 97 35 97 45 Z" fill="#3B82F6"/>
+                                <path d="M97 55 Q115 55 110 80" stroke="#64748B" stroke-width="4" fill="none"/>
+                                <!-- Cleaning Bucket & Spray Bottles -->
+                                <path d="M105 70 L135 70 L130 92 L110 92 Z" fill="#EF4444"/>
+                                <rect x="110" y="58" width="6" height="14" fill="#3B82F6"/>
+                                <rect x="120" y="54" width="6" height="18" fill="#10B981"/>
+                                <path d="M100 90 L138 90" stroke="#F59E0B" stroke-width="3"/>
                             </svg>
                         </div>
                     </div>
 
                     <!-- CARD 3: Salon Services -->
-                    <div class="bg-white p-4 rounded-[22px] border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between h-[180px] relative overflow-hidden group cursor-pointer">
+                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
                         <div>
-                            <h3 class="font-extrabold text-gray-900 text-sm leading-tight">Salon Services</h3>
-                            <div class="mt-1.5">
-                                <span class="bg-[#E91E63] text-white text-[9px] font-extrabold px-2 py-0.5 rounded">FOR HER</span>
+                            <h3 class="font-bold text-gray-900 text-[15px]">Salon Services</h3>
+                            <div class="mt-1">
+                                <span class="bg-[#E84A5F] text-white text-[8px] font-bold px-2 py-0.5 rounded">FOR HER</span>
                             </div>
                         </div>
-                        <!-- Custom SVG Illustration: Salon / Beauty -->
-                        <div class="mt-auto flex justify-end items-end pt-2">
-                            <svg class="w-24 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="60" r="50" fill="#FDF2F8"/>
-                                <!-- Hair Dryer & Mirror / Sparkles -->
-                                <path d="M35 45 C35 38 42 32 50 32 H70 C78 32 85 38 85 45 V55 C85 62 78 68 70 68 H50 C42 68 35 62 35 55 Z" fill="#EC4899"/>
-                                <rect x="55" y="68" width="12" height="28" rx="4" fill="#BE185D"/>
-                                <path d="M85 45 L100 42 V58 L85 55 Z" fill="#831843"/>
-                                <circle cx="35" cy="30" r="4" fill="#F472B6"/>
-                                <circle cx="95" cy="75" r="5" fill="#FB7185"/>
-                                <path d="M25 65 L32 58 M32 65 L25 58" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Cosmetics SVG Artwork -->
+                        <div class="mt-auto flex justify-center items-end pb-1">
+                            <svg class="w-32 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 150 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Pink Makeup Pouch -->
+                                <path d="M35 65 C35 55 45 52 75 52 C105 52 115 55 115 65 L110 90 H40 L35 65 Z" fill="#E84A5F"/>
+                                <text x="62" y="78" fill="#FFFFFF" font-size="7" font-weight="bold">mahir</text>
+                                <!-- Large Lotion Pump Bottle -->
+                                <rect x="100" y="40" width="22" height="48" rx="6" fill="#38BDF8"/>
+                                <rect x="107" y="32" width="8" height="8" fill="#94A3B8"/>
+                                <path d="M105 32 H117 V27 H105 Z" fill="#64748B"/>
+                                <!-- Tubes & Lipsticks -->
+                                <rect x="25" y="60" width="12" height="28" rx="3" fill="#67E8F9" transform="rotate(-15 25 60)"/>
+                                <rect x="52" y="72" width="8" height="18" fill="#000000"/>
+                                <rect x="53" y="65" width="6" height="7" fill="#EF4444"/>
+                                <!-- Compact Mirror -->
+                                <ellipse cx="85" cy="88" rx="14" ry="5" fill="#FDE047"/>
+                                <!-- Brushes -->
+                                <path d="M68 35 L76 55 M74 33 L80 55" stroke="#D97706" stroke-width="3"/>
+                                <path d="M66 30 Q70 20 74 30 Z" fill="#1E293B"/>
                             </svg>
                         </div>
                     </div>
 
                     <!-- CARD 4: Maintained by mahir -->
-                    <div class="bg-white p-4 rounded-[22px] border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between h-[180px] relative overflow-hidden group cursor-pointer">
+                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
                         <div>
-                            <h3 class="font-extrabold text-gray-900 text-xs leading-tight">
-                                Maintained by <span class="text-blue-600 font-black">mahir</span>
+                            <h3 class="font-bold text-gray-900 text-[14px] leading-tight">
+                                Maintained by <br/><span class="text-black font-extrabold">mahir</span> <span class="text-[9px] text-gray-400 font-normal">company</span>
                             </h3>
-                            <div class="mt-1.5">
-                                <span class="bg-[#1D4ED8] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">SUBSCRIPTION PLANS</span>
+                            <div class="mt-1">
+                                <span class="bg-[#2550C0] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">SUBSCRIPTION PLANS</span>
                             </div>
                         </div>
-                        <!-- Custom SVG Illustration: House & Shield Subscription -->
-                        <div class="mt-auto flex justify-end items-end pt-2">
-                            <svg class="w-24 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="60" r="50" fill="#EEF2FF"/>
-                                <!-- House Shield -->
-                                <path d="M60 25 L30 50 V85 C30 90 35 95 40 95 H80 C85 95 90 90 90 85 V50 L60 25 Z" fill="#4338CA"/>
-                                <path d="M60 40 L45 52 V80 H75 V52 L60 40 Z" fill="#6366F1"/>
-                                <!-- Check Shield Badge -->
-                                <circle cx="78" cy="78" r="16" fill="#10B981"/>
-                                <path d="M72 78 L76 82 L84 74" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Smart Home Maintenance SVG Artwork -->
+                        <div class="mt-auto flex justify-center items-end pb-1">
+                            <svg class="w-32 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 150 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Modern House -->
+                                <path d="M40 60 L75 35 L110 60 V92 H40 V60 Z" fill="#F8FAFC" stroke="#cbd5e1" stroke-width="2"/>
+                                <path d="M35 60 L75 30 L115 60" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+                                <rect x="50" y="68" width="18" height="24" fill="#475569"/>
+                                <rect x="80" y="68" width="18" height="14" fill="#38BDF8"/>
+                                <!-- Connected Smart Service Icons -->
+                                <path d="M45 35 Q75 15 105 35" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="3 3"/>
+                                <circle cx="48" cy="35" r="7" fill="#EF4444"/>
+                                <circle cx="75" cy="22" r="7" fill="#3B82F6"/>
+                                <circle cx="102" cy="35" r="7" fill="#F59E0B"/>
+                                <!-- Smartphone overlay -->
+                                <rect x="105" y="70" width="16" height="25" rx="3" fill="#000000"/>
+                                <rect x="107" y="73" width="12" height="17" fill="#FFFFFF"/>
                             </svg>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- CARD 5: Mahir For Business (Full Width Banner Card) -->
-                <div class="bg-white p-5 rounded-[22px] border border-gray-100 shadow-sm hover:shadow-md transition flex items-center justify-between relative overflow-hidden group cursor-pointer">
-                    <div class="space-y-2 max-w-[60%] z-10">
-                        <h3 class="font-black text-gray-900 text-base leading-tight">
-                            Mahir For Business
-                        </h3>
+                <!-- CARD 5: Mahir For Business (Full Width Banner) -->
+                <div class="bg-white p-4 rounded-[22px] border border-gray-100 mahir-card-shadow flex items-center justify-between group cursor-pointer">
+                    <div class="space-y-1.5">
+                        <h3 class="font-bold text-gray-900 text-[16px]">Mahir For Business</h3>
                         <div>
-                            <span class="bg-[#0B1536] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-md inline-block">
+                            <span class="bg-[#1E2B58] text-white text-[9px] font-bold px-2 py-0.5 rounded">
                                 Your Corporate Maintenance Partner
                             </span>
                         </div>
                     </div>
-                    <!-- Custom SVG Illustration: Corporate Office & Briefcase -->
-                    <div class="z-10">
-                        <svg class="w-24 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="60" cy="60" r="50" fill="#F1F5F9"/>
-                            <!-- Skyscrapers -->
-                            <rect x="35" y="45" width="22" height="50" rx="3" fill="#1E293B"/>
-                            <rect x="60" y="30" width="28" height="65" rx="3" fill="#0F172A"/>
-                            <!-- Windows -->
-                            <rect x="40" y="52" width="5" height="5" fill="#38BDF8"/>
-                            <rect x="48" y="52" width="5" height="5" fill="#38BDF8"/>
-                            <rect x="40" y="64" width="5" height="5" fill="#38BDF8"/>
-                            <rect x="48" y="64" width="5" height="5" fill="#38BDF8"/>
-                            <rect x="66" y="38" width="6" height="6" fill="#F59E0B"/>
-                            <rect x="76" y="38" width="6" height="6" fill="#F59E0B"/>
-                            <rect x="66" y="50" width="6" height="6" fill="#38BDF8"/>
-                            <rect x="76" y="50" width="6" height="6" fill="#38BDF8"/>
+                    <!-- Corporate Document Briefcase Artwork -->
+                    <div>
+                        <svg class="w-20 h-16 transform group-hover:scale-105 transition duration-300" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Briefcase -->
-                            <rect x="22" y="70" width="24" height="18" rx="3" fill="#3B82F6"/>
-                            <path d="M30 70 V66 C30 64 32 63 34 63 H34 C36 63 38 64 38 66 V70" stroke="#1D4ED8" stroke-width="2"/>
+                            <rect x="25" y="15" width="50" height="35" rx="4" fill="none" stroke="#0891B2" stroke-width="3"/>
+                            <path d="M40 15 V10 C40 8 42 7 44 7 H56 C58 7 60 8 60 10 V15" stroke="#0891B2" stroke-width="3"/>
+                            <!-- Document Scroll -->
+                            <rect x="45" y="30" width="35" height="42" rx="3" fill="#FFFFFF" stroke="#0891B2" stroke-width="3"/>
+                            <line x1="52" y1="40" x2="72" y2="40" stroke="#0891B2" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="52" y1="48" x2="72" y2="48" stroke="#0891B2" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="52" y1="56" x2="65" y2="56" stroke="#0891B2" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Pencil -->
+                            <path d="M30 65 L50 65 L40 72 Z" fill="#EF4444"/>
+                            <rect x="20" y="62" width="25" height="6" fill="#F59E0B"/>
                         </svg>
                     </div>
                 </div>
@@ -418,13 +414,12 @@
     </div>
 
     <!-- ==========================================
-         FIREBASE AUTHENTICATION CONFIGURATION
+         FIREBASE AUTHENTICATION SCRIPT
          ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        // Firebase project credentials (User's track-kharcha app)
         const firebaseConfig = {
             apiKey: "AIzaSyDN8MB7B0-faYxCZIaDdqXZ01MHYu_22qU",
             authDomain: "track-kharcha.firebaseapp.com",
@@ -435,246 +430,174 @@
             measurementId: "G-CFM1N6RTNV"
         };
 
-        // Initialize Firebase
         let auth;
         try {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
-        } catch(e) {
-            console.warn("Firebase Init Note: ", e);
+        } catch (e) {
+            console.warn("Firebase Auth Init Note:", e);
         }
 
-        // Google Authentication Handler
         window.handleGoogleLogin = async function() {
-            if (!auth) {
-                navigateTo('map-screen');
-                return;
-            }
+            if (!auth) { navigateTo('map-screen'); return; }
             const provider = new GoogleAuthProvider();
             try {
-                const result = await signInWithPopup(auth, provider);
-                console.log("Logged in user:", result.user);
+                await signInWithPopup(auth, provider);
                 navigateTo('map-screen');
             } catch (error) {
-                console.error("Google Auth Notice:", error);
-                // Fallback graceful transition if domain restricted on GitHub Pages
-                alert("Navigating as authenticated user (" + (error.message || 'Domain check') + ")");
+                console.log("Google Auth fallback navigation");
                 navigateTo('map-screen');
             }
         };
 
-        // Facebook Authentication Handler
         window.handleFacebookLogin = async function() {
-            if (!auth) {
-                navigateTo('map-screen');
-                return;
-            }
+            if (!auth) { navigateTo('map-screen'); return; }
             const provider = new FacebookAuthProvider();
             try {
-                const result = await signInWithPopup(auth, provider);
+                await signInWithPopup(auth, provider);
                 navigateTo('map-screen');
             } catch (error) {
-                console.error("Facebook Auth Notice:", error);
+                console.log("Facebook Auth fallback navigation");
                 navigateTo('map-screen');
             }
         };
     </script>
 
     <!-- ==========================================
-         APPLICATION LOGIC & GOOGLE MAPS API
+         APPLICATION NAVIGATION & GOOGLE MAPS API
          ========================================== -->
     <script>
-        /* 
+        /*
            ==================================================
-           GOOGLE MAPS API KEY CONFIGURATION VARIABLE
+           GOOGLE MAPS API KEY CONFIGURATION
            ==================================================
-           REPLACE "YOUR_API_KEY_HERE" WITH YOUR ACTUAL GOOGLE MAPS API KEY.
         */
-        const GOOGLE_MAPS_API_KEY = "YOUR_API_KEY_HERE";
+        const GOOGLE_MAPS_API_KEY = "AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao";
 
-        // Global Application State Variables
-        let currentSelectedAddress = "48 Street 14, Korang Town, Islamabad";
-        let googleMapInstance = null;
-        let mapMarkerInstance = null;
+        let selectedAddressText = "48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi";
+        let gMapInstance = null;
+        let gMapMarker = null;
 
         // Navigation Controller
         function navigateTo(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-            }
-            
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+
             if (screenId === 'map-screen') {
-                initializeMapEngine();
+                initMapEngine();
             }
         }
 
-        // Phone Login Action
+        // Phone Login Handler
         function handlePhoneLogin() {
-            const phoneInput = document.getElementById('phone-input').value.trim();
-            if (!phoneInput || phoneInput.length < 7) {
-                alert('Please enter a valid phone number to continue');
+            const phone = document.getElementById('phone-input').value.trim();
+            if (!phone || phone.length < 6) {
+                alert('Please enter a valid phone number');
                 return;
             }
             navigateTo('map-screen');
         }
 
-        // Confirm Address Action
-        function confirmSelectedAddress() {
-            document.getElementById('home-address-text').innerText = currentSelectedAddress;
+        // Confirm Selected Address Action
+        function confirmAddressSelection() {
+            document.getElementById('selected-address-detail').innerText = selectedAddressText;
             navigateTo('dashboard-screen');
         }
 
-        // Initialize Map (Google Maps JS API with Autocomplete + High-Fidelity Fallback)
-        function initializeMapEngine() {
-            // Update address labels
-            document.getElementById('confirm-address-display').innerText = currentSelectedAddress;
-            document.getElementById('pin-address-label').innerText = currentSelectedAddress;
-
-            // Check if Google Maps is already loaded or key is specified
+        // Initialize Google Maps API or Render Fallback
+        function initMapEngine() {
             if (window.google && window.google.maps) {
-                setupGoogleMapsInstance();
+                setupGoogleMap();
                 return;
             }
 
-            // Attempt to load external Google Maps script dynamically if key is provided
-            if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== "YOUR_API_KEY_HERE" && !document.getElementById('gmap-script')) {
+            if (GOOGLE_MAPS_API_KEY && !document.getElementById('gmaps-sdk')) {
                 const script = document.createElement('script');
-                script.id = 'gmap-script';
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=setupGoogleMapsInstance`;
+                script.id = 'gmaps-sdk';
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=setupGoogleMap`;
                 script.async = true;
                 script.defer = true;
-                script.onerror = () => enableFallbackMapMode("Invalid API Key or Network issue");
+                script.onerror = () => { console.log("Map key restriction mode enabled."); };
                 document.head.appendChild(script);
-            } else {
-                enableFallbackMapMode("Set your GOOGLE_MAPS_API_KEY in index.html to view live map rendering");
             }
         }
 
-        // Real Google Maps Initialization Setup
-        window.setupGoogleMapsInstance = function() {
+        // Setup Live Google Maps Instance
+        window.setupGoogleMap = function() {
             const mapContainer = document.getElementById("google-map-canvas");
-            const fallbackUI = document.getElementById("map-fallback-ui");
-            
-            if (!mapContainer || !window.google || !window.google.maps) {
-                enableFallbackMapMode("Google Maps SDK Unreachable");
-                return;
-            }
+            const fallbackOverlay = document.getElementById("map-fallback-view");
 
-            // Hide fallback UI vector overlay when Google Maps loads successfully
-            fallbackUI.style.opacity = "0";
-            fallbackUI.style.pointerEvents = "none";
+            if (!mapContainer || !window.google || !window.google.maps) return;
 
-            const defaultLocation = { lat: 33.6844, lng: 73.0479 }; // Islamabad/Rawalpindi area
+            // Hide fallback SVG graphic if Google Maps loads successfully
+            if (fallbackOverlay) fallbackOverlay.style.display = "none";
 
-            // Dark Mode Maps Styling
+            const defaultLocation = { lat: 33.6007, lng: 73.1022 }; // Korang Town / Islamabad
+
+            // Dark Mode Map Styling matching Screenshot 1000149302.jpg
             const darkMapStyle = [
-                { elementType: "geometry", stylers: [{ color: "#111827" }] },
-                { elementType: "labels.text.stroke", stylers: [{ color: "#111827" }] },
-                { elementType: "labels.text.fill", stylers: [{ color: "#9CA3AF" }] },
-                { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#F3F4F6" }] },
-                { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#6B7280" }] },
-                { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#1F2937" }] },
-                { featureType: "road", elementType: "geometry", stylers: [{ color: "#1F2937" }] },
-                { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#111827" }] },
-                { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#374151" }] },
-                { featureType: "water", elementType: "geometry", stylers: [{ color: "#0F172A" }] }
+                { elementType: "geometry", stylers: [{ color: "#18233c" }] },
+                { elementType: "labels.text.stroke", stylers: [{ color: "#18233c" }] },
+                { elementType: "labels.text.fill", stylers: [{ color: "#7488a7" }] },
+                { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#8b9db7" }] },
+                { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#546886" }] },
+                { featureType: "road", elementType: "geometry", stylers: [{ color: "#283756" }] },
+                { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#18233c" }] },
+                { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#32466c" }] },
+                { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
             ];
 
-            googleMapInstance = new google.maps.Map(mapContainer, {
+            gMapInstance = new google.maps.Map(mapContainer, {
                 center: defaultLocation,
                 zoom: 16,
                 disableDefaultUI: true,
                 styles: darkMapStyle
             });
 
-            mapMarkerInstance = new google.maps.Marker({
+            gMapMarker = new google.maps.Marker({
                 position: defaultLocation,
-                map: googleMapInstance,
+                map: gMapInstance,
                 draggable: true,
-                animation: google.maps.Animation.DROP
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8,
+                    fillColor: "#000000",
+                    fillOpacity: 1,
+                    strokeWeight: 3,
+                    strokeColor: "#ffffff"
+                }
             });
 
-            // Handle marker drag updates
-            google.maps.event.addListener(mapMarkerInstance, 'dragend', function(evt) {
-                const lat = evt.latLng.lat().toFixed(4);
-                const lng = evt.latLng.lng().toFixed(4);
-                updateAddressText(`Pinned Location (${lat}, ${lng}), Islamabad`);
-            });
-
-            // Google Places Autocomplete Integration
-            const searchInput = document.getElementById("map-search-input");
-            const autocomplete = new google.maps.places.Autocomplete(searchInput);
-            autocomplete.bindTo("bounds", googleMapInstance);
+            // Autocomplete Address Search
+            const input = document.getElementById("map-search-input");
+            const autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", gMapInstance);
 
             autocomplete.addListener("place_changed", () => {
                 const place = autocomplete.getPlace();
-                if (!place.geometry || !place.geometry.location) return;
-
-                googleMapInstance.setCenter(place.geometry.location);
-                googleMapInstance.setZoom(17);
-                mapMarkerInstance.setPosition(place.geometry.location);
-
+                if (!place.geometry) return;
+                gMapInstance.setCenter(place.geometry.location);
+                gMapInstance.setZoom(17);
+                gMapMarker.setPosition(place.geometry.location);
                 if (place.formatted_address) {
-                    updateAddressText(place.formatted_address);
+                    selectedAddressText = place.formatted_address;
                 }
             });
         };
 
-        // Fallback UI Mode Activation Function
-        function enableFallbackMapMode(statusMsg) {
-            const fallbackUI = document.getElementById("map-fallback-ui");
-            const statusText = document.getElementById("api-status-text");
-            if (fallbackUI) {
-                fallbackUI.style.opacity = "1";
-                fallbackUI.style.pointerEvents = "auto";
-            }
-            if (statusText) {
-                statusText.innerText = statusMsg;
-            }
-
-            // Simulate address search input on input change for fallback
-            const searchInput = document.getElementById("map-search-input");
-            searchInput.addEventListener("input", function(e) {
-                if (e.target.value.trim().length > 3) {
-                    updateAddressText(e.target.value);
-                }
-            });
-        }
-
-        // Geolocation Lookup for My Location Button
-        function getUserCurrentLocation() {
+        // Geolocation Lookup for Location Button
+        function fetchCurrentLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        const updatedAddr = `Sector G-11/3, Islamabad (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
-                        
-                        if (googleMapInstance && mapMarkerInstance) {
-                            const pos = { lat, lng };
-                            googleMapInstance.setCenter(pos);
-                            googleMapInstance.setZoom(17);
-                            mapMarkerInstance.setPosition(pos);
-                        }
-                        updateAddressText(updatedAddr);
-                    },
-                    () => {
-                        updateAddressText("Korang Town, Phase 2, Rawalpindi");
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    if (gMapInstance && gMapMarker) {
+                        gMapInstance.setCenter(coords);
+                        gMapMarker.setPosition(coords);
                     }
-                );
-            } else {
-                updateAddressText("Korang Town, Phase 2, Rawalpindi");
+                    selectedAddressText = "48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi";
+                });
             }
-        }
-
-        // Helper to Sync Address across screens
-        function updateAddressText(newAddress) {
-            currentSelectedAddress = newAddress;
-            document.getElementById('confirm-address-display').innerText = newAddress;
-            document.getElementById('pin-address-label').innerText = newAddress;
-            document.getElementById('home-address-text').innerText = newAddress;
         }
     </script>
 </body>
