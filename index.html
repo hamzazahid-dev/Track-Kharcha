@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mahir Company</title>
-    <!-- Tailwind CSS for modern styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Maps API (Replace YOUR_API_KEY with a valid Google Maps JavaScript API key) -->
+    <!-- Google Maps API (Replace with your restricted key) -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -28,7 +28,7 @@
             <div>
                 <!-- Top Bar -->
                 <div class="flex justify-end pt-2">
-                    <button onclick="navigateTo('dashboard-screen')" class="bg-black text-white text-sm font-medium px-4 py-1.5 rounded-full">Guest</button>
+                    <button onclick="navigateTo('dashboard-screen')" class="bg-black text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm hover:bg-gray-800 transition">Guest</button>
                 </div>
                 
                 <!-- Title & Subtitle -->
@@ -40,7 +40,7 @@
                 <!-- Phone Input Form -->
                 <div class="mt-8 space-y-4">
                     <div class="relative">
-                        <input type="tel5" id="phone-input" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 px-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-black transition">
+                        <input type="tel" id="phone-input" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 px-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-black transition">
                     </div>
                     <button onclick="handlePhoneLogin()" class="w-full bg-black text-white font-medium py-4 rounded-2xl shadow-lg hover:bg-gray-800 transition">
                         Continue
@@ -50,7 +50,7 @@
 
             <!-- Social Logins & Footer -->
             <div class="space-y-4 pb-4">
-                <!-- Continue with Google (Replacing Facebook) -->
+                <!-- Continue with Google -->
                 <button onclick="handleGoogleLogin()" class="w-full flex items-center justify-center gap-3 bg-gray-50 border border-gray-200 py-3.5 rounded-2xl font-medium text-gray-800 hover:bg-gray-100 transition shadow-sm">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -81,7 +81,7 @@
             <div id="google-map" class="w-full h-full"></div>
 
             <!-- Bottom Confirm Address Card -->
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent z-10">
                 <button onclick="navigateTo('dashboard-screen')" class="w-full bg-black text-white font-semibold py-4 rounded-2xl shadow-xl hover:bg-gray-900 transition">
                     Confirm
                 </button>
@@ -92,10 +92,10 @@
         <!-- ================= 3. DASHBOARD SERVICES SCREEN ================= -->
         <div id="dashboard-screen" class="screen flex-col h-full bg-gray-50 overflow-y-auto">
             <!-- Header -->
-            <div class="bg-white px-4 py-3 border-b border-gray-100 sticky top-0 z-20 flex items-center gap-3">
+            <div class="bg-white px-4 py-3 border-b border-gray-100 sticky top-0 z-20 flex items-center gap-3 shadow-sm">
                 <button onclick="navigateTo('map-screen')" class="text-gray-800"><i class="fa-solid fa-arrow-left text-lg"></i></button>
                 <div>
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Address</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Address</p>
                     <p id="selected-address-text" class="text-xs font-medium text-gray-700 truncate max-w-[280px]">48 Street 14 Korang Town Rawalpindi Punjab</p>
                 </div>
             </div>
@@ -108,50 +108,50 @@
                     <!-- Home Services -->
                     <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-gray-900 text-base">Home Services</h3>
-                            <div class="flex gap-1 mt-1">
-                                <span class="bg-blue-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
-                                <span class="bg-blue-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
+                            <h3 class="font-bold text-gray-900 text-sm">Home Services</h3>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                <span class="bg-blue-900 text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
+                                <span class="bg-blue-900 text-white text-[8px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
                             </div>
                         </div>
-                        <div class="mt-4 flex justify-center">
-                            <img src="https://img.icons8.com/color/140/toolbox.png" alt="Home Services" class="h-20 object-contain">
+                        <div class="my-6 flex justify-center text-blue-600">
+                            <i class="fa-solid fa-toolbox text-4xl"></i>
                         </div>
                     </div>
 
                     <!-- Cleaning Services -->
                     <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-gray-900 text-base">Cleaning Services</h3>
-                            <div class="flex gap-1 mt-1">
-                                <span class="bg-blue-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
-                                <span class="bg-blue-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
+                            <h3 class="font-bold text-gray-900 text-sm">Cleaning Services</h3>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                <span class="bg-blue-900 text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
+                                <span class="bg-blue-900 text-white text-[8px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
                             </div>
                         </div>
-                        <div class="mt-4 flex justify-center">
-                            <img src="https://img.icons8.com/color/140/vacuum-cleaner.png" alt="Cleaning Services" class="h-20 object-contain">
+                        <div class="my-6 flex justify-center text-cyan-600">
+                            <i class="fa-solid fa-broom text-4xl"></i>
                         </div>
                     </div>
 
                     <!-- Salon Services -->
                     <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-gray-900 text-base">Salon Services</h3>
-                            <span class="inline-block bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded mt-1">FOR HER</span>
+                            <h3 class="font-bold text-gray-900 text-sm">Salon Services</h3>
+                            <span class="inline-block bg-rose-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded mt-1">FOR HER</span>
                         </div>
-                        <div class="mt-4 flex justify-center">
-                            <img src="https://img.icons8.com/color/140/化妆品.png" alt="Salon Services" class="h-20 object-contain">
+                        <div class="my-6 flex justify-center text-rose-500">
+                            <i class="fa-solid fa-wand-magic-sparkles text-4xl"></i>
                         </div>
                     </div>
 
                     <!-- Maintained by Mahir -->
                     <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-gray-900 text-base leading-tight">Maintained by <span class="text-blue-600 font-black">mahir</span></h3>
-                            <span class="inline-block bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded mt-1">SUBSCRIPTION PLANS</span>
+                            <h3 class="font-bold text-gray-900 text-xs leading-tight">Maintained by <span class="text-blue-600 font-black">mahir</span></h3>
+                            <span class="inline-block bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded mt-1">SUBSCRIPTION PLANS</span>
                         </div>
-                        <div class="mt-4 flex justify-center">
-                            <img src="https://img.icons8.com/color/140/smart-home-connected.png" alt="Subscription Plans" class="h-20 object-contain">
+                        <div class="my-6 flex justify-center text-indigo-600">
+                            <i class="fa-solid fa-house-chimney-user text-4xl"></i>
                         </div>
                     </div>
                 </div>
@@ -159,11 +159,11 @@
                 <!-- Mahir For Business Banner -->
                 <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
-                        <h3 class="font-bold text-gray-900 text-base">Mahir For Business</h3>
-                        <span class="inline-block bg-blue-900 text-white text-[9px] font-bold px-2 py-0.5 rounded mt-1">Your Corporate Maintenance Partner</span>
+                        <h3 class="font-bold text-gray-900 text-sm">Mahir For Business</h3>
+                        <span class="inline-block bg-blue-900 text-white text-[8px] font-bold px-2 py-0.5 rounded mt-1">Your Corporate Maintenance Partner</span>
                     </div>
-                    <div class="w-20 flex justify-center">
-                        <img src="https://img.icons8.com/color/140/business-report.png" alt="Business" class="h-16 object-contain">
+                    <div class="text-blue-900 px-2">
+                        <i class="fa-solid fa-briefcase text-4xl"></i>
                     </div>
                 </div>
             </div>
@@ -171,7 +171,7 @@
 
     </div>
 
-    <!-- Firebase SDK Integration & Navigation Script -->
+    <!-- Firebase Auth Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
@@ -187,27 +187,23 @@
             measurementId: "G-CFM1N6RTNV"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
 
-        // Google Sign-In Trigger
         window.handleGoogleLogin = async function() {
             const provider = new GoogleAuthProvider();
             try {
                 const result = await signInWithPopup(auth, provider);
-                console.log("Logged in user:", result.user);
                 navigateTo('map-screen');
             } catch (error) {
                 console.error("Google Auth Error:", error);
-                alert("Google Sign-In failed. Please check your Firebase console settings.");
+                alert("Google Sign-In failed. Make sure your GitHub Pages domain is added to Authorized Domains in your Firebase Console.");
             }
         };
     </script>
 
     <script>
-        // Screen Navigation Utility
         function navigateTo(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -225,32 +221,30 @@
             navigateTo('map-screen');
         }
 
-        // Google Maps Initialization with Dark Theme Matching Your Reference
         function initMap() {
-            const defaultLocation = { lat: 33.6844, lng: 73.0479 }; // Islamabad / Rawalpindi area
-            const mapOptions = {
-                center: defaultLocation,
-                zoom: 15,
-                disableDefaultUI: true,
-                styles: [
-                    { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
-                    { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
-                    { elementType: "labels.text.stroke", stylers: [{ color: "#1a365d" }] },
-                    { featureType: "road", elementType: "geometry", stylers: [{ color: "#304a7d" }] },
-                    { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
-                ]
-            };
-            
+            const defaultLocation = { lat: 33.6844, lng: 73.0479 };
             const mapElement = document.getElementById("google-map");
-            if (mapElement && !mapElement.dataset.loaded) {
-                const map = new google.maps.Map(mapElement, mapOptions);
+            
+            if (window.google && window.google.maps) {
+                const map = new google.maps.Map(mapElement, {
+                    center: defaultLocation,
+                    zoom: 15,
+                    disableDefaultUI: true,
+                    styles: [
+                        { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
+                        { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
+                        { elementType: "labels.text.stroke", stylers: [{ color: "#1a365d" }] },
+                        { featureType: "road", elementType: "geometry", stylers: [{ color: "#304a7d" }] },
+                        { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
+                    ]
+                });
+                
                 const marker = new google.maps.Marker({
                     position: defaultLocation,
                     map: map,
                     draggable: true
                 });
 
-                // Setup Places Autocomplete Search Bar
                 const input = document.getElementById("map-search-input");
                 const autocomplete = new google.maps.places.Autocomplete(input);
                 autocomplete.bindTo("bounds", map);
@@ -263,8 +257,13 @@
                     marker.setPosition(place.geometry.location);
                     document.getElementById('selected-address-text').innerText = place.formatted_address;
                 });
-
-                mapElement.dataset.loaded = "true";
+            } else {
+                // Fallback if API key fails or isn't loaded
+                mapElement.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-white p-6 text-center">
+                    <i class="fa-solid fa-triangle-exclamation text-4xl text-yellow-500 mb-2"></i>
+                    <p class="font-semibold">Google Maps Key Restriction Error</p>
+                    <p class="text-xs text-gray-400 mt-1">Please add <code class="text-blue-400">zahid-dev.github.io</code> to your API Key website restrictions in the Google Cloud Console.</p>
+                </div>`;
             }
         }
     </script>
