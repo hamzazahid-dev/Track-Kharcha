@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Mahir Company</title>
+    <title>Mahir Company App</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet OpenStreetMap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
         tailwind.config = {
@@ -21,7 +22,7 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        mahirBlue: '#0B57D0',
+                        mahirBlue: '#0d6efd',
                         mahirLightBg: '#F8F9FA'
                     }
                 }
@@ -42,7 +43,6 @@
             user-select: none;
         }
         
-        /* Mobile Frame Layout with Safe Area Fixes */
         .app-container {
             width: 100%;
             max-width: 412px;
@@ -55,7 +55,6 @@
             flex-direction: column;
             margin: 0 auto;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            /* Prevents overlapping with phone UI */
             padding-top: env(safe-area-inset-top, 40px);
             padding-bottom: env(safe-area-inset-bottom, 20px);
         }
@@ -89,12 +88,19 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .mahir-card-shadow { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
-        .icon-shadow { box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06); }
-        
         .leaflet-container { background-color: #18233c !important; width: 100%; height: 100%; }
-        .leaflet-control-container .leaflet-routing-container-hide { display: none; }
-        .leaflet-touch .leaflet-bar { border: none; }
-        .leaflet-tile { filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3); }
+        .leaflet-tile { filter: brightness(0.9) contrast(1.1); }
+
+        .trending-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+        .trending-card {
+            min-width: 250px;
+            scroll-snap-align: start;
+        }
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen">
@@ -153,9 +159,9 @@
         </div>
 
         <!-- ==========================================
-             2. FREE OPENSTREETMAP / ADDRESS SCREEN
+             2. ADDRESS / MAP SCREEN
              ========================================== -->
-        <div id="map-screen" class="screen flex-col h-full bg-slate-900 relative pt-10">
+        <div id="map-screen" class="screen flex-col h-full bg-slate-900 relative">
             <div class="h-[75px] bg-white px-4 flex items-center gap-4 z-20 border-b border-gray-100 shadow-xs relative">
                 <button onclick="navigateTo('login-screen')" class="p-1 hover:bg-gray-100 rounded-full transition">
                     <i class="fa-solid fa-chevron-left text-xl text-black"></i>
@@ -182,24 +188,24 @@
             <div class="p-4 bg-white z-20 mb-2 pb-8">
                 <button onclick="confirmAddressSelection()" 
                         class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-2xl hover:bg-gray-900 active:scale-[0.99] transition">
-                    Confirm
+                    Confirm Location
                 </button>
             </div>
         </div>
 
         <!-- ==========================================
-             3. DASHBOARD / SERVICES SCREEN
+             3. DASHBOARD SCREEN
              ========================================== -->
-        <div id="dashboard-screen" class="screen flex-col h-full bg-white pt-10 overflow-y-auto no-scrollbar">
+        <div id="dashboard-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
             <div class="bg-white px-5 py-4 border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('map-screen')" class="flex items-center gap-3 text-black font-semibold text-lg hover:opacity-80 transition mb-2">
+                <button onclick="navigateTo('login-screen')" class="flex items-center gap-3 text-black font-semibold text-lg hover:opacity-80 transition mb-2">
                     <i class="fa-solid fa-chevron-left text-lg"></i>
                     <span>Log in</span>
                 </button>
                 <div class="space-y-0.5">
                     <h4 class="text-xs font-bold text-gray-900 tracking-tight">Address</h4>
                     <p id="selected-address-detail" class="text-xs text-gray-400 font-medium leading-snug line-clamp-2">
-                        48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi
+                        Islamabad, Punjab, Pakistan
                     </p>
                 </div>
             </div>
@@ -210,7 +216,7 @@
                 </h2>
 
                 <div class="grid grid-cols-2 gap-3.5">
-                    <!-- Home Services (Clickable) -->
+                    <!-- Home Services Card -->
                     <div onclick="navigateTo('home-services-screen')" class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer active:scale-95 transition">
                         <div>
                             <h3 class="font-bold text-gray-900 text-[15px]">Home Services</h3>
@@ -220,24 +226,12 @@
                             </div>
                         </div>
                         <div class="mt-auto flex justify-center items-end pb-1">
-                            <svg class="w-28 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="30" y="50" width="80" height="50" rx="8" fill="#EF4444"/>
-                                <rect x="25" y="45" width="90" height="12" rx="4" fill="#DC2626"/>
-                                <rect x="58" y="32" width="24" height="15" rx="3" fill="#94A3B8"/>
-                                <rect x="62" y="35" width="16" height="10" rx="2" fill="#FFFFFF"/>
-                                <path d="M40 30 L55 45 L50 50 L35 35 Z" fill="#D97706"/>
-                                <rect x="30" y="22" width="18" height="10" rx="2" fill="#64748B" transform="rotate(-15 30 22)"/>
-                                <path d="M80 20 L105 45 L95 50 L75 25 Z" fill="#94A3B8"/>
-                                <path d="M98 40 L102 44 M94 36 L98 40 M90 32 L94 36" stroke="#475569" stroke-width="2"/>
-                                <rect x="45" y="65" width="50" height="12" rx="3" fill="#F59E0B"/>
-                                <circle cx="70" cy="71" r="3" fill="#10B981"/>
-                                <text x="55" y="85" fill="#FFFFFF" font-size="9" font-weight="900" font-family="sans-serif">mahir</text>
-                            </svg>
+                            <i class="fa-solid fa-house-chimney-crack text-5xl text-blue-600"></i>
                         </div>
                     </div>
 
-                    <!-- Cleaning Services -->
-                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
+                    <!-- Cleaning Services Card -->
+                    <div onclick="navigateTo('home-services-screen')" class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer active:scale-95 transition">
                         <div>
                             <h3 class="font-bold text-gray-900 text-[15px]">Cleaning Services</h3>
                             <div class="flex flex-wrap gap-1 mt-1">
@@ -246,460 +240,229 @@
                             </div>
                         </div>
                         <div class="mt-auto flex justify-center items-end pb-1">
-                            <svg class="w-32 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 150 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 80 Q15 65 30 65 L45 55 H70 L80 65 H90 Q95 65 95 80 Z" fill="#EF4444"/>
-                                <circle cx="30" cy="82" r="7" fill="#1E293B"/>
-                                <circle cx="75" cy="82" r="7" fill="#1E293B"/>
-                                <rect x="75" y="45" width="22" height="35" rx="5" fill="#F59E0B"/>
-                                <path d="M75 45 C75 35 97 35 97 45 Z" fill="#3B82F6"/>
-                                <path d="M97 55 Q115 55 110 80" stroke="#64748B" stroke-width="4" fill="none"/>
-                                <path d="M105 70 L135 70 L130 92 L110 92 Z" fill="#EF4444"/>
-                                <rect x="110" y="58" width="6" height="14" fill="#3B82F6"/>
-                                <rect x="120" y="54" width="6" height="18" fill="#10B981"/>
-                                <path d="M100 90 L138 90" stroke="#F59E0B" stroke-Here is the complete HTML and CSS code to create the "Home Services" screen exactly as shown in your image. It includes the overlapping app UI feel, the search bar, the hero banner, the trending services carousel, and the exact categories you specified. 
-
-I have contained everything within a mobile-sized frame so it looks like an app screen on any device.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Services App UI</title>
-<!-- FontAwesome for Icons -->
-<link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-<style>
-    @import url('[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)');
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-    }
-
-    body {
-        background-color: #000; /* Dark background to make the phone UI pop */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
-
-    /* Phone Container */
-    .app-container {
-        width: 390px;
-        height: 844px;
-        background-color: #ffffff;
-        border-radius: 40px;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    }
-
-    /* Safe Area & Header */
-    .header {
-        padding: 40px 20px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #fff;
-        z-index: 10;
-    }
-
-    .header-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #111;
-    }
-
-    .header-icons {
-        display: flex;
-        gap: 15px;
-        color: #111;
-        font-size: 18px;
-    }
-    
-    .header-icons .fa-phone {
-        color: #0d6efd;
-    }
-
-    .header-icons .fa-bell {
-        color: #ccc;
-    }
-
-    /* Scrollable Content */
-    .content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 0 20px 100px; /* Padding bottom for nav bar */
-    }
-
-    /* Hide Scrollbar */
-    .content::-webkit-scrollbar, .trending-carousel::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Search Bar */
-    .search-container {
-        margin-bottom: 20px;
-        position: relative;
-    }
-
-    .search-container input {
-        width: 100%;
-        padding: 12px 15px 12px 40px;
-        border: 1px solid #f0f0f0;
-        border-radius: 25px;
-        font-size: 14px;
-        background-color: #fafafa;
-        outline: none;
-    }
-
-    .search-container i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #aaa;
-    }
-
-    /* Hero Banner */
-    .hero-banner {
-        width: 100%;
-        height: 140px;
-        border-radius: 15px;
-        background: linear-gradient(to right, #1a1a1a, #4a4a4a), url('[https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=800](https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=800)') center/cover;
-        background-blend-mode: overlay;
-        color: #fff;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 25px;
-    }
-
-    .hero-banner h2 {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .hero-banner p {
-        font-size: 12px;
-        color: #ddd;
-    }
-
-    /* Trending Services */
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .section-header h3 {
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .view-all {
-        background-color: #000;
-        color: #fff;
-        padding: 5px 12px;
-        border-radius: 15px;
-        font-size: 11px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .trending-carousel {
-        display: flex;
-        gap: 15px;
-        overflow-x: auto;
-        margin-bottom: 30px;
-        scroll-snap-type: x mandatory;
-    }
-
-    .trending-card {
-        min-width: 260px;
-        background-color: #0d6efd; /* Blue color from image */
-        border-radius: 15px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        color: #fff;
-        scroll-snap-align: start;
-        position: relative;
-    }
-
-    .trending-img-container {
-        width: 80px;
-        height: 80px;
-        background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .trending-img-container img {
-        width: 90%;
-        height: 90%;
-        object-fit: cover;
-    }
-
-    .trending-info h4 {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 5px;
-        line-height: 1.2;
-    }
-
-    .rating {
-        background-color: #ffc107;
-        color: #000;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 2px 6px;
-        border-radius: 5px;
-        display: inline-block;
-        margin-bottom: 8px;
-    }
-
-    .price-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .old-price {
-        font-size: 11px;
-        text-decoration: line-through;
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .new-price {
-        font-size: 14px;
-        font-weight: 700;
-    }
-
-    /* All Services Grid */
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-top: 15px;
-    }
-
-    .service-item {
-        background-color: #fff;
-        border: 1px solid #f0f0f0;
-        border-radius: 15px;
-        padding: 20px 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-    }
-
-    .service-icon {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-    }
-
-    /* Coloring icons to match image aesthetic */
-    .fa-broom { color: #8e6c43; } /* Cleaning */
-    .fa-snowflake { color: #0d6efd; } /* AC */
-    .fa-plug { color: #333; } /* Electrician */
-    .fa-car { color: #0d6efd; } /* Car */
-    .fa-paint-roller { color: #e74c3c; } /* Painter */
-    .fa-wrench { color: #7f8c8d; } /* Plumber */
-
-    .service-item span {
-        font-size: 12px;
-        color: #333;
-        font-weight: 500;
-    }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 80px;
-        background-color: #fff;
-        border-top: 1px solid #f0f0f0;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding-bottom: 20px; /* Safe area */
-    }
-
-    .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-        color: #aaa;
-        font-size: 11px;
-        cursor: pointer;
-    }
-
-    .nav-item.active {
-        color: #0d6efd;
-    }
-
-    .nav-item i {
-        font-size: 20px;
-    }
-
-    /* iPhone Home Indicator */
-    .home-indicator {
-        position: absolute;
-        bottom: 8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 130px;
-        height: 5px;
-        background-color: #111;
-        border-radius: 5px;
-        z-index: 20;
-    }
-</style>
-</head>
-<body>
-
-<div class="app-container">
-    <!-- Header -->
-    <div class="header">
-        <i class="fa-solid fa-chevron-left"></i>
-        <div class="header-title">Home Services</div>
-        <div class="header-icons">
-            <i class="fa-solid fa-phone"></i>
-            <i class="fa-solid fa-bell"></i>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="content">
-        
-        <!-- Search -->
-        <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search">
-        </div>
-
-        <!-- Hero Banner -->
-        <div class="hero-banner">
-            <h2>Car<br>Cleaning</h2>
-            <p>Best Service</p>
-        </div>
-
-        <!-- Trending Services Section -->
-        <div class="section-header">
-            <h3>Trending Services</h3>
-            <button class="view-all">View All</button>
-        </div>
-
-        <div class="trending-carousel">
-            <!-- Card 1 -->
-            <div class="trending-card">
-                <div class="trending-img-container">
-                    <!-- High quality switchbox placeholder image -->
-                    <img src="[https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&q=80&w=200](https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&q=80&w=200)" alt="Switchbox">
-                </div>
-                <div class="trending-info">
-                    <h4>AC Switchbox<br>Installation</h4>
-                    <div class="rating"><i class="fa-solid fa-star" style="font-size: 8px;"></i> 5.0</div>
-                    <div class="price-container">
-                        <span class="old-price">Rs: 600</span>
-                        <span class="new-price">Rs: 500</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 2 -->
-            <div class="trending-card">
-                <div class="trending-img-container">
-                    <img src="[https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&q=80&w=200](https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&q=80&w=200)" alt="Switchbox">
-                </div>
-                <div class="trending-info">
-                    <h4>AC Switchbox<br>Repair</h4>
-                    <div class="rating"><i class="fa-solid fa-star" style="font-size: 8px;"></i> 4.8</div>
-                    <div class="price-container">
-                        <span class="old-price">Rs: 400</span>
-                        <span class="new-price">Rs: 350</span>
+                            <i class="fa-solid fa-broom text-5xl text-amber-600"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- All Services Section -->
-        <div class="section-header" style="margin-bottom: 5px;">
-            <h3>All Services</h3>
-        </div>
+        <!-- ==========================================
+             4. HOME SERVICES SCREEN
+             ========================================== -->
+        <div id="home-services-screen" class="screen flex-col h-full bg-white relative">
+            <!-- Header -->
+            <div class="px-5 py-4 flex items-center justify-between border-b border-gray-50 bg-white sticky top-0 z-20">
+                <button onclick="navigateTo('dashboard-screen')" class="p-1 hover:bg-gray-100 rounded-full transition">
+                    <i class="fa-solid fa-chevron-left text-lg text-gray-800"></i>
+                </button>
+                <h3 class="text-base font-bold text-gray-900">Home Services</h3>
+                <div class="flex items-center gap-4 text-gray-800">
+                    <i class="fa-solid fa-phone text-blue-600 text-base cursor-pointer"></i>
+                    <i class="fa-solid fa-bell text-gray-300 text-base cursor-pointer"></i>
+                </div>
+            </div>
 
-        <div class="services-grid">
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-broom"></i></div>
-                <span>Cleaning</span>
+            <!-- Scrollable Page Content -->
+            <div class="flex-1 overflow-y-auto no-scrollbar p-5 pb-24 space-y-5">
+                
+                <!-- Search Bar -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" placeholder="Search" class="w-full bg-[#F8F9FA] border border-gray-100 rounded-full py-2.5 pl-11 pr-4 text-sm text-gray-800 placeholder-gray-400 focus:outline-none">
+                </div>
+
+                <!-- Hero Banner -->
+                <div class="w-full h-36 rounded-2xl bg-gradient-to-r from-gray-900 to-gray-700 p-5 flex flex-col justify-center text-white shadow-sm relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay" alt="Car Cleaning">
+                    <h2 class="text-xl font-bold leading-tight z-10">Car<br>Cleaning</h2>
+                    <p class="text-xs text-gray-300 mt-1 z-10">Best Service</p>
+                </div>
+
+                <!-- Trending Services Section -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-sm font-bold text-gray-900">Trending Services</h4>
+                        <button class="bg-black text-white text-[10px] font-semibold px-3 py-1 rounded-full">View All</button>
+                    </div>
+
+                    <div class="trending-carousel no-scrollbar pb-2">
+                        <!-- Card 1 -->
+                        <div class="trending-card bg-[#0d6efd] text-white p-3.5 rounded-2xl flex items-center gap-3">
+                            <div class="w-20 h-20 bg-white rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover" alt="Switchbox">
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-xs font-bold leading-snug">AC Switchbox<br>Installation</h5>
+                                <div class="inline-flex items-center gap-1 bg-amber-400 text-black font-extrabold text-[9px] px-1.5 py-0.5 rounded my-1">
+                                    <i class="fa-solid fa-star text-[7px]"></i> 5.0
+                                </div>
+                                <div class="flex items-center gap-2 text-xs">
+                                    <span class="line-through text-white/70 text-[10px]">Rs:600</span>
+                                    <span class="font-bold">Rs:500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="trending-card bg-[#0d6efd] text-white p-3.5 rounded-2xl flex items-center gap-3">
+                            <div class="w-20 h-20 bg-white rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover" alt="Electrical">
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-xs font-bold leading-snug">AC Switchbox<br>Repair</h5>
+                                <div class="inline-flex items-center gap-1 bg-amber-400 text-black font-extrabold text-[9px] px-1.5 py-0.5 rounded my-1">
+                                    <i class="fa-solid fa-star text-[7px]"></i> 4.8
+                                </div>
+                                <div class="flex items-center gap-2 text-xs">
+                                    <span class="line-through text-white/70 text-[10px]">Rs:400</span>
+                                    <span class="font-bold">Rs:350</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Services Section -->
+                <div>
+                    <h4 class="text-sm font-bold text-gray-900 mb-3">All Services</h4>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-broom text-2xl text-[#8e6c43]"></i>
+                            <span class="text-xs font-medium text-gray-700">Cleaning</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-snowflake text-2xl text-[#0d6efd]"></i>
+                            <span class="text-xs font-medium text-gray-700">Ac</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-plug text-2xl text-gray-800"></i>
+                            <span class="text-xs font-medium text-gray-700">Electrician</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-car text-2xl text-[#0d6efd]"></i>
+                            <span class="text-xs font-medium text-gray-700">Car</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-paint-roller text-2xl text-[#e74c3c]"></i>
+                            <span class="text-xs font-medium text-gray-700">Painter</span>
+                        </div>
+                        <div class="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center shadow-2xs cursor-pointer active:scale-95 transition">
+                            <i class="fa-solid fa-wrench text-2xl text-[#7f8c8d]"></i>
+                            <span class="text-xs font-medium text-gray-700">Plumber</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-snowflake"></i></div>
-                <span>Ac</span>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-plug"></i></div>
-                <span>Electrician</span>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-car"></i></div>
-                <span>Car</span>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-paint-roller"></i></div>
-                <span>Painter</span>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fa-solid fa-wrench"></i></div>
-                <span>Plumber</span>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-100 flex justify-around items-center px-4 z-20">
+                <button onclick="navigateTo('home-services-screen')" class="flex flex-col items-center gap-1 text-[#0d6efd]">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-semibold">Home</span>
+                </button>
+                <button onclick="alert('Orders screen')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-box text-lg"></i>
+                    <span class="text-[10px] font-medium">Orders</span>
+                </button>
+                <button onclick="alert('Profile screen')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-600">
+                    <i class="fa-regular fa-user text-lg"></i>
+                    <span class="text-[10px] font-medium">Profile</span>
+                </button>
             </div>
         </div>
 
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa-solid fa-box"></i>
-            <span>Orders</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa-regular fa-user"></i>
-            <span>Profile</span>
-        </div>
-    </div>
-    
-    <!-- iPhone Home Indicator line -->
-    <div class="home-indicator"></div>
-</div>
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        // Screen Navigation
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            if (screenId === 'map-screen') {
+                setTimeout(initMap, 100);
+            }
+        }
+
+        // Phone Login
+        function handlePhoneLogin() {
+            const input = document.getElementById('phone-input').value.trim();
+            if (!input) {
+                alert('Please enter your phone number.');
+                return;
+            }
+            navigateTo('map-screen');
+        }
+
+        // Confirm Location Selection
+        function confirmAddressSelection() {
+            navigateTo('dashboard-screen');
+        }
+
+        // Leaflet Map Logic
+        let map = null;
+        function initMap() {
+            if (!map && typeof L !== 'undefined') {
+                map = L.map('leaflet-map').setView([33.6844, 73.0479], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                L.marker([33.6844, 73.0479]).addTo(map)
+                    .bindPopup('Islamabad, Pakistan')
+                    .openPopup();
+            } else if (map) {
+                map.invalidateSize();
+            }
+        }
+
+        function fetchCurrentLocation() {
+            if (navigator.geolocation && map) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        map.setView([lat, lng], 15);
+                        L.marker([lat, lng]).addTo(map).bindPopup('Current Location').openPopup();
+                    },
+                    () => alert('Unable to fetch location.')
+                );
+            }
+        }
+
+        function handleAddressSearch(val) {
+            const results = document.getElementById('search-results');
+            if (val.length > 2) {
+                results.classList.remove('hidden');
+                results.innerHTML = `
+                    <div class="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100" onclick="selectSearchResult('Sector F-6, Islamabad')">
+                        <p class="font-semibold text-xs text-gray-800">Sector F-6, Islamabad</p>
+                        <p class="text-[10px] text-gray-400">Islamabad Capital Territory</p>
+                    </div>
+                    <div class="p-3 hover:bg-gray-100 cursor-pointer" onclick="selectSearchResult('Korang Town, Rawalpindi')">
+                        <p class="font-semibold text-xs text-gray-800">Korang Town, Rawalpindi</p>
+                        <p class="text-[10px] text-gray-400">Punjab, Pakistan</p>
+                    </div>
+                `;
+            } else {
+                results.classList.add('hidden');
+            }
+        }
+
+        function selectSearchResult(addr) {
+            document.getElementById('map-search-input').value = addr;
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('selected-address-detail').innerText = addr;
+        }
+    </script>
 
 </body>
 </html>
