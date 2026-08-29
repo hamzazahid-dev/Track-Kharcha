@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mahir Company</title>
+    <title>VeloxCare Services</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -21,10 +21,11 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        mahirNavy: '#1E2B58',
-                        mahirBadgeBlue: '#2550C0',
-                        mahirPink: '#E84A5F',
-                        mahirLightBg: '#F8F9FA'
+                        brandDark: '#1E2B58',
+                        brandBlue: '#2550C0',
+                        brandLightBlue: '#84D2EE',
+                        brandAccent: '#E84A5F',
+                        brandBg: '#F8F9FA'
                     }
                 }
             }
@@ -44,13 +45,12 @@
             user-select: none;
         }
         
-        /* Mobile Frame Layout */
         .app-container {
             width: 100%;
             max-width: 412px;
             height: 100vh;
             max-height: 892px;
-            background-color: #ffffff;
+            background-color: #F8F9FA;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -67,7 +67,6 @@
             }
         }
 
-        /* Screen Controller */
         .screen {
             display: none;
             width: 100%;
@@ -76,49 +75,53 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: #ffffff;
+            background-color: #F8F9FA;
             z-index: 10;
         }
         .screen.active {
             display: flex;
         }
 
-        /* Scrollbar styles */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .mahir-card-shadow {
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-        }
-        .mahir-input-bg {
-            background-color: #F4F4F5;
-        }
-        .service-list-shadow {
-            box-shadow: 0px 2px 10px rgba(0,0,0,0.03);
-        }
+        .velox-card-shadow { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
+        .velox-input-bg { background-color: #F4F4F5; }
 
-        /* Customizing Leaflet Dark Theme Tiles & Controls */
-        .leaflet-container {
-            background-color: #18233c !important;
-            width: 100%;
-            height: 100%;
-        }
+        .leaflet-container { background-color: #18233c !important; width: 100%; height: 100%; }
         .leaflet-control-container .leaflet-routing-container-hide { display: none; }
         .leaflet-touch .leaflet-bar { border: none; }
-        .leaflet-tile {
-            filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
+        .leaflet-tile { filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3); }
+
+        /* Custom Add Button Styles */
+        .add-btn {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .add-btn span { padding: 4px 10px; color: #374151; }
+        .add-btn .plus-icon {
+            background: black;
+            color: white;
+            padding: 4px 8px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen">
 
-    <div class="app-container">
+    <div class="app-container relative">
 
-        <!-- ==========================================
-             1. LOGIN SCREEN (Existing)
-             ========================================== -->
-        <div id="login-screen" class="screen active justify-between p-6 overflow-y-auto no-scrollbar">
-            <!-- (Content omitted for brevity, identical to your provided code) -->
+        <!-- 1. LOGIN SCREEN -->
+        <div id="login-screen" class="screen justify-between p-6 overflow-y-auto no-scrollbar">
             <div>
                 <div class="flex justify-end pt-2">
                     <button onclick="navigateTo('map-screen')" class="bg-black text-white text-xs font-medium px-4 py-1.5 rounded-full hover:opacity-90 active:scale-95 transition">
@@ -126,154 +129,152 @@
                     </button>
                 </div>
                 <div class="mt-14 space-y-2">
-                    <h1 class="text-[26px] font-bold text-black tracking-tight leading-snug">Welcome to Mahir Company</h1>
+                    <h1 class="text-[26px] font-bold text-black tracking-tight leading-snug">Welcome to VeloxCare</h1>
                     <p class="text-gray-600 text-[14px] font-normal">Please enter your phone number to continue</p>
                 </div>
                 <div class="mt-10 space-y-4">
-                    <input type="tel" id="phone-input" placeholder="Phone Number" class="w-full mahir-input-bg text-gray-800 placeholder-gray-400 text-base font-medium rounded-2xl py-4 px-5 border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition">
-                    <button onclick="handlePhoneLogin()" class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-sm hover:bg-gray-900 active:scale-[0.99] transition">Continue</button>
+                    <input type="tel" id="phone-input" placeholder="Phone Number" class="w-full velox-input-bg text-gray-800 placeholder-gray-400 text-base font-medium rounded-2xl py-4 px-5 border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition">
+                    <button onclick="navigateTo('map-screen')" class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-sm hover:bg-gray-900 active:scale-[0.99] transition">Continue</button>
                 </div>
+            </div>
+            <div class="space-y-3 pt-6 pb-2">
+                <button onclick="navigateTo('map-screen')" class="w-full flex items-center justify-center gap-3 velox-input-bg border border-gray-100 py-3.5 rounded-2xl font-medium text-gray-800 transition">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg>
+                    <span class="text-sm font-semibold">Continue with Google</span>
+                </button>
             </div>
         </div>
 
-        <!-- ==========================================
-             2. FREE OPENSTREETMAP / ADDRESS SCREEN (Existing)
-             ========================================== -->
+        <!-- 2. MAP SCREEN -->
         <div id="map-screen" class="screen flex-col h-full bg-slate-900 relative">
-             <div class="h-[75px] bg-white px-4 flex items-center gap-4 z-20 border-b border-gray-100 shadow-xs relative">
+            <div class="h-[75px] bg-white px-4 flex items-center gap-4 z-20 border-b border-gray-100 shadow-xs relative">
                 <button onclick="navigateTo('login-screen')" class="p-1 hover:bg-gray-100 rounded-full transition">
                     <i class="fa-solid fa-chevron-left text-xl text-black"></i>
                 </button>
                 <div class="flex-1 relative">
-                    <input type="text" id="map-search-input" placeholder="Search address (e.g. Islamabad)" class="w-full text-gray-800 placeholder-gray-400 text-base font-semibold focus:outline-none bg-transparent">
+                    <input type="text" id="map-search-input" placeholder="Search address" oninput="handleAddressSearch(this.value)" class="w-full text-gray-800 placeholder-gray-400 text-base font-semibold focus:outline-none bg-transparent">
+                    <div id="search-results" class="hidden absolute top-12 left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto"></div>
                 </div>
             </div>
             <div class="flex-1 w-full h-full relative">
                 <div id="leaflet-map" class="w-full h-full"></div>
+                <button onclick="fetchCurrentLocation()" class="absolute bottom-24 right-5 z-[500] w-12 h-12 bg-white text-black rounded-full shadow-2xl flex items-center justify-center border border-gray-100 active:scale-90 transition">
+                    <i class="fa-solid fa-crosshairs text-xl"></i>
+                </button>
             </div>
             <div class="p-4 bg-transparent z-20 mb-2">
-                <button onclick="confirmAddressSelection()" class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-2xl hover:bg-gray-900 active:scale-[0.99] transition">Confirm</button>
+                <button onclick="confirmAddressSelection()" class="w-full bg-black text-white text-base font-semibold py-4 rounded-2xl shadow-2xl hover:bg-gray-900 transition">Confirm</button>
             </div>
         </div>
 
-        <!-- ==========================================
-             3. HOME / SERVICES SCREEN (Main Dashboard)
-             ========================================== -->
-        <div id="dashboard-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
+        <!-- 3. MAIN DASHBOARD SCREEN -->
+        <div id="dashboard-screen" class="screen active flex-col h-full bg-white overflow-y-auto no-scrollbar">
             <div class="bg-white px-5 py-4 border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('map-screen')" class="flex items-center gap-3 text-black font-semibold text-lg hover:opacity-80 transition mb-2">
-                    <i class="fa-solid fa-chevron-left text-lg"></i>
-                    <span>Log in</span>
+                <button onclick="navigateTo('map-screen')" class="flex items-center gap-3 text-black font-semibold text-lg transition mb-2">
+                    <i class="fa-solid fa-chevron-left text-lg"></i><span>Log in</span>
                 </button>
                 <div class="space-y-0.5">
-                    <h4 class="text-xs font-bold text-gray-900 tracking-tight">Address</h4>
-                    <p id="selected-address-detail" class="text-xs text-gray-400 font-medium leading-snug line-clamp-2">
-                        48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi
-                    </p>
+                    <h4 class="text-xs font-bold text-gray-900">Address</h4>
+                    <p id="selected-address-detail" class="text-xs text-gray-400 font-medium truncate">Islamabad, Pakistan</p>
                 </div>
             </div>
-
             <div class="p-5 space-y-5 pb-10">
-                <h2 class="text-[22px] font-bold text-gray-900 tracking-tight">
-                    Welcome to Mahir Company
-                </h2>
-
+                <h2 class="text-[22px] font-bold text-gray-900 tracking-tight">Welcome to VeloxCare</h2>
                 <div class="grid grid-cols-2 gap-3.5">
-                    <!-- Home Services (Updated to navigate) -->
-                    <div onclick="navigateTo('homeservices-screen')" class="bg-white p-3.5 rounded-[22px] border border-gray-100 mahir-card-shadow flex flex-col justify-between h-[190px] relative overflow-hidden group cursor-pointer">
+                    <!-- Home Services Route -->
+                    <div onclick="navigateTo('home-services-main')" class="bg-white p-3.5 rounded-[22px] border border-gray-100 velox-card-shadow flex flex-col justify-between h-[190px] cursor-pointer hover:bg-gray-50 transition">
                         <div>
                             <h3 class="font-bold text-gray-900 text-[15px]">Home Services</h3>
                             <div class="flex flex-wrap gap-1 mt-1">
-                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
-                                <span class="bg-[#1E2B58] text-white text-[8px] font-bold px-1.5 py-0.5 rounded">COMMERCIAL</span>
+                                <span class="bg-brandDark text-white text-[8px] font-bold px-1.5 py-0.5 rounded">RESIDENTIAL</span>
                             </div>
                         </div>
-                        <div class="mt-auto flex justify-center items-end pb-1">
-                            <!-- SVGs remain same as original -->
-                            <svg class="w-28 h-24 transform group-hover:scale-105 transition duration-300" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="30" y="50" width="80" height="50" rx="8" fill="#EF4444"/>
-                                <rect x="25" y="45" width="90" height="12" rx="4" fill="#DC2626"/>
-                                <rect x="58" y="32" width="24" height="15" rx="3" fill="#94A3B8"/>
-                                <rect x="62" y="35" width="16" height="10" rx="2" fill="#FFFFFF"/>
-                                <path d="M40 30 L55 45 L50 50 L35 35 Z" fill="#D97706"/>
-                            </svg>
+                        <div class="mt-auto flex justify-center items-end pb-1 text-4xl text-brandBlue">
+                            <i class="fa-solid fa-house-chimney-crack"></i>
                         </div>
                     </div>
-                    <!-- (Other dashboard cards remain intact here, omitted for space but assume they exist) -->
+                    <!-- Cleaning Services -->
+                    <div class="bg-white p-3.5 rounded-[22px] border border-gray-100 velox-card-shadow flex flex-col justify-between h-[190px] cursor-pointer hover:bg-gray-50 transition">
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-[15px]">Cleaning Services</h3>
+                        </div>
+                        <div class="mt-auto flex justify-center items-end pb-1 text-4xl text-blue-500">
+                            <i class="fa-solid fa-broom"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==========================================
-             4. HOME SERVICES SUB-MENU (New Screen)
-             ========================================== -->
-        <div id="homeservices-screen" class="screen flex-col h-full bg-[#f8f9fa] overflow-y-auto no-scrollbar">
+        <!-- 4. HOME SERVICES MAIN SCREEN -->
+        <div id="home-services-main" class="screen flex-col h-full bg-[#F8F9FA] overflow-y-auto no-scrollbar">
             <!-- Header -->
-            <div class="bg-[#f8f9fa] px-4 py-3 flex items-center justify-between sticky top-0 z-20">
-                <button onclick="navigateTo('dashboard-screen')" class="p-2 hover:bg-gray-200 rounded-full transition">
-                    <i class="fa-solid fa-chevron-left text-xl text-black"></i>
-                </button>
-                <h1 class="text-lg font-bold text-gray-900">Home Services</h1>
-                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition">
-                    <i class="fa-solid fa-phone text-lg"></i>
-                </button>
+            <div class="bg-white px-4 py-3 flex items-center justify-between sticky top-0 z-20 border-b border-gray-100">
+                <div class="flex items-center gap-4">
+                    <button onclick="navigateTo('dashboard-screen')" class="p-2 -ml-2 text-black">
+                        <i class="fa-solid fa-chevron-left text-lg"></i>
+                    </button>
+                    <h2 class="text-lg font-bold text-gray-900">Home Services</h2>
+                </div>
+                <button class="text-brandBlue text-xl"><i class="fa-solid fa-phone"></i></button>
             </div>
-
+            
             <!-- Search -->
-            <div class="px-4 pb-3">
-                <div class="relative w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
-                    <input type="text" placeholder="Search" class="w-full bg-white border border-gray-200 rounded-full py-3 pl-10 pr-4 text-sm font-medium focus:outline-none focus:border-gray-300 shadow-sm">
+            <div class="bg-white px-4 pb-4 pt-2">
+                <div class="bg-gray-100 rounded-full flex items-center px-4 py-2.5">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 mr-3"></i>
+                    <input type="text" placeholder="Search" class="bg-transparent w-full focus:outline-none text-sm text-gray-700">
                 </div>
             </div>
 
-            <div class="px-4 space-y-6 pb-20">
-                <!-- Banner Image placeholder -->
-                <div class="w-full h-36 bg-blue-800 rounded-2xl overflow-hidden relative shadow-sm">
-                    <div class="absolute inset-0 flex items-center justify-center text-white/50 text-sm font-bold">
-                        [Lahore/Pakistan Monuments Banner Graphic]
+            <div class="p-4 space-y-6">
+                <!-- Promo Banner -->
+                <div class="w-full h-36 rounded-xl overflow-hidden relative shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="Banner">
+                    <div class="absolute inset-0 bg-blue-900/60 flex items-center justify-center">
+                        <h2 class="text-white font-bold text-2xl tracking-wider uppercase drop-shadow-md">VeloxCare Pro</h2>
                     </div>
                 </div>
 
                 <!-- Trending Services -->
                 <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-base font-bold text-gray-900">Trending Services</h2>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-gray-900 text-[15px]">Trending Services</h3>
                         <button class="bg-black text-white text-[10px] font-bold px-3 py-1 rounded-full">View All</button>
                     </div>
-                    <!-- Horizontal Scroll -->
                     <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-                        <!-- Trending Item 1 -->
-                        <div class="w-40 bg-blue-600 rounded-xl p-2.5 shrink-0 flex flex-col justify-between shadow-sm relative overflow-hidden">
-                            <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center mb-2">
-                                <i class="fa-solid fa-fan text-gray-400 text-2xl"></i>
+                        <!-- Trending Card 1 -->
+                        <div onclick="openCategory('ac')" class="min-w-[240px] bg-[#1E5BBD] rounded-xl p-3 flex gap-3 text-white cursor-pointer shadow-md">
+                            <div class="w-20 h-20 bg-white rounded-lg flex items-center justify-center p-2 shrink-0">
+                                <img src="https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?auto=format&fit=crop&w=150&q=80" class="object-contain" alt="AC">
                             </div>
-                            <h3 class="text-white text-xs font-bold leading-tight">AC Installation</h3>
-                            <div class="flex items-center gap-1 mt-1">
-                                <span class="bg-white text-green-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                                    <i class="fa-solid fa-star text-[8px]"></i> 4.4
-                                </span>
-                            </div>
-                            <p class="text-white/80 text-[9px] mt-1 line-clamp-2">Installation with 10 Feet pipe (1 to 2.5 tons)</p>
-                            <div class="flex justify-between items-end mt-2">
-                                <span class="text-[10px] text-white/70 line-through">Rs. 5100</span>
-                                <span class="text-xs font-bold text-white">Rs. 3000</span>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-semibold text-sm leading-tight">AC Installation</h4>
+                                <div class="flex items-center gap-1 mt-1 mb-1">
+                                    <span class="bg-white text-green-600 text-[9px] font-bold px-1.5 rounded flex items-center"><i class="fa-solid fa-star text-[7px] mr-1"></i>4.4</span>
+                                </div>
+                                <p class="text-[9px] text-blue-100 leading-tight mb-2">Installation with 10 Feet pipe<br>(1 to 2.5 tons)</p>
+                                <div class="flex gap-2 items-center">
+                                    <span class="text-[10px] line-through text-blue-200">Rs. 5100</span>
+                                    <span class="text-xs font-bold">Rs. 3000</span>
+                                </div>
                             </div>
                         </div>
-                        <!-- Trending Item 2 -->
-                        <div class="w-40 bg-blue-600 rounded-xl p-2.5 shrink-0 flex flex-col justify-between shadow-sm">
-                            <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center mb-2">
-                                <i class="fa-solid fa-car-battery text-gray-400 text-2xl"></i>
+                        <!-- Trending Card 2 -->
+                        <div onclick="openCategory('electrician')" class="min-w-[240px] bg-[#1E5BBD] rounded-xl p-3 flex gap-3 text-white cursor-pointer shadow-md">
+                            <div class="w-20 h-20 bg-white rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+                                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=150&q=80" class="w-full h-full object-cover" alt="UPS">
                             </div>
-                            <h3 class="text-white text-xs font-bold leading-tight">UPS Installation</h3>
-                            <div class="flex items-center gap-1 mt-1">
-                                <span class="bg-white text-green-600 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                                    <i class="fa-solid fa-star text-[8px]"></i> 4.8
-                                </span>
-                            </div>
-                            <div class="flex justify-between items-end mt-4">
-                                <span class="text-[10px] text-white/70 line-through">Rs. 1500</span>
-                                <span class="text-xs font-bold text-white">Rs. 1000</span>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-semibold text-sm leading-tight">UPS Installation</h4>
+                                <div class="flex items-center gap-1 mt-1 mb-1">
+                                    <span class="bg-white text-green-600 text-[9px] font-bold px-1.5 rounded flex items-center"><i class="fa-solid fa-star text-[7px] mr-1"></i>4.8</span>
+                                </div>
+                                <p class="text-[9px] text-blue-100 leading-tight mb-2">Complete setup and wiring</p>
+                                <div class="flex gap-2 items-center">
+                                    <span class="text-[10px] line-through text-blue-200">Rs. 3500</span>
+                                    <span class="text-xs font-bold">Rs. 2000</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -281,376 +282,301 @@
 
                 <!-- All Services Grid -->
                 <div>
-                    <h2 class="text-base font-bold text-gray-900 mb-3">All Services</h2>
+                    <h3 class="font-bold text-gray-900 text-[15px] mb-3">All Services</h3>
                     <div class="grid grid-cols-3 gap-3">
-                        <button onclick="navigateTo('ac-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-snowflake text-[#2550C0] text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">AC Services</span>
-                        </button>
-                        <button onclick="navigateTo('carpenter-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-hammer text-[#8B4513] text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Carpenter</span>
-                        </button>
-                        <button onclick="navigateTo('electrician-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-plug text-yellow-500 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Electrician</span>
-                        </button>
-                        <button onclick="navigateTo('geyser-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-fire text-red-500 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Geyser</span>
-                        </button>
-                        <button class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-toolbox text-gray-600 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Handyman</span>
-                        </button>
-                        <button onclick="navigateTo('home-appliances-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-blender text-blue-400 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Home<br>Appliances</span>
-                        </button>
-                        <button onclick="navigateTo('painter-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-paint-roller text-purple-500 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Painter</span>
-                        </button>
-                        <button onclick="navigateTo('plumber-services-screen')" class="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition">
-                            <i class="fa-solid fa-wrench text-gray-500 text-3xl"></i>
-                            <span class="text-[11px] font-medium text-gray-800 text-center">Plumber</span>
-                        </button>
+                        <!-- AC -->
+                        <div onclick="openCategory('ac')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-blue-500">
+                                <i class="fa-solid fa-fan"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">AC Services</span>
+                        </div>
+                        <!-- Carpenter -->
+                        <div onclick="openCategory('carpenter')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-amber-700">
+                                <i class="fa-solid fa-hammer"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Carpenter</span>
+                        </div>
+                        <!-- Electrician -->
+                        <div onclick="openCategory('electrician')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-yellow-500">
+                                <i class="fa-solid fa-plug"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Electrician</span>
+                        </div>
+                        <!-- Geyser -->
+                        <div onclick="openCategory('geyser')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-red-500">
+                                <i class="fa-solid fa-fire-burner"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Geyser</span>
+                        </div>
+                        <!-- Handyman -->
+                        <div onclick="openCategory('handyman')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-gray-600">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Handyman</span>
+                        </div>
+                        <!-- Home Appliances -->
+                        <div onclick="openCategory('appliances')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-indigo-500">
+                                <i class="fa-solid fa-jug-detergent"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Home<br>Appliances</span>
+                        </div>
+                        <!-- Painter -->
+                        <div onclick="openCategory('painter')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-teal-500">
+                                <i class="fa-solid fa-paint-roller"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Painter</span>
+                        </div>
+                        <!-- Plumber -->
+                        <div onclick="openCategory('plumber')" class="flex flex-col items-center gap-2 cursor-pointer">
+                            <div class="bg-white w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-3xl text-blue-400">
+                                <i class="fa-solid fa-sink"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 text-center">Plumber</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Footer Pill Button -->
-                <div class="flex justify-center mt-6">
-                    <button class="bg-[#89CFF0] text-gray-900 font-bold text-sm px-6 py-3.5 rounded-full shadow-sm hover:opacity-90 transition flex items-center gap-2">
-                        Explore Cleaning Services <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             5. AC SERVICES (Representative Sub-page)
-             ========================================== -->
-        <div id="ac-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <!-- Header -->
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2">
-                    <i class="fa-solid fa-chevron-left text-xl text-black"></i>
+                <!-- Footer Button -->
+                <button class="w-full bg-brandLightBlue text-brandDark font-bold py-4 rounded-3xl mt-4 mb-6 flex justify-center items-center gap-2 active:scale-95 transition">
+                    Explore Cleaning Services <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">AC Services</h1>
+            </div>
+        </div>
+
+        <!-- 5. DYNAMIC CATEGORY LISTING SCREEN -->
+        <div id="category-detail-screen" class="screen flex-col h-full bg-[#F8F9FA] overflow-hidden">
+            <!-- Header -->
+            <div class="bg-white px-4 py-3 flex items-center justify-between border-b border-gray-100 shrink-0">
+                <button onclick="navigateTo('home-services-main')" class="p-2 -ml-2 text-black">
+                    <i class="fa-solid fa-chevron-left text-lg"></i>
+                </button>
+                <h2 id="cat-title" class="text-lg font-bold text-gray-900">Category Services</h2>
+                <div class="w-8"></div> <!-- Spacer for center alignment -->
+            </div>
+            
+            <!-- Search -->
+            <div class="bg-white px-4 pb-4 pt-2 shrink-0">
+                <div class="bg-gray-100 rounded-full flex items-center px-4 py-2.5">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 mr-3"></i>
+                    <input type="text" placeholder="Search" class="bg-transparent w-full focus:outline-none text-sm text-gray-700">
+                </div>
             </div>
 
-            <div class="px-4 py-4 space-y-5 pb-10">
-                <!-- Search -->
-                <div class="relative w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400"></i>
-                    <input type="text" placeholder="Search" class="w-full bg-[#f4f4f5] border-none rounded-full py-2.5 pl-10 pr-4 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-gray-300">
-                </div>
-
-                <!-- Rating Box -->
-                <div class="bg-[#f8f9fa] rounded-xl p-4 space-y-3">
-                    <div class="flex items-start gap-3">
-                        <i class="fa-solid fa-star text-gray-400 mt-1"></i>
+            <div class="flex-1 overflow-y-auto no-scrollbar p-4">
+                <!-- Stats Box -->
+                <div class="bg-white rounded-xl p-4 mb-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fa-solid fa-star text-gray-400 text-xl"></i>
                         <div>
-                            <h4 class="text-sm font-bold text-gray-900">4.4 out of 5 stars rating</h4>
-                            <p class="text-[11px] text-gray-500">Average rating of the service</p>
+                            <p id="cat-rating" class="text-sm font-bold text-gray-800">4.4 out of 5 stars rating</p>
+                            <p class="text-[11px] text-gray-400">Average rating of the service</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-circle-check text-gray-400"></i>
-                        <span class="text-xs text-gray-700 font-medium">55754 Orders done</span>
+                    <div class="flex items-center gap-3 border-t border-gray-100 pt-3">
+                        <i class="fa-solid fa-circle-check text-gray-400 text-xl"></i>
+                        <p id="cat-orders" class="text-sm font-medium text-gray-800">55754 Orders done</p>
                     </div>
                 </div>
 
-                <!-- Service List -->
-                <div>
-                    <h3 class="text-sm text-gray-600 mb-3">Choose from below</h3>
-                    <div class="space-y-3">
-                        <!-- List Item 1 -->
-                        <div class="flex bg-white rounded-xl border border-gray-100 p-3 service-list-shadow gap-3">
-                            <div class="w-[84px] h-[84px] bg-gray-100 rounded-lg shrink-0 overflow-hidden flex items-center justify-center">
-                                <i class="fa-solid fa-wind text-gray-300 text-3xl"></i>
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div>
-                                    <h4 class="text-sm font-semibold text-gray-900 leading-tight">AC Dismounting</h4>
-                                    <p class="text-[11px] text-blue-600 mt-0.5 font-medium">Per AC (1 to 2.5 tons)</p>
-                                </div>
-                                <div class="flex items-center gap-1.5 mt-1">
-                                    <span class="text-[11px] text-blue-600/70 line-through">Rs. 1500</span>
-                                    <span class="text-xs font-bold text-[#1E3A8A]">Rs. 1200</span>
-                                </div>
-                                <div class="flex items-center justify-between mt-1">
-                                    <div class="flex items-center gap-1 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10px]">
-                                        <i class="fa-solid fa-star text-[#4CAF50]"></i>
-                                        <span class="text-[#4CAF50] font-bold">4.8</span>
-                                    </div>
-                                    <button class="flex items-center border border-gray-300 rounded-full overflow-hidden h-7 hover:opacity-80 active:scale-95 transition">
-                                        <span class="px-3 text-xs font-semibold text-gray-800 bg-white">ADD</span>
-                                        <span class="bg-black text-white px-2.5 h-full flex items-center"><i class="fa-solid fa-plus text-xs"></i></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <p class="text-sm font-medium text-gray-700 mb-3">Choose from below</p>
 
-                        <!-- List Item 2 -->
-                        <div class="flex bg-white rounded-xl border border-gray-100 p-3 service-list-shadow gap-3">
-                            <div class="w-[84px] h-[84px] bg-gray-100 rounded-lg shrink-0 overflow-hidden flex items-center justify-center">
-                                <i class="fa-solid fa-spray-can-sparkles text-gray-300 text-3xl"></i>
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div>
-                                    <h4 class="text-sm font-semibold text-gray-900 leading-tight">AC General Service</h4>
-                                    <p class="text-[11px] text-blue-600 mt-0.5 font-medium">Per AC (1 to 2.5 tons)</p>
-                                </div>
-                                <div class="flex items-center gap-1.5 mt-1">
-                                    <span class="text-[11px] text-blue-600/70 line-through">Rs. 3300</span>
-                                    <span class="text-xs font-bold text-[#1E3A8A]">Rs. 2250</span>
-                                </div>
-                                <div class="flex items-center justify-between mt-1">
-                                    <div class="flex items-center gap-1 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10px]">
-                                        <i class="fa-solid fa-star text-[#4CAF50]"></i>
-                                        <span class="text-[#4CAF50] font-bold">4.3</span>
-                                    </div>
-                                    <button class="flex items-center border border-gray-300 rounded-full overflow-hidden h-7 hover:opacity-80 active:scale-95 transition">
-                                        <span class="px-3 text-xs font-semibold text-gray-800 bg-white">ADD</span>
-                                        <span class="bg-black text-white px-2.5 h-full flex items-center"><i class="fa-solid fa-plus text-xs"></i></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Dynamic List Container -->
+                <div id="services-list" class="space-y-3 pb-8">
+                    <!-- Javascript will populate this -->
                 </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             6. CARPENTER SERVICES 
-             ========================================== -->
-        <div id="carpenter-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <!-- Header -->
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Carpenter Services</h1>
-            </div>
-            <div class="px-4 py-4 space-y-5 pb-10">
-                <div class="relative w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400"></i>
-                    <input type="text" placeholder="Search" class="w-full bg-[#f4f4f5] border-none rounded-full py-2.5 pl-10 pr-4 text-sm font-medium focus:outline-none">
-                </div>
-                <div class="bg-[#f8f9fa] rounded-xl p-4 space-y-3">
-                    <div class="flex items-start gap-3"><i class="fa-solid fa-star text-gray-400 mt-1"></i><div><h4 class="text-sm font-bold text-gray-900">4.3 out of 5 stars rating</h4><p class="text-[11px] text-gray-500">Average rating of the service</p></div></div>
-                    <div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-gray-400"></i><span class="text-xs text-gray-700 font-medium">19831 Orders done</span></div>
-                </div>
-                <div>
-                    <h3 class="text-sm text-gray-600 mb-3">Choose from below</h3>
-                    <div class="space-y-3">
-                        <div class="flex bg-white rounded-xl border border-gray-100 p-3 service-list-shadow gap-3">
-                            <div class="w-[84px] h-[84px] bg-gray-100 rounded-lg shrink-0 overflow-hidden flex items-center justify-center"><i class="fa-solid fa-hammer text-gray-300 text-3xl"></i></div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div><h4 class="text-sm font-semibold text-gray-900">Carpenter Work</h4><p class="text-[11px] text-blue-600 mt-0.5">Visit & Inspection Charges</p></div>
-                                <div class="flex items-center gap-1.5 mt-1"><span class="text-[11px] text-blue-600/70 line-through">Rs. 800</span><span class="text-xs font-bold text-[#1E3A8A]">Rs. 500</span></div>
-                                <div class="flex items-center justify-between mt-1">
-                                    <div class="flex items-center gap-1 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-star text-[#4CAF50]"></i><span class="text-[#4CAF50] font-bold">4.3</span></div>
-                                    <button class="flex items-center border border-gray-300 rounded-full overflow-hidden h-7 hover:opacity-80 active:scale-95 transition"><span class="px-3 text-xs font-semibold text-gray-800 bg-white">ADD</span><span class="bg-black text-white px-2.5 h-full flex items-center"><i class="fa-solid fa-plus text-xs"></i></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             7. PLUMBER SERVICES (Representative long list pattern)
-             ========================================== -->
-        <div id="plumber-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <!-- Header -->
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Plumber Services</h1>
-            </div>
-            <div class="px-4 py-4 space-y-5 pb-10">
-                <div class="relative w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400"></i>
-                    <input type="text" placeholder="Search" class="w-full bg-[#f4f4f5] border-none rounded-full py-2.5 pl-10 pr-4 text-sm font-medium focus:outline-none">
-                </div>
-                <div class="bg-[#f8f9fa] rounded-xl p-4 space-y-3">
-                    <div class="flex items-start gap-3"><i class="fa-solid fa-star text-gray-400 mt-1"></i><div><h4 class="text-sm font-bold text-gray-900">4.4 out of 5 stars rating</h4><p class="text-[11px] text-gray-500">Average rating of the service</p></div></div>
-                    <div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-gray-400"></i><span class="text-xs text-gray-700 font-medium">42918 Orders done</span></div>
-                </div>
-                <div>
-                    <h3 class="text-sm text-gray-600 mb-3">Choose from below</h3>
-                    <div class="space-y-3">
-                        <div class="flex bg-white rounded-xl border border-gray-100 p-3 service-list-shadow gap-3">
-                            <div class="w-[84px] h-[84px] bg-gray-100 rounded-lg shrink-0 overflow-hidden flex items-center justify-center"><i class="fa-solid fa-sink text-gray-300 text-3xl"></i></div>
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div><h4 class="text-sm font-semibold text-gray-900 leading-tight">Bath Shower Installation</h4><p class="text-[11px] text-blue-600 mt-0.5">Vary After Inspection</p></div>
-                                <div class="flex items-center gap-1.5 mt-1"><span class="text-[11px] text-blue-600/70 line-through">Rs. 1800</span><span class="text-xs font-bold text-[#1E3A8A]">Rs. 1500</span></div>
-                                <div class="flex items-center justify-between mt-1">
-                                    <div class="flex items-center gap-1 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10px]"><i class="fa-solid fa-star text-[#4CAF50]"></i><span class="text-[#4CAF50] font-bold">4.6</span></div>
-                                    <button class="flex items-center border border-gray-300 rounded-full overflow-hidden h-7 hover:opacity-80 active:scale-95 transition"><span class="px-3 text-xs font-semibold text-gray-800 bg-white">ADD</span><span class="bg-black text-white px-2.5 h-full flex items-center"><i class="fa-solid fa-plus text-xs"></i></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             8. EMPTY / STUBBED SCREENS (Electrician, Geyser, Appliance, Painter)
-             ========================================== -->
-        <!-- Just duplicate the "Plumber" structural HTML pattern for Electrician (id="electrician-services-screen"), Geyser (id="geyser-services-screen"), Appliances (id="home-appliances-screen"), and Painter (id="painter-services-screen") modifying the Titles/Icons. -->
-        <div id="electrician-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Electrician Services</h1>
-            </div>
-            <!-- Standard search, stats, and list container repeats here -->
-            <div class="p-4 flex flex-col items-center justify-center h-full opacity-50">
-                 <i class="fa-solid fa-plug text-4xl mb-4 text-yellow-500"></i>
-                 <p class="text-sm font-medium">Service List Population Area</p>
-                 <p class="text-xs text-center mt-2">Duplicate the List Item HTML structure here matching the screenshots.</p>
-            </div>
-        </div>
-        
-        <div id="geyser-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Geyser Services</h1>
-            </div>
-            <div class="p-4 flex flex-col items-center justify-center h-full opacity-50">
-                 <i class="fa-solid fa-fire text-4xl mb-4 text-red-500"></i>
-                 <p class="text-sm font-medium">Service List Population Area</p>
-            </div>
-        </div>
-
-        <div id="home-appliances-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Home Appliances Repair</h1>
-            </div>
-            <div class="p-4 flex flex-col items-center justify-center h-full opacity-50">
-                 <i class="fa-solid fa-blender text-4xl mb-4 text-blue-400"></i>
-                 <p class="text-sm font-medium">Service List Population Area</p>
-            </div>
-        </div>
-
-        <div id="painter-services-screen" class="screen flex-col h-full bg-white overflow-y-auto no-scrollbar">
-            <div class="bg-white px-4 py-3 flex items-center border-b border-gray-100 sticky top-0 z-20">
-                <button onclick="navigateTo('homeservices-screen')" class="p-2 hover:bg-gray-100 rounded-full transition absolute left-2"><i class="fa-solid fa-chevron-left text-xl text-black"></i></button>
-                <h1 class="text-base font-semibold text-gray-900 w-full text-center">Painter Services</h1>
-            </div>
-            <div class="p-4 flex flex-col items-center justify-center h-full opacity-50">
-                 <i class="fa-solid fa-paint-roller text-4xl mb-4 text-purple-500"></i>
-                 <p class="text-sm font-medium">Service List Population Area</p>
             </div>
         </div>
 
     </div>
 
-    <!-- Leaflet JS Library (Free OpenSource) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        let leafletMap = null;
-        let mapMarker = null;
-        let selectedAddressText = "48 Street 14 Korang Town Rawalpindi Punjab, Korang Town, Rawalpindi";
-        let searchTimeout = null;
-
+        // --- Navigation Logic ---
         function navigateTo(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
             if (target) target.classList.add('active');
+            if (screenId === 'map-screen') setTimeout(initLeafletMap, 100);
+        }
 
-            if (screenId === 'map-screen') {
-                setTimeout(initLeafletMap, 100);
+        // --- Database for Category Services ---
+        const servicesData = {
+            'ac': {
+                title: "AC Services", rating: "4.4", orders: "55754",
+                items: [
+                    { name: "AC Dismounting", desc: "Per AC (1 to 2.5 tons)", oldPrice: 1500, price: 1200, rating: 4.8, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" },
+                    { name: "AC General Service", desc: "Per AC (1 to 2.5 tons)", oldPrice: 3300, price: 2250, rating: 4.3, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" },
+                    { name: "AC Installation", desc: "Installation with 10 Feet pipe", oldPrice: 5100, price: 3000, rating: 4.4, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" },
+                    { name: "AC Mounting and Dismounting", desc: "Per AC (1 to 2.5 tons)", oldPrice: 6400, price: 4000, rating: 4.6, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" },
+                    { name: "AC Mounting and Dismounting + AC General Service", desc: "Per AC (1 to 2.5 tons)", oldPrice: 8500, price: 5500, rating: 4.9, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" },
+                    { name: "AC Repairing", desc: "Visit and Inspection Charges", oldPrice: 1000, price: 800, rating: 4.3, img: "https://images.unsplash.com/photo-1610491462702-42e6ecd4f836?w=150" }
+                ]
+            },
+            'carpenter': {
+                title: "Carpenter Services", rating: "4.3", orders: "19831",
+                items: [
+                    { name: "Carpenter Work", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.3, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" },
+                    { name: "Catcher Replacement", desc: "Per Catcher", oldPrice: 800, price: 500, rating: 5.0, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" },
+                    { name: "Door Installation", desc: "Starting From", oldPrice: 1500, price: 1000, rating: 4.3, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" },
+                    { name: "Door Repairing", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.2, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" },
+                    { name: "Drawer Lock installation", desc: "Per Lock", oldPrice: 800, price: 500, rating: 4.0, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" },
+                    { name: "Furniture Repairing", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.6, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=150" }
+                ]
+            },
+            'electrician': {
+                title: "Electrician Services", rating: "4.4", orders: "50809",
+                items: [
+                    { name: "33-47 inch LED TV or LCD Mounting", desc: "Vary After Inspection", oldPrice: 2000, price: 1200, rating: 4.7, img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150" },
+                    { name: "Automatic Washing Machine Repairing", desc: "Visit & Inspection Charges", oldPrice: 1000, price: 800, rating: 4.6, img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150" },
+                    { name: "Ceiling Fan Installation", desc: "Per Fan", oldPrice: 800, price: 600, rating: 4.3, img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150" },
+                    { name: "Electrical Wiring", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.5, img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150" },
+                    { name: "UPS Repairing", desc: "Visit & Inspection Charges", oldPrice: 1000, price: 800, rating: 4.7, img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150" }
+                ]
+            },
+            'geyser': {
+                title: "Geyser Services", rating: "4.6", orders: "34114",
+                items: [
+                    { name: "Gas Geyser Dismounting", desc: "Fixed Price", oldPrice: 1500, price: 1000, rating: 5.0, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=150" },
+                    { name: "Gas Geyser Installation", desc: "Starting From", oldPrice: 3000, price: 2800, rating: 4.7, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=150" },
+                    { name: "Gas Geyser Repairing", desc: "Visit & Inspection Charges", oldPrice: 1000, price: 800, rating: 4.6, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=150" },
+                    { name: "Instant Electric Geyser Installation", desc: "Starting From", oldPrice: 2800, price: 2250, rating: 4.5, img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=150" }
+                ]
+            },
+            'handyman': {
+                title: "Handyman Services", rating: "4.5", orders: "11914",
+                items: [
+                    { name: "Art Hanging", desc: "Per Piece", oldPrice: 800, price: 600, rating: 5.0, img: "https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=150" },
+                    { name: "Curtain Rod Installation", desc: "Per Rod", oldPrice: 800, price: 650, rating: 4.2, img: "https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=150" },
+                    { name: "Mirror hanging", desc: "Vary After Inspection", oldPrice: 800, price: 600, rating: 4.5, img: "https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=150" },
+                    { name: "Room Clock Hanging", desc: "Per Clock", oldPrice: 800, price: 650, rating: 4.2, img: "https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=150" }
+                ]
+            },
+            'appliances': {
+                title: "Home Appliances Repair", rating: "4.2", orders: "24004",
+                items: [
+                    { name: "Automatic Washing Machine Service", desc: "Top-Loaded", oldPrice: 7000, price: 4000, rating: 4.8, img: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=150" },
+                    { name: "Kitchen Hood Installation", desc: "Visit & Inspection Charges", oldPrice: 1000, price: 800, rating: 4.5, img: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=150" },
+                    { name: "Oven Range Services", desc: "Per Oven Range", oldPrice: 3200, price: 1600, rating: 4.6, img: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=150" }
+                ]
+            },
+            'painter': {
+                title: "Painter Services", rating: "4.2", orders: "20095",
+                items: [
+                    { name: "Gray structure Paint", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.2, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=150" },
+                    { name: "House Paint (indoor)", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.4, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=150" },
+                    { name: "House Paint (outdoor)", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.1, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=150" }
+                ]
+            },
+            'plumber': {
+                title: "Plumber Services", rating: "4.4", orders: "42918",
+                items: [
+                    { name: "Automatic Washing Machine Installation", desc: "With Wiring", oldPrice: 2800, price: 2500, rating: 4.6, img: "https://images.unsplash.com/photo-1607472586893-edb57cbca8ea?w=150" },
+                    { name: "Bath Shower Installation", desc: "Vary After Inspection", oldPrice: 1800, price: 1500, rating: 4.6, img: "https://images.unsplash.com/photo-1607472586893-edb57cbca8ea?w=150" },
+                    { name: "Commode Installation", desc: "Vary After Inspection", oldPrice: 2800, price: 2500, rating: 4.4, img: "https://images.unsplash.com/photo-1607472586893-edb57cbca8ea?w=150" },
+                    { name: "Drain Pipe Installation", desc: "Visit & Inspection Charges", oldPrice: 800, price: 500, rating: 4.2, img: "https://images.unsplash.com/photo-1607472586893-edb57cbca8ea?w=150" },
+                    { name: "Water Motor Installation", desc: "Vary After Inspection", oldPrice: 1500, price: 1000, rating: 4.8, img: "https://images.unsplash.com/photo-1607472586893-edb57cbca8ea?w=150" }
+                ]
             }
+        };
+
+        function openCategory(categoryId) {
+            const data = servicesData[categoryId];
+            if(!data) return;
+
+            // Populate header stats
+            document.getElementById('cat-title').innerText = data.title;
+            document.getElementById('cat-rating').innerText = `${data.rating} out of 5 stars rating`;
+            document.getElementById('cat-orders').innerText = `${data.orders} Orders done`;
+
+            // Populate list
+            const listContainer = document.getElementById('services-list');
+            listContainer.innerHTML = '';
+
+            data.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3 rounded-2xl border border-gray-100 flex gap-3 shadow-sm";
+                card.innerHTML = `
+                    <img src="${item.img}" class="w-[88px] h-[88px] object-cover rounded-xl bg-gray-50 border border-gray-100 shrink-0" alt="${item.name}">
+                    <div class="flex-1 flex flex-col justify-between py-1">
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-sm leading-tight">${item.name}</h4>
+                            <p class="text-brandBlue text-[11px] font-medium mt-1">${item.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[11px] text-gray-400 line-through">Rs. ${item.oldPrice}</span>
+                                    <span class="text-sm font-bold text-brandBlue">Rs. ${item.price}</span>
+                                </div>
+                                <span class="text-green-600 text-[10px] font-bold mt-0.5 flex items-center">
+                                    <i class="fa-solid fa-star text-[8px] mr-1"></i>${item.rating}
+                                </span>
+                            </div>
+                            <button class="add-btn active:scale-95 transition">
+                                <span>ADD</span>
+                                <div class="plus-icon"><i class="fa-solid fa-plus text-[10px]"></i></div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+
+            navigateTo('category-detail-screen');
         }
 
-        function handlePhoneLogin() {
-            const phone = document.getElementById('phone-input').value.trim();
-            if (!phone || phone.length < 6) {
-                alert('Please enter a valid phone number');
-                return;
-            }
-            navigateTo('map-screen');
-        }
+        // --- Map Setup ---
+        let leafletMap = null;
+        let mapMarker = null;
+        let searchTimeout = null;
 
-        function handleGoogleLogin() { navigateTo('map-screen'); }
-        function handleFacebookLogin() { navigateTo('map-screen'); }
-
-        function confirmAddressSelection() {
-            document.getElementById('selected-address-detail').innerText = selectedAddressText;
-            navigateTo('dashboard-screen');
-        }
-
-        // Initialize Free Leaflet Map
         function initLeafletMap() {
-            if (leafletMap) {
-                leafletMap.invalidateSize();
-                return;
-            }
-
-            const initialCoords = [33.6007, 73.1022]; // Default Islamabad / Rawalpindi
-
-            leafletMap = L.map('leaflet-map', {
-                zoomControl: false
-            }).setView(initialCoords, 15);
-
-            // OpenStreetMap Tile Layer (100% Free)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(leafletMap);
-
-            // Custom Marker Pin
+            if (leafletMap) { leafletMap.invalidateSize(); return; }
+            const initialCoords = [33.6844, 73.0479]; // Islamabad
+            leafletMap = L.map('leaflet-map', { zoomControl: false }).setView(initialCoords, 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(leafletMap);
+            
             const customIcon = L.divIcon({
                 className: 'custom-pin',
-                html: `<div style="background-color:black; color:white; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 10px 15px rgba(0,0,0,0.4);">
-                        <i class="fa-solid fa-location-dot" style="font-size:16px;"></i>
-                       </div>`,
-                iconSize: [36, 36],
-                iconAnchor: [18, 36]
+                html: `<div style="background-color:black; color:white; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 10px 15px rgba(0,0,0,0.4);"><i class="fa-solid fa-location-dot" style="font-size:16px;"></i></div>`,
+                iconSize: [36, 36], iconAnchor: [18, 36]
             });
 
             mapMarker = L.marker(initialCoords, { icon: customIcon, draggable: true }).addTo(leafletMap);
-
-            mapMarker.on('dragend', function (e) {
+            mapMarker.on('dragend', function () {
                 const position = mapMarker.getLatLng();
                 reverseGeocode(position.lat, position.lng);
             });
         }
 
-        // Free Search via OpenStreetMap Nominatim API
         function handleAddressSearch(query) {
             clearTimeout(searchTimeout);
             const dropdown = document.getElementById('search-results');
-            if (!query || query.length < 3) {
-                dropdown.classList.add('hidden');
-                return;
-            }
-
+            if (!query || query.length < 3) { dropdown.classList.add('hidden'); return; }
             searchTimeout = setTimeout(() => {
                 fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         dropdown.innerHTML = '';
-                        if (data.length === 0) {
-                            dropdown.classList.add('hidden');
-                            return;
-                        }
+                        if (data.length === 0) { dropdown.classList.add('hidden'); return; }
                         data.slice(0, 5).forEach(item => {
                             const div = document.createElement('div');
                             div.className = 'px-4 py-2.5 hover:bg-gray-100 text-xs text-gray-700 cursor-pointer border-b border-gray-100 last:border-none';
                             div.innerText = item.display_name;
                             div.onclick = () => {
-                                const lat = parseFloat(item.lat);
-                                const lon = parseFloat(item.lon);
+                                const lat = parseFloat(item.lat), lon = parseFloat(item.lon);
                                 leafletMap.setView([lat, lon], 16);
                                 mapMarker.setLatLng([lat, lon]);
-                                selectedAddressText = item.display_name;
                                 document.getElementById('map-search-input').value = item.display_name;
+                                document.getElementById('selected-address-detail').innerText = item.display_name;
                                 dropdown.classList.add('hidden');
                             };
                             dropdown.appendChild(div);
@@ -660,24 +586,21 @@
             }, 400);
         }
 
-        // Reverse Geocoding to get address text from coordinates
         function reverseGeocode(lat, lng) {
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.display_name) {
-                        selectedAddressText = data.display_name;
                         document.getElementById('map-search-input').value = data.display_name;
+                        document.getElementById('selected-address-detail').innerText = data.display_name;
                     }
                 });
         }
 
-        // Device GPS Location
         function fetchCurrentLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
+                    const lat = pos.coords.latitude, lng = pos.coords.longitude;
                     if (leafletMap && mapMarker) {
                         leafletMap.setView([lat, lng], 16);
                         mapMarker.setLatLng([lat, lng]);
@@ -685,6 +608,10 @@
                     }
                 });
             }
+        }
+
+        function confirmAddressSelection() {
+            navigateTo('dashboard-screen');
         }
     </script>
 </body>
